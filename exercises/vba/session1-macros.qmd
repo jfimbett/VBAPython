@@ -1,0 +1,22 @@
+---
+title: "VBA Session 1 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Record and Refactor
+
+- Record a macro that formats A1:E1 as a header (bold, fill color)
+- Refactor the recorded code to remove Select/Activate and use a With block
+
+---
+
+## Exercise 2 — Input and Greet
+
+- Ask for a user name via InputBox, then show a welcome MsgBox
+
+---
+
+## Exercise 3 — Write a Column
+
+- Write numbers 1..50 into column A without selecting cells

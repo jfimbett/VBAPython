@@ -1,0 +1,283 @@
+---
+title: "Python Session 2 — Python Basics"
+subtitle: "Syntax, variables, conditionals, loops, data structures"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Why Python?
+
+- General‑purpose, batteries included, huge ecosystem
+- Readable like English; great for rapid prototyping
+
+---
+
+## Running Python
+
+- REPL: python
+- Scripts: python file.py
+- Notebooks: Jupyter/VS Code
+
+---
+
+## Hello, world
+
+```python
+print("Hello, world")
+```
+
+---
+
+## Variables and types
+
+```python
+x = 42          # int
+pi = 3.14       # float
+name = "Ana"    # str
+ok = True       # bool
+```
+
+- Dynamic typing; type(x) tells you the runtime type
+
+---
+
+## Strings
+
+```python
+msg = f"Hi {name}!"
+msg.upper()
+```
+
+- Slicing, methods, f-strings for formatting
+
+---
+
+## Lists (ordered, mutable)
+
+```python
+nums = [1, 2, 3]
+nums.append(4)
+nums[0] = 10
+```
+
+---
+
+## Tuples (ordered, immutable)
+
+```python
+point = (3, 4)
+```
+
+- Useful for fixed records, dictionary keys
+
+---
+
+## Sets (unique, unordered)
+
+```python
+ids = {1, 2, 2, 3}  # {1, 2, 3}
+```
+
+- Fast membership tests
+
+---
+
+## Dicts (key → value)
+
+```python
+user = {"id": 1, "name": "Ana"}
+user["email"] = "ana@example.com"
+```
+
+---
+
+## Conditionals
+
+```python
+if x > 0:
+    print("positive")
+elif x == 0:
+    print("zero")
+else:
+    print("negative")
+```
+
+---
+
+## Loops: while
+
+```python
+i = 0
+while i < 3:
+    print(i)
+    i += 1
+```
+
+---
+
+## Loops: for
+
+```python
+for n in [1, 2, 3]:
+    print(n)
+```
+
+- Iterates over any iterable
+
+---
+
+## Range and enumerate
+
+```python
+for i, n in enumerate(range(5, 8)):
+    print(i, n)
+```
+
+---
+
+## Comprehensions
+
+```python
+squares = [n*n for n in range(10)]
+```
+
+- Read as: build a list by repeating a pattern
+
+---
+
+## Functions
+
+```python
+def area(r: float) -> float:
+    return 3.1416 * r * r
+```
+
+- Optional type hints aid readability
+
+---
+
+## Exceptions
+
+```python
+try:
+    1 / 0
+except ZeroDivisionError as e:
+    print("oops", e)
+```
+
+---
+
+## Modules and imports
+
+```python
+import math
+from pathlib import Path
+```
+
+---
+
+## File I/O
+
+```python
+with open("notes.txt", "w", encoding="utf-8") as f:
+    f.write("hello\n")
+```
+
+---
+
+## Real‑life analogy
+
+- Data structures = containers in a workshop
+- Use the right one to work faster and safer
+
+---
+
+## Idioms
+
+- EAFP: Easier to Ask Forgiveness than Permission
+- Truthy/Falsey values
+
+---
+
+## Exercise 1
+
+- Read a CSV, count lines, print first 5
+
+---
+
+## Exercise 2
+
+- Build a frequency dict for words in a text
+
+---
+
+## Wrap‑up
+
+- You can write basic Python with core data structures and control flow
+- Next: OOP and types
+
+---
+
+## Slicing
+
+```python
+nums = [0,1,2,3,4]
+nums[1:4], nums[:3], nums[::2]
+```
+
+---
+
+## Unpacking
+
+```python
+a, b = 1, 2
+x, *rest = [10, 20, 30]
+```
+
+---
+
+## Truthiness
+
+- empty list/dict/set → False; non‑empty → True
+
+---
+
+## Ternary expression
+
+```python
+label = "even" if x % 2 == 0 else "odd"
+```
+
+---
+
+## with context manager
+
+```python
+from contextlib import suppress
+with suppress(FileNotFoundError):
+    open("maybe.txt").read()
+```
+
+---
+
+## Small gotchas
+
+- Mutable default args; indentation errors
+
+---
+
+## Knowledge check (quiz)
+
+- List vs tuple difference?
+- What does enumerate do?

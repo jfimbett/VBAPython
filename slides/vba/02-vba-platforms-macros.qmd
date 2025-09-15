@@ -1,0 +1,335 @@
+---
+title: "VBA Session 2 — Macros, Platforms, and Productivity"
+subtitle: "Windows vs Mac, recording/refactoring, organizing modules"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Agenda
+
+- Accessing macros on Windows and Mac
+- Differences in VBE usage, file paths, dialogs
+- Recording, reviewing, and refactoring
+- Organizing modules and utilities
+
+---
+
+## Accessing macros (Windows)
+
+- Developer tab → Macros (Alt+F8)
+- Assign macros to buttons, shapes, or shortcuts
+- Trust Center settings for macro security
+
+---
+
+## Accessing macros (Mac)
+
+- Developer tab → Macros
+- Customize Ribbon & Toolbar for quick access
+- Note: some shortcut keys differ
+
+---
+
+## Macro storage locations
+
+- This Workbook vs New Workbook vs Personal Macro Workbook
+- Pros/cons for sharing vs personal use
+
+---
+
+## Macro recorder pitfalls
+
+- Records every click → lots of Select/Activate
+- Absolute selections → fragile
+- Good for learning object references
+
+---
+
+## Refactoring recorded macros
+
+Before:
+
+```vba
+Range("A1").Select
+ActiveCell.Value = "Header"
+```
+
+After:
+
+```vba
+Range("A1").Value = "Header"
+```
+
+---
+
+## Selecting ranges robustly
+
+```vba
+With Worksheets("Data")
+    .Range("A1").CurrentRegion.Select 'for exploration only
+    .Range("A1").Value = "OK"
+End With
+```
+
+- Prefer qualified references (.Range) inside With blocks
+
+---
+
+## Named ranges and Tables
+
+- Use structured references for stability
+- Tables (ListObjects) are macro‑friendly
+
+```vba
+ActiveSheet.ListObjects("Sales").DataBodyRange.Columns(1).Value = 0
+```
+
+---
+
+## Win vs Mac: file paths
+
+- Windows: C:\Users\You\Documents\...
+- Mac: /Users/you/Documents/...
+- Use Application.OperatingSystem to branch when needed
+
+```vba
+If InStr(Application.OperatingSystem, "Mac") > 0 Then
+    ' Mac path logic
+Else
+    ' Windows path logic
+End If
+```
+
+---
+
+## Dialog differences
+
+- File pickers, message boxes, and fonts dialogs differ slightly
+- Abstract with small helper functions
+
+---
+
+## Example: Save CSV cross‑platform
+
+```vba
+Sub SaveCsv()
+    Dim path As String
+    If InStr(Application.OperatingSystem, "Mac") > 0 Then
+        path = "/Users/you/Desktop/out.csv"
+    Else
+        path = "C:\\Users\\you\\Desktop\\out.csv"
+    End If
+    ActiveWorkbook.SaveAs Filename:=path, FileFormat:=xlCSVUTF8
+End Sub
+```
+
+---
+
+## Organizing modules
+
+- Baseline folders: Modules/, Forms/, Classes/
+- Keep utilities in a separate module (e.g., modUtils)
+- One responsibility per module where possible
+
+---
+
+## Sub vs Function
+
+```vba
+Function Add(a As Double, b As Double) As Double
+    Add = a + b
+End Function
+
+Sub UseAdd()
+    Range("A1").Value = Add(2, 3)
+End Sub
+```
+
+- Function returns a value; Sub performs actions
+
+---
+
+## Public vs Private scope
+
+```vba
+Public Const AppName As String = "MyTools"
+Private Sub Helper()
+End Sub
+```
+
+- Limit visibility to avoid name collisions
+
+---
+
+## Error handling patterns
+
+```vba
+Sub DoWork()
+On Error GoTo Fail
+    ' ...
+    Exit Sub
+Fail:
+    MsgBox "Error: " & Err.Number & " - " & Err.Description
+End Sub
+```
+
+- Add logging to a hidden sheet for audits
+
+---
+
+## Loop patterns
+
+- For i = 1 To n
+- For Each cell In Range(...)
+- Do While condition
+
+Prefer For Each for collections (fewer index mistakes)
+
+---
+
+## Working with Sheets and Workbooks
+
+```vba
+Dim wb As Workbook
+Set wb = Workbooks.Open("C:\\path\\file.xlsx")
+wb.Sheets("Data").Range("A1").Value = Now
+```
+
+- Always Set object variables; remember to Close when done
+
+---
+
+## Performance tips
+
+```vba
+Application.ScreenUpdating = False
+Application.Calculation = xlCalculationManual
+' ... work ...
+Application.Calculation = xlCalculationAutomatic
+Application.ScreenUpdating = True
+```
+
+- Batch writes; avoid cell‑by‑cell loops when possible
+
+---
+
+## Input/Output basics
+
+- InputBox, MsgBox, file read/write
+- CSV vs XLSX vs XLSB tradeoffs
+
+---
+
+## Example: Summarize a column
+
+```vba
+Function SumCol(rng As Range) As Double
+    Dim c As Range, s As Double
+    For Each c In rng
+        If IsNumeric(c.Value) Then s = s + c.Value
+    Next c
+    SumCol = s
+End Function
+```
+
+---
+
+## Assigning macros to shapes
+
+- Insert → Shapes → Right‑click → Assign Macro
+- Great for dashboard buttons
+
+---
+
+## Custom toolbar on Mac/Win
+
+- Create a quick access button for common macros
+- Improves discoverability for non‑technical users
+
+---
+
+## Real‑life analogy: Office assistant
+
+- Recorder = intern writing down your steps
+- Refactoring = turning notes into a clean checklist
+
+---
+
+## Exercise: cleanup report
+
+- Open a messy sheet; record cleanup
+- Refactor to parameterize sheet/ranges
+- Add error handling and performance guards
+
+---
+
+## Exercise: cross‑platform save
+
+- Write a macro that saves a CSV differently on Win vs Mac
+- Test with a configurable base path
+
+---
+
+## Macro security recap
+
+- Prefer signed macros for distribution
+- Educate users about enabling content
+
+---
+
+## Personal Macro Workbook tips
+
+- Store reusable utilities (date stamp, clear filters)
+- Backup PERSONAL.XLSB occasionally
+
+---
+
+## Ribbon/Toolbar customization
+
+- Add buttons for frequent macros
+- Improves adoption for teams
+
+---
+
+## Logging pattern
+
+```vba
+Sub LogMsg(msg As String)
+    With Worksheets("Log")
+        .Cells(.Rows.Count, 1).End(xlUp).Offset(1, 0).Value = Now & ": " & msg
+    End With
+End Sub
+```
+
+---
+
+## Config via hidden sheet
+
+- Store base paths, sheet names, parameters
+- Read once at startup; validate
+
+---
+
+## Knowledge check (quiz)
+
+- Where should global utilities live?
+- One reason to avoid the recorder’s output as-is?
+- How to branch code by OS?
+
+---
+
+## Case study: cross‑platform export
+
+- Requirement: Export active sheet as CSV to Desktop
+- Design: path helper + SaveAs wrapper + logging

@@ -1,0 +1,22 @@
+---
+title: "Python Exercises"
+format: revealjs
+paginate: true
+---
+
+## How to use these exercises
+
+- Exercises grouped per session with separate solution files
+- Run in your selected environment; requirements noted per session
+
+---
+
+## Sessions
+
+- Session 1: Setup & Tools
+- Session 2: Python Basics
+- Session 3: OOP & Types
+- Session 4: NumPy & pandas
+- Session 5: Optimization
+- Session 6: Flask & Streamlit
+- Session 7: Big Data

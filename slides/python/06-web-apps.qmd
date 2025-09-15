@@ -1,0 +1,158 @@
+---
+title: "Python Session 6 — Flask and Streamlit"
+subtitle: "From scripts to simple apps"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Two paths to apps
+
+- Flask: micro web framework (routes, templates)
+- Streamlit: UI for data apps with minimal code
+
+---
+
+## Flask: hello app
+
+```python
+from flask import Flask
+app = Flask(__name__)
+
+@app.get("/")
+def home():
+    return "Hello, Flask!"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+---
+
+## Flask: routes and params
+
+```python
+@app.get("/greet/<name>")
+def greet(name):
+    return f"Hi {name}!"
+```
+
+---
+
+## Flask: templates (Jinja2)
+
+- Render HTML with variables and loops
+- Keep logic in Python, presentation in templates
+
+---
+
+## Flask: forms and JSON
+
+- request.form, request.json
+- Return jsonify for APIs
+
+---
+
+## Streamlit: hello app
+
+```python
+import streamlit as st
+st.title("Hello Streamlit")
+name = st.text_input("Name")
+st.write(f"Hi {name}")
+```
+
+---
+
+## Streamlit: widgets
+
+- sliders, selectbox, file_uploader
+- instant feedback loop
+
+---
+
+## Streamlit: caching
+
+```python
+@st.cache_data
+def load_data(path):
+    ...
+```
+
+---
+
+## Deploying
+
+- Flask: gunicorn + reverse proxy
+- Streamlit: Streamlit Cloud or container
+
+---
+
+## Security basics
+
+- Never trust user input; validate and sanitize
+- Hide secrets via env variables
+
+---
+
+## Exercise 1
+
+- Flask endpoint that sums two numbers from query params
+
+---
+
+## Exercise 2
+
+- Streamlit app that uploads a CSV and shows summary stats
+
+---
+
+## Real‑life analogy
+
+- Flask = build your kitchen from scratch
+- Streamlit = plug‑and‑play kitchen kit
+
+---
+
+## Wrap‑up
+
+- You can create basic web/data apps quickly
+- Next: Big data with Polars and Dask
+
+---
+
+## Flask: blueprints
+
+- Modularize routes for larger apps
+
+---
+
+## Streamlit: state
+
+```python
+if "n" not in st.session_state:
+    st.session_state.n = 0
+```
+
+---
+
+## Deployment gotchas
+
+- Timeouts, static files, CORS
+
+---
+
+## Knowledge check (quiz)
+
+- When pick Streamlit over Flask?
+- One security practice for secrets?

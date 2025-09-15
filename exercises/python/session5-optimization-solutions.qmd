@@ -1,0 +1,27 @@
+---
+title: "Python Session 5 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solutions
+
+```python
+import numpy as np
+from scipy import optimize as opt
+
+np.random.seed(0)
+mu = np.array([0.10,0.12,0.08])
+Sigma = np.array([[0.04,0.01,0.00],[0.01,0.05,0.02],[0.00,0.02,0.09]])
+N = len(mu)
+
+def variance(w):
+    return w @ Sigma @ w
+
+cons = ({"type":"eq","fun": lambda w: np.sum(w)-1},
+        {"type":"ineq","fun": lambda w: w})
+
+w0 = np.ones(N)/N
+res = opt.minimize(variance, w0, constraints=cons, bounds=[(0,1)]*N)
+print(res.x)
+```

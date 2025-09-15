@@ -1,0 +1,190 @@
+---
+title: "Python Session 4 — NumPy and pandas"
+subtitle: "Array programming and tabular data"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Why NumPy?
+
+- Fast vectorized operations on arrays
+- Analogy: work with whole trays, not single candies
+
+---
+
+## Create arrays
+
+```python
+import numpy as np
+
+np.zeros((3, 3))
+np.arange(10)
+np.linspace(0, 1, 5)
+```
+
+---
+
+## Dtypes
+
+- int32, float64, bool, datetime64, etc.
+- Memory layout matters for speed
+
+---
+
+## Indexing and slicing
+
+```python
+x = np.arange(9).reshape(3, 3)
+x[0, 0], x[:, 1], x[1:, :]
+```
+
+---
+
+## Broadcasting
+
+```python
+x = np.arange(3)
+(x + 10) * 2
+```
+
+- Rules allow operations on different shapes
+
+---
+
+## Vectorization vs loops
+
+- Prefer vectorized expressions → C-level speed
+- Only loop in Python when necessary
+
+---
+
+## Aggregations
+
+```python
+x.sum(), x.mean(axis=0), x.max()
+```
+
+---
+
+## Random
+
+```python
+rng = np.random.default_rng(0)
+rng.normal(size=5)
+```
+
+---
+
+## pandas intro
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({"a": [1,2,3], "b": [4,5,6]})
+```
+
+---
+
+## Series and DataFrame
+
+- Series = 1D labeled array
+- DataFrame = 2D table with columns
+
+---
+
+## Read/write files (finance dataset)
+
+```python
+# prices for top-20 US tickers (date, symbol, close)
+df = pd.read_csv("data/prices-top20.csv", parse_dates=["date"])  # provided by fetch_prices.py
+```
+
+---
+
+## Returns pivot
+
+```python
+# compute daily returns pivot with symbols as columns
+px = df.sort_values(["symbol","date"]).assign(
+    ret = df.groupby("symbol")["close"].pct_change()
+)
+ret_pivot = px.pivot(index="date", columns="symbol", values="ret")
+ret_pivot.describe().T.head()
+```
+
+---
+
+## Simple visualization
+
+```python
+# plot a couple of tickers (requires a plotting backend available)
+ret_pivot[["AAPL", "MSFT"]].cumsum().plot(title="Cumulative Returns: AAPL vs MSFT")
+```
+
+---
+
+## Groupby and aggregations
+
+```python
+px.groupby("symbol").agg(vol=("ret","std"), mean=("ret","mean")).sort_values("vol", ascending=False).head()
+```
+
+---
+
+## Merge/join
+
+```python
+left.merge(right, on="id", how="left")
+```
+
+---
+
+## Pivot and melt
+
+```python
+pd.pivot_table(df, index="date", values="close", aggfunc="mean")
+```
+
+---
+
+## Time series quick tour
+
+```python
+s = pd.date_range("2024-01-01", periods=5, freq="D")
+```
+
+---
+
+## Performance tips
+
+- Use categories, vectorized ops, avoid apply in hot paths
+
+---
+
+## Exercise 1
+
+- Load `data/prices-top20.csv`, compute summary stats per symbol
+
+---
+
+## Exercise 2
+
+- Build a cumulative return chart for 2–3 tickers
+
+---
+
+## Wrap‑up
+
+- You can manipulate arrays with NumPy and tables with pandas
+- Next: numerical optimization

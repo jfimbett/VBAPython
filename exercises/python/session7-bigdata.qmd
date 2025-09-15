@@ -1,0 +1,15 @@
+---
+title: "Python Session 7 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Polars Parquet
+
+- Convert a large CSV to Parquet and compute per-symbol volatility
+
+---
+
+## Exercise 2 — Dask Groupby
+
+- Read multiple CSVs with Dask and compute monthly returns by symbol

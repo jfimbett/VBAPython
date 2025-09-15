@@ -1,0 +1,16 @@
+---
+title: "Python Session 2 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Prices CSV
+
+- Read `prices.csv` with columns date,symbol,close
+- Compute daily returns per symbol
+
+---
+
+## Exercise 2 — Top Movers
+
+- Print the top 5 days by absolute return for a chosen symbol

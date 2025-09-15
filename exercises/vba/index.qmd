@@ -1,0 +1,18 @@
+---
+title: "VBA Exercises"
+format: revealjs
+paginate: true
+---
+
+## How to use these exercises
+
+- Each session has practice prompts and separate solutions
+- Import .bas files under Developer → Visual Basic → File → Import File
+
+---
+
+## Sessions
+
+- Session 1: Macros & VBE
+- Session 2: Platforms & Recorder → Refactor
+- Session 3: Programming Basics

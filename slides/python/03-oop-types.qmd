@@ -1,0 +1,189 @@
+---
+title: "Python Session 3 — OOP and Types"
+subtitle: "Classes, dataclasses, typing, exceptions"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Why OOP?
+
+- Organize code around data + behavior
+- Analogy: blueprint → objects (houses)
+
+---
+
+## Basic class
+
+```python
+class Account:
+    def __init__(self, owner: str, balance: float = 0.0):
+        self.owner = owner
+        self.balance = balance
+    def deposit(self, amount: float):
+        self.balance += amount
+```
+
+---
+
+## Methods and self
+
+- self is the instance being acted upon
+- Methods are functions attached to a class
+
+---
+
+## Properties
+
+```python
+class Temperature:
+    def __init__(self, c: float):
+        self._c = c
+    @property
+    def celsius(self):
+        return self._c
+    @celsius.setter
+    def celsius(self, v):
+        self._c = v
+```
+
+---
+
+## Inheritance
+
+```python
+class Savings(Account):
+    def interest(self, rate: float):
+        self.balance *= (1 + rate)
+```
+
+---
+
+## Composition over inheritance
+
+- Combine objects to build bigger ones
+- Lego bricks vs extending a single brick
+
+---
+
+## Dataclasses
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Order:
+    id: int
+    item: str
+    qty: int = 1
+```
+
+- Generates __init__, __repr__, comparisons
+
+---
+
+## Typing basics
+
+```python
+from typing import List, Dict, Optional
+```
+
+- Helps tools catch mistakes; doesn’t change runtime
+
+---
+
+## Generics and Protocols (brief)
+
+- List[int], Dict[str, float]
+- Structural typing (duck typing) via Protocols
+
+---
+
+## Exceptions as control flow for errors
+
+```python
+def divide(a: float, b: float) -> float:
+    if b == 0:
+        raise ValueError("b must not be zero")
+    return a / b
+```
+
+---
+
+## Testing mindset
+
+- Write small tests for class behavior
+- Use assert statements or pytest
+
+---
+
+## Exercise 1
+
+- Build a Bank with Accounts; deposit/withdraw; compute interest
+
+---
+
+## Exercise 2
+
+- Convert an existing dict into a dataclass and add methods
+
+---
+
+## Equality and hashing
+
+```python
+from dataclasses import dataclass
+@dataclass(frozen=True)
+class Point:
+    x: int; y: int
+```
+
+- Hashable → usable in sets/dicts
+
+---
+
+## __repr__ and __str__
+
+- Human vs debug representations
+
+---
+
+## Static and class methods
+
+```python
+class C:
+    @staticmethod
+    def util(): ...
+    @classmethod
+    def from_str(cls, s): ...
+```
+
+---
+
+## Type checking tools
+
+- mypy, pyright; gradual typing in practice
+
+---
+
+## Knowledge check (quiz)
+
+- When prefer dataclass over regular class?
+- What’s a Protocol good for?
+
+---
+
+## Wrap‑up
+
+- You can model data with classes/dataclasses and add type hints
+- Next: NumPy and pandas

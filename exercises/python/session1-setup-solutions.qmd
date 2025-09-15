@@ -1,0 +1,15 @@
+---
+title: "Python Session 1 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solution snippets
+
+```bash
+conda create -n fin310 python=3.10 -y
+conda activate fin310
+conda install numpy pandas -y
+pip install yfinance
+conda env export --no-builds > environment.yml
+```

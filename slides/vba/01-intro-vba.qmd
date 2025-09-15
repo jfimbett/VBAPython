@@ -1,0 +1,347 @@
+---
+title: "VBA Session 1 — Introduction to VBA"
+subtitle: "Macros, the VBE, and cross‑platform basics (Win/Mac)"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Welcome
+
+- Course: Intro to VBA and Python (10 sessions x ~3 hours)
+- Today: VBA overview, macros, security, the Visual Basic Editor (VBE), Win/Mac differences
+- Goal: Build confidence to automate simple tasks in Excel using VBA
+
+---
+
+## What is VBA?
+
+- Visual Basic for Applications, built into Office (Excel, Word, etc.)
+- Lets you automate repetitive tasks and build custom tools
+- Think of it as a personal assistant living inside Excel
+
+---
+
+## Why learn VBA in 2025?
+
+- Excel remains the lingua franca of business
+- Quick wins: automate reports, cleanup, formatting
+- Bridges to other tools (Power Query, Python via xlwings, etc.)
+
+---
+
+## Macro security mindset
+
+- Macros can run code; treat files like executables
+- Only enable content from trusted sources
+- Use signed macros in corporate environments
+
+---
+
+## Enable Developer tab (Windows)
+
+1. File → Options → Customize Ribbon
+2. Check "Developer"
+3. Click OK; Developer tab appears
+
+---
+
+## Enable Developer tab (Mac)
+
+1. Excel → Preferences → Ribbon & Toolbar
+2. Check "Developer"
+3. Save; Developer tab appears
+
+---
+
+## Recording a macro (Windows)
+
+- Developer → Record Macro
+- Give it a name, store location (This Workbook/Personal Macro Workbook)
+- Do actions; Stop Recording; inspect code in VBE
+
+---
+
+## Recording a macro (Mac)
+
+- Developer → Record Macro (similar flow)
+- Differences: some keyboard shortcuts, dialog layouts
+- Outcome: generates VBA you can study and tweak
+
+---
+
+## The Visual Basic Editor (VBE)
+
+- Open with Alt+F11 (Windows) or Option+F11 (Mac)
+- Project Explorer, Properties Window, Code Pane
+- Modules vs ThisWorkbook vs Sheet objects
+
+---
+
+## Hello, world (VBA)
+
+```vba
+Sub HelloWorld()
+    MsgBox "Hello from VBA!"
+End Sub
+```
+
+- Analogy: like telling Excel to display a post‑it note
+
+---
+
+## Anatomy of a Sub procedure
+
+```vba
+Sub MyTask()
+    ' your steps here
+End Sub
+```
+
+- Sub = a routine you can run
+- Lives in a Module
+
+---
+
+## Variables: your labeled boxes
+
+```vba
+Sub Boxes()
+    Dim total As Long
+    total = 42
+    MsgBox total
+End Sub
+```
+
+- Dim declares storage with a name and type
+
+---
+
+## Data types (quick tour)
+
+- Integer, Long, Double, String, Boolean, Date
+- Variant (can hold anything; convenient but slower)
+- Best practice: be explicit where possible
+
+---
+
+## Option Explicit saves time
+
+```vba
+Option Explicit
+Sub Safer()
+    Dim count As Long
+    count = 10
+    MsgBox count
+End Sub
+```
+
+- Forces variable declaration → fewer typos, clearer code
+
+---
+
+## Referencing cells
+
+```vba
+Sub SetA1()
+    Range("A1").Value = "Hi"
+End Sub
+```
+
+- Range, Cells, Selection
+- Qualify with Worksheets("Sheet1").Range("A1") to be precise
+
+---
+
+## Selecting vs directly writing
+
+- Avoid Select/Activate when possible; write directly
+
+```vba
+Worksheets("Sheet1").Range("A1").Value = "Direct write"
+```
+
+---
+
+## If...Then logic
+
+```vba
+If Range("A1").Value > 0 Then
+    MsgBox "Positive"
+Else
+    MsgBox "Non‑positive"
+End If
+```
+
+- Analogy: checking a traffic light before crossing
+
+---
+
+## Loops: Do it repeatedly
+
+```vba
+Dim i As Long
+For i = 1 To 10
+    Cells(i, 1).Value = i
+Next i
+```
+
+- For, For Each, Do While
+
+---
+
+## InputBox and MsgBox
+
+```vba
+Dim name As String
+name = InputBox("Your name?")
+MsgBox "Hi " & name
+```
+
+- Simple UI for quick interactions
+
+---
+
+## Recording vs writing by hand
+
+- Recorder shows object model usage
+- Hand‑writing gives cleaner, faster code
+- Use both: record → refactor
+
+---
+
+## Win vs Mac differences (overview)
+
+- Shortcuts (Alt vs Option), some dialogs differ
+- File system paths differ
+- Many object model calls are the same
+
+---
+
+## Personal Macro Workbook
+
+- Store macros globally
+- Lives as PERSONAL.XLSB
+- Great for universal utilities
+
+---
+
+## Error handling basics
+
+```vba
+On Error GoTo CleanUp
+' risky code
+CleanUp:
+    If Err.Number <> 0 Then MsgBox Err.Description
+```
+
+- Start simple; add structure as you grow
+
+---
+
+## Best practices cheat‑sheet
+
+- Option Explicit
+- Avoid Select/Activate
+- Name ranges; avoid magic coordinates
+- Comment intent, not the obvious
+
+---
+
+## Mini‑exercise 1
+
+- Record a macro that formats a header row
+- Then rewrite it to avoid Select/Activate
+- Compare line count and clarity
+
+---
+
+## Mini‑exercise 2
+
+- Write a Sub that fills A1:A20 with squares of 1..20
+- Show a MsgBox when done
+
+---
+
+## Real‑life analogy: kitchen workflow
+
+- Routines = recipes, Variables = labeled jars, Loops = repeating steps
+- Good labeling and clean counters make cooking faster
+
+---
+
+## Where to find help
+
+- Object Browser (F2), MSDN docs, community forums
+- Read recorded macros and simplify
+
+---
+
+## Common pitfalls (VBA newcomers)
+
+- Relying on Select/Activate everywhere → fragile
+- Not using Option Explicit → typos hide bugs
+- Hard‑coding sheet names/paths → parameterize
+
+---
+
+## Keyboard shortcuts (Win/Mac)
+
+- Open VBE: Alt+F11 (Win), Option+F11 (Mac)
+- Run macro: Alt+F8 (Win/Mac)
+- Step through: F8 (Win/Mac)
+
+---
+
+## Object model mental model
+
+- Application → Workbooks → Worksheets → Range
+- Think nested boxes; qualify references from outer to inner
+
+---
+
+## Little refactor challenge
+
+- Record a macro; then: remove Select, add Option Explicit
+- Use With blocks and qualified references
+
+---
+
+## Quick cheat‑sheet
+
+- Range("A1").Value, Cells(r, c).Value
+- .CurrentRegion, .UsedRange
+- MsgBox, InputBox
+
+---
+
+## Knowledge check (quiz)
+
+- What does Option Explicit do?
+- Why avoid Select/Activate?
+- How do you qualify a Range to a specific sheet?
+
+---
+
+## Mini case study
+
+- Monthly report cleanup: record → refactor → parameterize sheet
+- Add error handling and performance toggles
+
+---
+
+## Resources
+
+- Excel VBA reference (Microsoft Learn)
+- OzGrid, MrExcel forums, Stack Overflow
+- Read recorded macros and simplify

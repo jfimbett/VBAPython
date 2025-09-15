@@ -1,0 +1,34 @@
+---
+title: "Python Session 6 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Flask Sum API
+
+```python
+from flask import Flask, request, jsonify
+app = Flask(__name__)
+
+@app.get('/sum')
+def sum_route():
+    a = float(request.args.get('a','0'))
+    b = float(request.args.get('b','0'))
+    return jsonify(result=a+b)
+```
+
+---
+
+## Streamlit CSV Summary
+
+```python
+import streamlit as st
+import pandas as pd
+
+st.title('Returns Summary')
+upl = st.file_uploader('CSV with date,symbol,close')
+if upl:
+    df = pd.read_csv(upl, parse_dates=['date']).sort_values(['symbol','date'])
+    df['ret'] = df.groupby('symbol')['close'].pct_change()
+    st.dataframe(df.groupby('symbol')['ret'].describe())
+```

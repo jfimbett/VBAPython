@@ -1,0 +1,15 @@
+---
+title: "Python Session 6 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Flask Sum API
+
+- `/sum?a=..&b=..` returns JSON with result
+
+---
+
+## Exercise 2 — Streamlit CSV Summary
+
+- Upload a prices CSV and show returns summary and top movers

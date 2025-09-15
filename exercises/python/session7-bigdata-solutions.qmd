@@ -1,0 +1,34 @@
+---
+title: "Python Session 7 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Polars Parquet
+
+```python
+import polars as pl
+
+df = pl.read_csv('big.csv')
+df.write_parquet('big.parquet')
+ret = df.sort(['symbol','date']).with_columns(
+    (pl.col('close').pct_change().over('symbol')).alias('ret')
+)
+vol = ret.group_by('symbol').agg(pl.col('ret').std().alias('vol'))
+print(vol)
+```
+
+---
+
+## Dask Groupby
+
+```python
+import dask.dataframe as dd
+
+df = dd.read_csv('data/*.csv', dtype={'symbol':'object'})
+df['date'] = dd.to_datetime(df['date'])
+df = df.set_index('date').groupby('symbol')['close'].pct_change()
+# monthly mean return
+monthly = df.to_frame('ret').groupby([dd.Grouper(freq='M'), 'symbol']).mean()
+print(monthly.compute().head())
+```

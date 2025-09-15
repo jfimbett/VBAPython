@@ -1,0 +1,15 @@
+---
+title: "Python Session 4 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — NumPy Stats
+
+- Given returns array shape (T, N), compute mean vector and covariance
+
+---
+
+## Exercise 2 — pandas Aggregations
+
+- From `prices.csv`, build daily returns pivot (date x symbol) and describe()

@@ -1,0 +1,25 @@
+---
+title: "Python Session 3 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solutions
+
+```python
+from dataclasses import dataclass
+import pandas as pd
+
+class Ticker:
+    def __init__(self, symbol: str, prices: pd.Series):
+        self.symbol = symbol
+        self.prices = prices
+    def returns(self) -> pd.Series:
+        return self.prices.pct_change()
+
+@dataclass
+class Portfolio:
+    holdings: dict
+    def value(self, prices: dict) -> float:
+        return sum(self.holdings.get(sym,0)*prices.get(sym,0) for sym in self.holdings)
+```

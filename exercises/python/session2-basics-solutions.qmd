@@ -1,0 +1,20 @@
+---
+title: "Python Session 2 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solutions
+
+```python
+import pandas as pd
+
+df = pd.read_csv("prices.csv", parse_dates=["date"]) 
+# daily returns by symbol
+df = df.sort_values(["symbol", "date"]).assign(
+    ret = df.groupby("symbol")["close"].pct_change()
+)
+# top movers
+sym = "AAPL"
+print(df[df.symbol==sym].nlargest(5, "ret", keep="all")[ ["date","ret"] ])
+```

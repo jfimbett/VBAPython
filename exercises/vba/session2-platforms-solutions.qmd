@@ -1,0 +1,44 @@
+---
+title: "VBA Session 2 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solution 1 — Cross‑platform Save
+
+```vba
+Sub SaveCsvDesktop()
+    Dim base As String
+    If InStr(Application.OperatingSystem, "Mac") > 0 Then
+        base = Environ$("HOME") & "/Desktop/"
+    Else
+        base = Environ$("USERPROFILE") & "\Desktop\"
+    End If
+    ActiveWorkbook.SaveAs Filename:=base & "out.csv", FileFormat:=xlCSVUTF8
+End Sub
+```
+
+---
+
+## Solution 2 — Recorder → Refactor (pattern)
+
+```vba
+Sub Cleanup(sheetName As String)
+    With Worksheets(sheetName)
+        .UsedRange.Value = .UsedRange.Value ' strip formulas
+        .Rows(1).Font.Bold = True
+    End With
+End Sub
+```
+
+---
+
+## Solution 3 — Logging
+
+```vba
+Sub LogMsg(msg As String)
+    With Worksheets("Log")
+        .Cells(.Rows.Count, 1).End(xlUp).Offset(1, 0).Value = Now & ": " & msg
+    End With
+End Sub
+```

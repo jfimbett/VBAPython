@@ -1,0 +1,334 @@
+---
+title: "VBA Session 3 — Programming Basics"
+subtitle: "Routines, variables, functions, references, loops, conditionals, I/O"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Agenda
+
+- Build solid foundations for VBA programming
+- Variables, types, functions, loops, conditionals, cell references
+- Input/Output patterns and exercises
+
+---
+
+## Subroutines: tasks you can run
+
+```vba
+Sub Greet()
+    MsgBox "Welcome!"
+End Sub
+```
+
+- Keep them short and focused
+
+---
+
+## Functions: return a value
+
+```vba
+Function NetPrice(price As Double, tax As Double) As Double
+    NetPrice = price * (1 + tax)
+End Function
+```
+
+- Can be used in cells too
+
+---
+
+## Variables and constants
+
+```vba
+Dim qty As Long
+Const TaxRate As Double = 0.16
+```
+
+- Constants express business rules clearly
+
+---
+
+## Types recap
+
+- Numeric: Integer/Long/Double/Decimal
+- Text: String; True/False: Boolean; Date
+- Variant: flexible but slower
+
+---
+
+## Arrays
+
+```vba
+Dim arr(1 To 3) As Long
+arr(1) = 10: arr(2) = 20: arr(3) = 30
+```
+
+- Dynamic arrays with ReDim when needed
+
+---
+
+## For loop
+
+```vba
+Dim i As Long
+For i = 1 To 10
+    Cells(i, 1).Value = i
+Next i
+```
+
+---
+
+## For Each loop
+
+```vba
+Dim c As Range
+For Each c In Range("A1:A10")
+    c.Value = c.Row
+Next c
+```
+
+- Safer for collections
+
+---
+
+## While/Do loops
+
+```vba
+Dim i As Long: i = 1
+Do While i <= 10
+    Cells(i, 2).Value = i * 2
+    i = i + 1
+Loop
+```
+
+---
+
+## If..ElseIf..Else
+
+```vba
+If qty = 0 Then
+    MsgBox "Empty"
+ElseIf qty < 10 Then
+    MsgBox "Low"
+Else
+    MsgBox "OK"
+End If
+```
+
+---
+
+## Select Case
+
+```vba
+Select Case UCase$(Range("B1").Value)
+Case "N"
+    MsgBox "North"
+Case "S"
+    MsgBox "South"
+Case Else
+    MsgBox "Other"
+End Select
+```
+
+---
+
+## With blocks for clarity
+
+```vba
+With Worksheets("Report")
+    .Range("A1").Value = "Title"
+    .Range("A2").Font.Bold = True
+End With
+```
+
+- Reduces repetition; groups related actions
+
+---
+
+## Reading/writing ranges fast
+
+```vba
+Dim data
+Dim rng As Range
+Set rng = Range("A1:D1000")
+data = rng.Value ' 2D array
+' ... process in memory ...
+rng.Value = data
+```
+
+- Better than cell‑by‑cell loops
+
+---
+
+## Finding last row
+
+```vba
+Dim lastRow As Long
+lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+```
+
+- Common pattern for dynamic ranges
+
+---
+
+## Interacting with files
+
+```vba
+Open "C:\\temp\\out.txt" For Output As #1
+Print #1, "Hello file"
+Close #1
+```
+
+- Prefer built‑in workbook I/O for Excel formats
+
+---
+
+## CSV export
+
+```vba
+ActiveSheet.Copy
+ActiveWorkbook.SaveAs "C:\\temp\\out.csv", xlCSVUTF8
+ActiveWorkbook.Close False
+```
+
+---
+
+## Basic error handling template
+
+```vba
+Sub Template()
+On Error GoTo Fail
+    ' work
+    Exit Sub
+Fail:
+    MsgBox Err.Number & ": " & Err.Description
+End Sub
+```
+
+---
+
+## InputBox patterns
+
+```vba
+Dim n As Variant
+n = InputBox("How many rows?", "Input", 10)
+If IsNumeric(n) Then Range("A1").Resize(n, 1).Value = 1
+```
+
+---
+
+## User‑defined worksheet functions (UDF)
+
+```vba
+Function IsPrime(n As Long) As Boolean
+    Dim i As Long
+    If n < 2 Then Exit Function
+    For i = 2 To Sqr(n)
+        If n Mod i = 0 Then Exit Function
+    Next i
+    IsPrime = True
+End Function
+```
+
+- Use carefully; they recalc often
+
+---
+
+## Clean coding guidelines
+
+- Name procedures VerbNoun (e.g., ExportReport)
+- Avoid magic numbers; use Consts
+- Keep procedures under ~50 lines when possible
+
+---
+
+## Exercise: data cleanup
+
+- Trim spaces, proper case, remove blanks
+- Write helper functions for reuse
+
+---
+
+## Exercise: summary table
+
+- Count by category using loops and dictionary
+- Output a clean table to a new sheet
+
+---
+
+## Real‑life analogy: building blocks
+
+- Loops = assembly line, Conditionals = quality checks
+- Functions = mini‑machines that produce a result
+
+---
+
+## Where to go next
+
+- UserForms for UI, Class modules for models
+- Interop with Power Query or Python tools
+
+---
+
+## Wrap‑up
+
+- Solid grounding to automate real Excel tasks using VBA
+
+---
+
+## Dictionaries (Scripting.Dictionary)
+
+```vba
+Dim d As Object: Set d = CreateObject("Scripting.Dictionary")
+d("A") = 1: d("B") = 2
+```
+
+- Great for counting/grouping
+
+---
+
+## Timer and performance
+
+```vba
+Dim t As Double: t = Timer
+' work
+MsgBox "Secs: " & Format(Timer - t, "0.00")
+```
+
+---
+
+## Modularization
+
+- Small subs that call each other
+- Clear inputs/outputs; avoid global state
+
+---
+
+## Testing mindset
+
+- Create a Test sheet; write simple asserts via MsgBox/Debug.Print
+
+---
+
+## Knowledge check (quiz)
+
+- When to use For vs For Each?
+- Why read/write ranges as arrays?
+- One benefit of Select Case over multiple Ifs?
+
+---
+
+## Next steps preview
+
+- UserForms, Events, Class modules

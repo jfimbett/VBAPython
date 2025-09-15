@@ -1,0 +1,24 @@
+---
+title: "VBA Session 2 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Cross‑platform Save
+
+- Save the active sheet to Desktop as CSV
+- Use OS detection to build the path differently for Win/Mac
+
+---
+
+## Exercise 2 — Recorder → Refactor
+
+- Record a cleanup macro, then:
+  - Remove Select/Activate
+  - Parameterize the target sheet name
+
+---
+
+## Exercise 3 — Logging
+
+- Create a "Log" sheet and write timestamped messages from your macro

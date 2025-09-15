@@ -1,0 +1,15 @@
+---
+title: "Python Session 1 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Create Env
+
+- Create env `fin310` with Python 3.10 and install numpy, pandas, yfinance
+
+---
+
+## Exercise 2 — Export/Import
+
+- Export to `environment.yml` and recreate it in a new folder

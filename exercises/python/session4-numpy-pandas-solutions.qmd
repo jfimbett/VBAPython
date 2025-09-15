@@ -1,0 +1,23 @@
+---
+title: "Python Session 4 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solutions
+
+```python
+import numpy as np
+import pandas as pd
+
+# numpy
+R = np.random.randn(250, 5)/100
+mu = R.mean(axis=0)
+Sigma = np.cov(R, rowvar=False)
+
+# pandas
+px = pd.read_csv("prices.csv", parse_dates=["date"]).sort_values(["symbol","date"])
+ret = px.groupby("symbol")["close"].pct_change()
+pivot = px.assign(ret=ret).pivot(index="date", columns="symbol", values="ret")
+print(pivot.describe())
+```

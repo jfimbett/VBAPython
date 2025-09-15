@@ -1,0 +1,42 @@
+---
+title: "VBA Session 1 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solution 1
+
+```vba
+Sub HeaderFormat()
+    With Worksheets("Sheet1").Range("A1:E1")
+        .Font.Bold = True
+        .Interior.Color = RGB(37, 150, 190)
+        .Font.Color = vbWhite
+    End With
+End Sub
+```
+
+---
+
+## Solution 2
+
+```vba
+Sub GreetUser()
+    Dim name As String
+    name = InputBox("Your name?")
+    If Len(name) > 0 Then MsgBox "Welcome, " & name
+End Sub
+```
+
+---
+
+## Solution 3
+
+```vba
+Sub FillColumn()
+    Dim i As Long
+    For i = 1 To 50
+        Cells(i, 1).Value = i
+    Next i
+End Sub
+```

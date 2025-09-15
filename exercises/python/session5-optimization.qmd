@@ -1,0 +1,15 @@
+---
+title: "Python Session 5 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Markowitz (No Short)
+
+- Minimize portfolio variance s.t. weights >= 0 and sum to 1
+
+---
+
+## Exercise 2 — Target Return
+
+- Add equality constraint mu.T @ w = target

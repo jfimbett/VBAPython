@@ -1,0 +1,57 @@
+---
+title: "VBA Session 3 — Solutions"
+format: revealjs
+paginate: true
+---
+
+## Solution 1 — Summary by Category
+
+```vba
+Sub SumByCategory()
+    Dim d As Object: Set d = CreateObject("Scripting.Dictionary")
+    Dim i As Long, last As Long
+    last = Cells(Rows.Count, 1).End(xlUp).Row
+    For i = 2 To last
+        If Len(Cells(i, 1).Value) > 0 And IsNumeric(Cells(i, 2).Value) Then
+            d(Cells(i, 1).Value) = d(Cells(i, 1).Value) + Cells(i, 2).Value
+        End If
+    Next i
+    Dim r As Long: r = 2
+    Range("G1").Value = "Category": Range("H1").Value = "Total"
+    Dim k
+    For Each k In d.Keys
+        Cells(r, 7).Value = k
+        Cells(r, 8).Value = d(k)
+        r = r + 1
+    Next k
+End Sub
+```
+
+---
+
+## Solution 2 — UDF
+
+```vba
+Function IsPrime(n As Long) As Boolean
+    Dim i As Long
+    If n < 2 Then Exit Function
+    For i = 2 To Int(Sqr(n))
+        If n Mod i = 0 Then Exit Function
+    Next i
+    IsPrime = True
+End Function
+```
+
+---
+
+## Solution 3 — Fast Range I/O
+
+```vba
+Sub CopyBlock()
+    Dim src As Range, dst As Range, data
+    Set src = Range("A1:D1000")
+    Set dst = Range("E1:H1000")
+    data = src.Value
+    dst.Value = data
+End Sub
+```

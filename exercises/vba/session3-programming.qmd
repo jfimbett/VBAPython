@@ -1,0 +1,22 @@
+---
+title: "VBA Session 3 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Summary by Category
+
+- Given categories in A2:A100 and values in B2:B100
+- Build a summary table showing sum by category
+
+---
+
+## Exercise 2 — UDF
+
+- Write a function `IsPrime(n)` and use it in a sheet
+
+---
+
+## Exercise 3 — Fast Range I/O
+
+- Copy A1:D1000 to E1:H1000 using an array without cell‑by‑cell loops

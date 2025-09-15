@@ -1,0 +1,140 @@
+---
+title: "Python Session 7 — Big Data with Polars and Dask"
+subtitle: "Parallelism and lazy dataframes"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Why big data tools?
+
+- Memory won’t hold everything; need out‑of‑core and parallelism
+- Analogy: more conveyor belts and bigger warehouses
+
+---
+
+## Polars intro
+
+```python
+import polars as pl
+
+df = pl.DataFrame({"a": [1,2,3], "b": [4,5,6]})
+```
+
+---
+
+## Eager vs Lazy
+
+```python
+q = df.lazy().with_columns((pl.col("a") + pl.col("b")).alias("c"))
+res = q.collect()
+```
+
+- Lazy builds a plan; executes once → fast
+
+---
+
+## IO formats (finance dataset)
+
+```python
+# read course prices (long format) and compute vol per symbol
+px = pl.read_csv('data/prices-top20.csv')
+ret = px.sort(['symbol','date']).with_columns(
+    pl.col('close').pct_change().over('symbol').alias('ret')
+)
+vol = ret.group_by('symbol').agg(pl.col('ret').std().alias('vol')).sort('vol', descending=True)
+vol.head()
+```
+
+---
+
+## Expressions and column ops
+
+```python
+df.with_columns((pl.col("a") * 2).alias("a2"))
+```
+
+---
+
+## Groupby and joins in Polars
+
+```python
+df.groupby("a").agg(pl.col("b").sum())
+```
+
+---
+
+## Dask intro (course dataset)
+
+```python
+import dask.dataframe as dd
+
+df = dd.read_csv('data/prices-top20.csv', dtype={'symbol':'object'})
+df['date'] = dd.to_datetime(df['date'])
+df = df.set_index('date')
+monthly = df.groupby([dd.Grouper(freq='M'), 'symbol'])['close'].last().pct_change()
+monthly.head().compute()
+```
+
+- Partitioned DataFrame across cores/machines
+
+---
+
+## Dask compute graph
+
+- Lazy; df.head() triggers small compute; df.compute() executes
+
+---
+
+## Map/Reduce style
+
+- map_partitions, aggregations, groupby across partitions
+
+---
+
+## Scheduling and diagnostics
+
+- Single‑machine threaded/process, distributed cluster
+- Dashboard for monitoring tasks
+
+---
+
+## When to use which?
+
+- Polars: single‑node speed, expressive API
+- Dask: scale out, interop with NumPy/pandas
+
+---
+
+## Exercise 1
+
+- Convert `prices-top20.csv` to Parquet and compute per‑symbol volatility
+
+---
+
+## Exercise 2
+
+- Use Dask to compute monthly returns by symbol and list the most volatile
+
+---
+
+## Real‑life analogy
+
+- Dask = many workers on an assembly line
+- Polars = one very fast worker with a smart plan
+
+---
+
+## Wrap‑up
+
+- You can process large datasets with Polars/Dask patterns

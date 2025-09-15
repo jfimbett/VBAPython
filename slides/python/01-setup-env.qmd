@@ -1,0 +1,253 @@
+---
+title: "Python Session 1 — Setup and Tools"
+subtitle: "Conda, Python, pip, and environment management"
+author: "Juan F. Imbet"
+institute: "Paris Dauphine University-PSL"
+format:
+  revealjs:
+    theme: white
+    css: styles.css
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    footer: "Intro to VBA and Python"
+    include-in-header: ../../tikzjax.html
+execute:
+  enabled: false
+---
+
+## Welcome
+
+- Goal: get a reliable Python setup for data and apps
+- Tools: Conda/Miniconda, Python, pip, virtual environments
+
+---
+
+## Why environments?
+
+- Keep projects isolated → fewer dependency conflicts
+- Analogy: separate kitchens so recipes don’t mix ingredients
+
+---
+
+## Conda vs pip (mental model)
+
+- Conda = environment + package manager (binaries too)
+- pip = Python packages from PyPI
+- You can use both together wisely
+
+---
+
+## Miniconda installation
+
+- Download Miniconda for your OS
+- Choose "Just Me"; add to PATH optional (Conda shell init recommended)
+
+---
+
+## Create an environment
+
+```bash
+conda create -n course310 python=3.10 -y
+conda activate course310
+```
+
+- Name it per project; pin a Python version
+
+---
+
+## Install packages (Conda)
+
+```bash
+conda install numpy pandas jupyterlab -y
+```
+
+- Channels: defaults, conda-forge
+
+---
+
+## Install packages (pip)
+
+```bash
+pip install requests matplotlib
+```
+
+- Prefer pip inside an activated env
+
+---
+
+## Mixing conda and pip safely
+
+- Prefer conda for heavy scientific stacks
+- Use pip last for PyPI-only packages
+
+---
+
+## Listing what’s installed
+
+```bash
+conda list
+pip list
+```
+
+---
+
+## Exporting environment
+
+```bash
+conda env export --no-builds > environment.yml
+```
+
+- Share with collaborators
+
+---
+
+## Recreating environment
+
+```bash
+conda env create -f environment.yml
+```
+
+---
+
+## Virtualenv (alt approach)
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+```
+
+- Lighter; use pip exclusively
+
+---
+
+## pipx for CLIs
+
+- Install Python command-line tools in isolation
+- E.g., pipx install black
+
+---
+
+## Jupyter and VS Code
+
+- Use JupyterLab or VS Code notebooks
+- Select interpreter per workspace
+
+---
+
+## Quarto intro (for these slides)
+
+- Quarto renders .qmd → Reveal.js
+- We use root styles.css for branding
+
+---
+
+## Troubleshooting PATH
+
+- If conda not found: re-run "conda init" then restart shell
+- If Python version wrong: check conda env activation
+
+---
+
+## Basic sanity check script
+
+```python
+import sys, numpy, pandas
+print(sys.version)
+print(numpy.__version__, pandas.__version__)
+```
+
+---
+
+## Best practices
+
+- One env per project
+- Lock dependencies when shipping
+- Keep environments small and reproducible
+
+---
+
+## Exercise 1
+
+- Create env course310; install numpy, pandas, jupyterlab
+- Run jupyter lab and create a notebook
+
+---
+
+## Exercise 2
+
+- Export environment.yml and recreate it in a new folder
+
+---
+
+## Real‑life analogy
+
+- Environments = separate toolboxes; avoid mixing metric/imperial tools
+
+---
+
+## Security notes
+
+- Only install from trusted sources
+- Read package readme, star ratings
+
+---
+
+## Wrap‑up
+
+- You can create/activate environments and manage packages
+- Next: Python language basics
+
+---
+
+## Conda-forge channel
+
+```bash
+conda config --add channels conda-forge
+conda config --set channel_priority flexible
+```
+
+---
+
+## Pinning versions
+
+```bash
+conda install numpy=2.0 pandas=2.2 -y
+```
+
+- Improves reproducibility
+
+---
+
+## Requirements vs environment.yml
+
+- pip requirements.txt vs conda environment.yml
+- Choose one primary spec; document
+
+---
+
+## Clean up environments
+
+```bash
+conda env remove -n oldenv
+```
+
+---
+
+## Verify GPU packages (if applicable)
+
+- conda search cudatoolkit
+- Match versions with installed drivers
+
+---
+
+## Knowledge check (quiz)
+
+- When to use pip vs conda?
+- Why create per‑project envs?
+
+---
+
+## Tip: .python-version / .envrc
+
+- Tools like direnv/pyenv can auto‑switch environments

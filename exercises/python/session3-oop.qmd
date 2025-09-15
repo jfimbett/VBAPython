@@ -1,0 +1,16 @@
+---
+title: "Python Session 3 — Exercises"
+format: revealjs
+paginate: true
+---
+
+## Exercise 1 — Ticker Class
+
+- Build a `Ticker` class with attributes symbol and prices (pd.Series)
+- Method: `returns()` computes pct_change
+
+---
+
+## Exercise 2 — Portfolio Dataclass
+
+- `Portfolio(holdings: Dict[str,float])` with method `value(prices: Dict[str,float])`
