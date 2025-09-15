@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f54fa83ccd8f86fe7238c9291c42d766.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.23">
 
   <meta name="author" content="Juan F. Imbet">
   <title>Intro to VBA and Python (10x3h) – Python Session 5 — Numerical Optimization</title>
@@ -56,46 +56,46 @@
         -khtml-user-select: none; -moz-user-select: none;
         -ms-user-select: none; user-select: none;
         padding: 0 4px; width: 4em;
-        color: #767676;
       }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
     div.sourceCode
-      { color: #545454; background-color: #fefefe; }
+      { color: #24292e;  }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #545454; } /* Normal */
-    code span.al { color: #7928a1; } /* Alert */
-    code span.an { color: #696969; } /* Annotation */
-    code span.at { color: #a55a00; } /* Attribute */
-    code span.bn { color: #7928a1; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #d91e18; } /* ControlFlow */
-    code span.ch { color: #008000; } /* Char */
-    code span.cn { color: #d91e18; } /* Constant */
-    code span.co { color: #696969; } /* Comment */
-    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
-    code span.do { color: #696969; font-style: italic; } /* Documentation */
-    code span.dt { color: #7928a1; } /* DataType */
-    code span.dv { color: #7928a1; } /* DecVal */
-    code span.er { color: #7928a1; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #a55a00; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #696969; } /* Information */
-    code span.kw { color: #d91e18; } /* Keyword */
-    code span.op { color: #00769e; } /* Operator */
-    code span.ot { color: #d91e18; } /* Other */
-    code span.pp { color: #7928a1; } /* Preprocessor */
-    code span.sc { color: #00769e; } /* SpecialChar */
-    code span.ss { color: #008000; } /* SpecialString */
-    code span.st { color: #008000; } /* String */
-    code span.va { color: #a55a00; } /* Variable */
-    code span.vs { color: #008000; } /* VerbatimString */
-    code span.wa { color: #696969; font-style: italic; } /* Warning */
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-51ca31f879033f291de59c5b755a141e.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="styles.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -224,7 +224,6 @@ Juan F. Imbet
 <h2>Why optimize?</h2>
 <ul>
 <li>Find best parameters or satisfy equations</li>
-<li>Analogy: finding the lowest valley in a landscape</li>
 </ul>
 </section>
 <section id="scipy-optimize" class="slide level2">
@@ -247,6 +246,13 @@ Juan F. Imbet
 <span id="cb3-4"><a></a>    x, y <span class="op">=</span> v</span>
 <span id="cb3-5"><a></a>    <span class="cf">return</span> [x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>, x <span class="op">-</span> y]</span>
 <span id="cb3-6"><a></a>sol <span class="op">=</span> opt.root(F, [<span class="fl">0.5</span>, <span class="fl">0.1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="designing-objectives" class="slide level2">
+<h2>Designing objectives</h2>
+<ul>
+<li>Smooth and well-scaled objectives converge faster</li>
+<li>Prefer returning scalar; avoid non-differentiable kinks if possible</li>
+</ul>
 </section>
 <section id="minimization-unconstrained" class="slide level2">
 <h2>Minimization: unconstrained</h2>
@@ -291,6 +297,12 @@ Juan F. Imbet
 <li>Speeds convergence and improves accuracy</li>
 </ul>
 </section>
+<section id="supplying-jacobianhessian" class="slide level2">
+<h2>Supplying Jacobian/Hessian</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> f(x): ...</span>
+<span id="cb8-2"><a></a><span class="kw">def</span> jac(x): ...</span>
+<span id="cb8-3"><a></a>opt.minimize(f, x0, jac<span class="op">=</span>jac, method<span class="op">=</span><span class="st">'BFGS'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 <section id="scaling-and-constraints" class="slide level2">
 <h2>Scaling and constraints</h2>
 <ul>
@@ -298,11 +310,49 @@ Juan F. Imbet
 <li>Trust-constr for complex problems</li>
 </ul>
 </section>
+<section id="bounds-and-linear-constraints" class="slide level2">
+<h2>Bounds and linear constraints</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> Bounds, LinearConstraint</span>
+<span id="cb9-2"><a></a>bounds <span class="op">=</span> Bounds(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb9-3"><a></a>A <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>]]<span class="op">;</span> lb<span class="op">=</span>[<span class="dv">1</span>]<span class="op">;</span> ub<span class="op">=</span>[<span class="dv">1</span>]</span>
+<span id="cb9-4"><a></a>lin <span class="op">=</span> LinearConstraint(A, lb, ub)</span>
+<span id="cb9-5"><a></a>opt.minimize(var, x0, bounds<span class="op">=</span>bounds, constraints<span class="op">=</span>[lin])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 <section id="diagnostics" class="slide level2">
 <h2>Diagnostics</h2>
 <ul>
 <li>Check status, fun, grad, nfev</li>
 <li>Plot objective over iterations when possible</li>
+</ul>
+</section>
+<section id="callbacks-and-termination" class="slide level2">
+<h2>Callbacks and termination</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">def</span> cb(xk): <span class="bu">print</span>(xk)</span>
+<span id="cb10-2"><a></a>opt.minimize(f, x0, callback<span class="op">=</span>cb, options<span class="op">=</span>{<span class="st">"maxiter"</span>: <span class="dv">200</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="linear-programming-highs" class="slide level2">
+<h2>Linear programming (HiGHS)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> linprog</span>
+<span id="cb11-2"><a></a>c <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]<span class="op">;</span> A_ub<span class="op">=</span>[[<span class="dv">1</span>,<span class="dv">1</span>]]<span class="op">;</span> b_ub<span class="op">=</span>[<span class="dv">3</span>]</span>
+<span id="cb11-3"><a></a>linprog(c, A_ub<span class="op">=</span>A_ub, b_ub<span class="op">=</span>b_ub)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="global-optimization-basinhopping" class="slide level2">
+<h2>Global optimization (basinhopping)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> basinhopping</span>
+<span id="cb12-2"><a></a>res <span class="op">=</span> basinhopping(<span class="kw">lambda</span> x: (x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span><span class="op">*</span><span class="bu">abs</span>(np.sin(x[<span class="dv">0</span>])), x0<span class="op">=</span>[<span class="fl">0.0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="trust-constr-highlights" class="slide level2">
+<h2>Trust-constr highlights</h2>
+<ul>
+<li>Handles bounds + (non)linear constraints with Jacobians</li>
+<li>Good default for complex constrained problems</li>
+</ul>
+</section>
+<section id="debugging-failures" class="slide level2">
+<h2>Debugging failures</h2>
+<ul>
+<li>Inspect <code>res.message</code>, try different initial guesses</li>
+<li>Check gradients numerically; rescale variables</li>
 </ul>
 </section>
 <section id="exercise-1" class="slide level2">
@@ -317,11 +367,9 @@ Juan F. Imbet
 <li>Minimize a portfolio variance under weight constraints on <code>prices-top20.csv</code></li>
 </ul>
 </section>
-<section id="reallife-analogy" class="slide level2">
-<h2>Real‑life analogy</h2>
-<ul>
-<li>Tuning a recipe: adjust ingredients to reach best taste</li>
-</ul>
+<section class="slide level2">
+
+<!-- removed by request: analogy content -->
 </section>
 <section id="wrapup" class="slide level2">
 <h2>Wrap‑up</h2>

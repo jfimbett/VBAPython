@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f54fa83ccd8f86fe7238c9291c42d766.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.23">
 
   <meta name="author" content="Juan F. Imbet">
   <title>Intro to VBA and Python (10x3h) – Python Session 6 — Flask and Streamlit</title>
@@ -56,46 +56,46 @@
         -khtml-user-select: none; -moz-user-select: none;
         -ms-user-select: none; user-select: none;
         padding: 0 4px; width: 4em;
-        color: #767676;
       }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
     div.sourceCode
-      { color: #545454; background-color: #fefefe; }
+      { color: #24292e;  }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #545454; } /* Normal */
-    code span.al { color: #7928a1; } /* Alert */
-    code span.an { color: #696969; } /* Annotation */
-    code span.at { color: #a55a00; } /* Attribute */
-    code span.bn { color: #7928a1; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #d91e18; } /* ControlFlow */
-    code span.ch { color: #008000; } /* Char */
-    code span.cn { color: #d91e18; } /* Constant */
-    code span.co { color: #696969; } /* Comment */
-    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
-    code span.do { color: #696969; font-style: italic; } /* Documentation */
-    code span.dt { color: #7928a1; } /* DataType */
-    code span.dv { color: #7928a1; } /* DecVal */
-    code span.er { color: #7928a1; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #a55a00; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #696969; } /* Information */
-    code span.kw { color: #d91e18; } /* Keyword */
-    code span.op { color: #00769e; } /* Operator */
-    code span.ot { color: #d91e18; } /* Other */
-    code span.pp { color: #7928a1; } /* Preprocessor */
-    code span.sc { color: #00769e; } /* SpecialChar */
-    code span.ss { color: #008000; } /* SpecialString */
-    code span.st { color: #008000; } /* String */
-    code span.va { color: #a55a00; } /* Variable */
-    code span.vs { color: #008000; } /* VerbatimString */
-    code span.wa { color: #696969; font-style: italic; } /* Warning */
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-51ca31f879033f291de59c5b755a141e.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="styles.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -305,8 +305,65 @@ Juan F. Imbet
 <li>Streamlit app that uploads a CSV and shows summary stats</li>
 </ul>
 </section>
-<section id="reallife-analogy" class="slide level2">
-<h2>Real‑life analogy</h2>
+<section id="flask-project-structure" class="slide level2">
+<h2>Flask project structure</h2>
+<pre><code>myapp/
+    app.py
+    templates/
+    static/</code></pre>
+</section>
+<section id="static-files" class="slide level2">
+<h2>Static files</h2>
+<ul>
+<li>Place CSS/JS in <code>static/</code>; link via <code>url_for('static', filename='app.css')</code></li>
+</ul>
+</section>
+<section id="error-handling" class="slide level2">
+<h2>Error handling</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="at">@app.errorhandler</span>(<span class="dv">404</span>)</span>
+<span id="cb6-2"><a></a><span class="kw">def</span> not_found(e): <span class="cf">return</span> (<span class="st">"Missing"</span>, <span class="dv">404</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="logging" class="slide level2">
+<h2>Logging</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> logging<span class="op">;</span> logging.basicConfig(level<span class="op">=</span>logging.INFO)</span>
+<span id="cb7-2"><a></a>app.logger.info(<span class="st">"started"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sessions-and-cookies" class="slide level2">
+<h2>Sessions and cookies</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>app.secret_key <span class="op">=</span> <span class="st">"change-me"</span></span>
+<span id="cb8-2"><a></a>session[<span class="st">'user'</span>] <span class="op">=</span> <span class="st">'ana'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="csrf-and-forms" class="slide level2">
+<h2>CSRF and forms</h2>
+<ul>
+<li>Use WTForms/Flask-WTF for CSRF tokens on POST forms</li>
+</ul>
+</section>
+<section id="file-uploads" class="slide level2">
+<h2>File uploads</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>f <span class="op">=</span> request.files[<span class="st">'file'</span>]</span>
+<span id="cb9-2"><a></a>f.save(<span class="st">'uploads/data.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="streamlit-session-state" class="slide level2">
+<h2>Streamlit: session state</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb10-2"><a></a>st.session_state.setdefault(<span class="st">'count'</span>, <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="streamlit-caching-nuances" class="slide level2">
+<h2>Streamlit: caching nuances</h2>
+<ul>
+<li><code>st.cache_data</code> for data; <code>st.cache_resource</code> for models/clients</li>
+</ul>
+</section>
+<section id="deployment-checklist" class="slide level2">
+<h2>Deployment checklist</h2>
+<ul>
+<li>Procfile/requirements, <code>gunicorn app:app</code>, env vars</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<!-- removed by request: analogy content -->
 <ul>
 <li>Flask = build your kitchen from scratch</li>
 <li>Streamlit = plug‑and‑play kitchen kit</li>
@@ -327,8 +384,8 @@ Juan F. Imbet
 </section>
 <section id="streamlit-state" class="slide level2">
 <h2>Streamlit: state</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="cf">if</span> <span class="st">"n"</span> <span class="kw">not</span> <span class="kw">in</span> st.session_state:</span>
-<span id="cb5-2"><a></a>    st.session_state.n <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="cf">if</span> <span class="st">"n"</span> <span class="kw">not</span> <span class="kw">in</span> st.session_state:</span>
+<span id="cb11-2"><a></a>    st.session_state.n <span class="op">=</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="deployment-gotchas" class="slide level2">
 <h2>Deployment gotchas</h2>

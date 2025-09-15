@@ -117,8 +117,87 @@ def load_data(path):
 
 ---
 
-## Real‑life analogy
+## Flask project structure
 
+```
+myapp/
+    app.py
+    templates/
+    static/
+```
+
+---
+
+## Static files
+
+- Place CSS/JS in `static/`; link via `url_for('static', filename='app.css')`
+
+---
+
+## Error handling
+
+```python
+@app.errorhandler(404)
+def not_found(e): return ("Missing", 404)
+```
+
+---
+
+## Logging
+
+```python
+import logging; logging.basicConfig(level=logging.INFO)
+app.logger.info("started")
+```
+
+---
+
+## Sessions and cookies
+
+```python
+app.secret_key = "change-me"
+session['user'] = 'ana'
+```
+
+---
+
+## CSRF and forms
+
+- Use WTForms/Flask-WTF for CSRF tokens on POST forms
+
+---
+
+## File uploads
+
+```python
+f = request.files['file']
+f.save('uploads/data.csv')
+```
+
+---
+
+## Streamlit: session state
+
+```python
+import streamlit as st
+st.session_state.setdefault('count', 0)
+```
+
+---
+
+## Streamlit: caching nuances
+
+- `st.cache_data` for data; `st.cache_resource` for models/clients
+
+---
+
+## Deployment checklist
+
+- Procfile/requirements, `gunicorn app:app`, env vars
+
+---
+
+<!-- removed by request: analogy content -->
 - Flask = build your kitchen from scratch
 - Streamlit = plug‑and‑play kitchen kit
 

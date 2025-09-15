@@ -26,7 +26,7 @@ execute:
 ## Why environments?
 
 - Keep projects isolated → fewer dependency conflicts
-- Analogy: separate kitchens so recipes don’t mix ingredients
+
 
 ---
 
@@ -180,9 +180,17 @@ print(numpy.__version__, pandas.__version__)
 
 ---
 
-## Real‑life analogy
+## Mamba (faster conda)
 
-- Environments = separate toolboxes; avoid mixing metric/imperial tools
+- Drop-in replacement for many conda commands, much faster solver
+- Install once, then use `mamba` instead of `conda` for installs
+
+```bash
+conda install -n base -c conda-forge mamba -y
+mamba create -n course310 python=3.10 -y
+mamba install numpy pandas jupyterlab -y
+```
+
 
 ---
 

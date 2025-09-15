@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f54fa83ccd8f86fe7238c9291c42d766.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.23">
 
   <meta name="author" content="Juan F. Imbet">
   <title>Intro to VBA and Python (10x3h) – VBA Session 3 — Programming Basics</title>
@@ -56,46 +56,46 @@
         -khtml-user-select: none; -moz-user-select: none;
         -ms-user-select: none; user-select: none;
         padding: 0 4px; width: 4em;
-        color: #767676;
       }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
     div.sourceCode
-      { color: #545454; background-color: #fefefe; }
+      { color: #24292e;  }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #545454; } /* Normal */
-    code span.al { color: #7928a1; } /* Alert */
-    code span.an { color: #696969; } /* Annotation */
-    code span.at { color: #a55a00; } /* Attribute */
-    code span.bn { color: #7928a1; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #d91e18; } /* ControlFlow */
-    code span.ch { color: #008000; } /* Char */
-    code span.cn { color: #d91e18; } /* Constant */
-    code span.co { color: #696969; } /* Comment */
-    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
-    code span.do { color: #696969; font-style: italic; } /* Documentation */
-    code span.dt { color: #7928a1; } /* DataType */
-    code span.dv { color: #7928a1; } /* DecVal */
-    code span.er { color: #7928a1; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #a55a00; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #696969; } /* Information */
-    code span.kw { color: #d91e18; } /* Keyword */
-    code span.op { color: #00769e; } /* Operator */
-    code span.ot { color: #d91e18; } /* Other */
-    code span.pp { color: #7928a1; } /* Preprocessor */
-    code span.sc { color: #00769e; } /* SpecialChar */
-    code span.ss { color: #008000; } /* SpecialString */
-    code span.st { color: #008000; } /* String */
-    code span.va { color: #a55a00; } /* Variable */
-    code span.vs { color: #008000; } /* VerbatimString */
-    code span.wa { color: #696969; font-style: italic; } /* Warning */
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-51ca31f879033f291de59c5b755a141e.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="styles.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -220,38 +220,90 @@ Juan F. Imbet
 </div>
 
 </section>
-<section id="agenda" class="slide level2">
-<h2>Agenda</h2>
+<section class="slide level2">
+
 <ul>
-<li>Build solid foundations for VBA programming</li>
-<li>Variables, types, functions, loops, conditionals, cell references</li>
 <li>Input/Output patterns and exercises</li>
 </ul>
 </section>
-<section id="subroutines-tasks-you-can-run" class="slide level2">
-<h2>Subroutines: tasks you can run</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>Sub Greet()</span>
-<span id="cb1-2"><a></a>    MsgBox "Welcome!"</span>
-<span id="cb1-3"><a></a>End Sub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level2">
+
+<ul>
+<li>Input/Output patterns and exercises</li>
+</ul>
+</section>
+<section id="section" class="slide level2">
+<h2>—</h2>
+</section>
+<section id="procedures-subs-and-functions" class="slide level2">
+<h2>Procedures: Subs and Functions</h2>
+<div class="columns">
+<div class="column">
+<p>Subroutines (Subs)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb1-1"><a></a><span class="kw">Sub </span>Greet()</span>
+<span id="cb1-2"><a></a>    MsgBox <span class="st">"Welcome!"</span></span>
+<span id="cb1-3"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Keep them short and focused</li>
 </ul>
-</section>
-<section id="functions-return-a-value" class="slide level2">
-<h2>Functions: return a value</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>Function NetPrice(price As Double, tax As Double) As Double</span>
+</div><div class="column">
+<p>Functions</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb2-1"><a></a><span class="kw">Function </span>NetPrice(price <span class="kw">As</span> <span class="dt">Double</span>, tax <span class="kw">As</span> <span class="dt">Double</span>) <span class="kw">As</span> <span class="dt">Double</span></span>
 <span id="cb2-2"><a></a>    NetPrice = price * (1 + tax)</span>
-<span id="cb2-3"><a></a>End Function</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-3"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Can be used in cells too</li>
+</ul>
+</div></div>
+</section>
+<section id="procedure-signatures-byrefbyval-optional-paramarray" class="slide level2">
+<h2>Procedure signatures: ByRef/ByVal, Optional, ParamArray</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb3-1"><a></a><span class="kw">Sub </span>Discount(<span class="kw">ByRef</span> price <span class="kw">As</span> <span class="dt">Double</span>, <span class="kw">ByVal</span> rate <span class="kw">As</span> <span class="dt">Double</span>)</span>
+<span id="cb3-2"><a></a>    price = price * (1 - rate)</span>
+<span id="cb3-3"><a></a><span class="kw">End Sub</span></span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a><span class="kw">Sub </span>Demo()</span>
+<span id="cb3-6"><a></a>    <span class="kw">Dim</span> p <span class="kw">As</span> <span class="dt">Double</span>: p = 100</span>
+<span id="cb3-7"><a></a>    Discount p, 0.1 <span class="co">' p becomes 90</span></span>
+<span id="cb3-8"><a></a><span class="kw">End Sub</span></span>
+<span id="cb3-9"><a></a></span>
+<span id="cb3-10"><a></a><span class="kw">Function </span>Concat(<span class="kw">Optional</span> sep <span class="kw">As</span> <span class="dt">String</span> = <span class="st">", "</span>, <span class="kw">ParamArray</span> items() <span class="kw">As</span> Variant) <span class="kw">As</span> <span class="dt">String</span></span>
+<span id="cb3-11"><a></a>    <span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb3-12"><a></a>    <span class="kw">For </span>i = LBound(items) <span class="kw">To</span> UBound(items)</span>
+<span id="cb3-13"><a></a>        Concat = Concat &amp; IIf(Len(Concat) &gt; 0, sep, <span class="st">""</span>) &amp; CStr(items(i))</span>
+<span id="cb3-14"><a></a>    <span class="kw">Next</span></span>
+<span id="cb3-15"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>ByRef</code>: caller’s variable is modified; <code>ByVal</code>: copy only</li>
+<li>Optional parameters and <code>ParamArray</code> for flexible APIs</li>
 </ul>
 </section>
 <section id="variables-and-constants" class="slide level2">
 <h2>Variables and constants</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>Dim qty As Long</span>
-<span id="cb3-2"><a></a>Const TaxRate As Double = 0.16</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb4-1"><a></a><span class="kw">Dim</span> qty <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb4-2"><a></a><span class="kw">Const</span> TaxRate <span class="kw">As</span> <span class="dt">Double</span> = 0.16</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Constants express business rules clearly</li>
+</ul>
+</section>
+<section id="strings-and-dates" class="slide level2">
+<h2>Strings and dates</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb5-1"><a></a><span class="kw">Dim</span> s <span class="kw">As</span> <span class="dt">String</span>: s = Trim$(UCase$(<span class="st">"  hello  "</span>)) <span class="co">' "HELLO"</span></span>
+<span id="cb5-2"><a></a><span class="kw">Dim</span> d <span class="kw">As</span> <span class="dt">Date</span>: d = DateSerial(2025, 9, 15) + TimeSerial(9, 30, 0)</span>
+<span id="cb5-3"><a></a>Debug.Print Format$(d, <span class="st">"yyyy-mm-dd hh:nn"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Use <code>$</code>-suffixed functions (e.g., <code>Trim$</code>) for string-returning variants</li>
+<li>Prefer <code>DateSerial</code>, <code>TimeSerial</code> for safe construction; <code>Format$</code> for display</li>
+</ul>
+</section>
+<section id="type-conversion-and-validation" class="slide level2">
+<h2>Type conversion and validation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb6-1"><a></a><span class="kw">Dim</span> v <span class="kw">As</span> Variant, n <span class="kw">As</span> <span class="dt">Double</span></span>
+<span id="cb6-2"><a></a>v = Range(<span class="st">"B1"</span>).Value</span>
+<span id="cb6-3"><a></a><span class="kw">If </span>IsNumeric(v) <span class="kw">Then</span> n = CDbl(v) <span class="kw">Else</span> n = 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Guard conversions with <code>IsNumeric</code>, <code>IsDate</code>, <code>IsError</code></li>
+<li><code>CStr</code>, <code>CLng</code>, <code>CDbl</code>, <code>CDate</code> for explicit casts</li>
 </ul>
 </section>
 <section id="types-recap" class="slide level2">
@@ -264,129 +316,164 @@ Juan F. Imbet
 </section>
 <section id="arrays" class="slide level2">
 <h2>Arrays</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a></a>Dim arr(1 To 3) As Long</span>
-<span id="cb4-2"><a></a>arr(1) = 10: arr(2) = 20: arr(3) = 30</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb7-1"><a></a><span class="kw">Dim</span> arr(1 <span class="kw">To</span> 3) <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb7-2"><a></a>arr(1) = 10: arr(2) = 20: arr(3) = 30</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Dynamic arrays with ReDim when needed</li>
 </ul>
 </section>
-<section id="for-loop" class="slide level2">
-<h2>For loop</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a></a>Dim i As Long</span>
-<span id="cb5-2"><a></a>For i = 1 To 10</span>
-<span id="cb5-3"><a></a>    Cells(i, 1).Value = i</span>
-<span id="cb5-4"><a></a>Next i</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="loop-patterns-for-for-each-do-while" class="slide level2">
+<h2>Loop patterns: For, For Each, Do While</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb8-1"><a></a><span class="co">' For loop with counter</span></span>
+<span id="cb8-2"><a></a><span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb8-3"><a></a><span class="kw">For </span>i = 1 <span class="kw">To</span> 10</span>
+<span id="cb8-4"><a></a>    Cells(i, 1).Value = i</span>
+<span id="cb8-5"><a></a><span class="kw">Next </span>i</span>
+<span id="cb8-6"><a></a></span>
+<span id="cb8-7"><a></a><span class="co">' For Each over a range (safer for collections)</span></span>
+<span id="cb8-8"><a></a><span class="kw">Dim</span> c <span class="kw">As</span> Range</span>
+<span id="cb8-9"><a></a><span class="kw">For </span>Each c In Range(<span class="st">"A1:A10"</span>)</span>
+<span id="cb8-10"><a></a>    c.Value = c.Row</span>
+<span id="cb8-11"><a></a><span class="kw">Next </span>c</span>
+<span id="cb8-12"><a></a></span>
+<span id="cb8-13"><a></a><span class="co">' Do While with guard</span></span>
+<span id="cb8-14"><a></a><span class="kw">Dim</span> k <span class="kw">As</span> <span class="dt">Long</span>: k = 1</span>
+<span id="cb8-15"><a></a><span class="kw">Do While </span>k &lt;= 10</span>
+<span id="cb8-16"><a></a>    Cells(k, 2).Value = k * 2</span>
+<span id="cb8-17"><a></a>    k = k + 1</span>
+<span id="cb8-18"><a></a><span class="kw">Loop</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="for-each-loop" class="slide level2">
-<h2>For Each loop</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>Dim c As Range</span>
-<span id="cb6-2"><a></a>For Each c In Range("A1:A10")</span>
-<span id="cb6-3"><a></a>    c.Value = c.Row</span>
-<span id="cb6-4"><a></a>Next c</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>Safer for collections</li>
-</ul>
-</section>
-<section id="whiledo-loops" class="slide level2">
-<h2>While/Do loops</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a></a>Dim i As Long: i = 1</span>
-<span id="cb7-2"><a></a>Do While i &lt;= 10</span>
-<span id="cb7-3"><a></a>    Cells(i, 2).Value = i * 2</span>
-<span id="cb7-4"><a></a>    i = i + 1</span>
-<span id="cb7-5"><a></a>Loop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="if..elseif..else" class="slide level2">
-<h2>If..ElseIf..Else</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a></a>If qty = 0 Then</span>
-<span id="cb8-2"><a></a>    MsgBox "Empty"</span>
-<span id="cb8-3"><a></a>ElseIf qty &lt; 10 Then</span>
-<span id="cb8-4"><a></a>    MsgBox "Low"</span>
-<span id="cb8-5"><a></a>Else</span>
-<span id="cb8-6"><a></a>    MsgBox "OK"</span>
-<span id="cb8-7"><a></a>End If</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="select-case" class="slide level2">
-<h2>Select Case</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a></a>Select Case UCase$(Range("B1").Value)</span>
-<span id="cb9-2"><a></a>Case "N"</span>
-<span id="cb9-3"><a></a>    MsgBox "North"</span>
-<span id="cb9-4"><a></a>Case "S"</span>
-<span id="cb9-5"><a></a>    MsgBox "South"</span>
-<span id="cb9-6"><a></a>Case Else</span>
-<span id="cb9-7"><a></a>    MsgBox "Other"</span>
-<span id="cb9-8"><a></a>End Select</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="branching-if-vs-select-case" class="slide level2">
+<h2>Branching: If vs Select Case</h2>
+<div class="columns">
+<div class="column">
+<p>If..ElseIf..Else</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb9-1"><a></a><span class="kw">If </span>qty = 0 <span class="kw">Then</span></span>
+<span id="cb9-2"><a></a>    MsgBox <span class="st">"Empty"</span></span>
+<span id="cb9-3"><a></a>ElseIf qty &lt; 10 <span class="kw">Then</span></span>
+<span id="cb9-4"><a></a>    MsgBox <span class="st">"Low"</span></span>
+<span id="cb9-5"><a></a><span class="kw">Else</span></span>
+<span id="cb9-6"><a></a>    MsgBox <span class="st">"OK"</span></span>
+<span id="cb9-7"><a></a><span class="kw">End If</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<p>Select Case</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb10-1"><a></a><span class="kw">Select Case UCase$(Range("B1").Value)</span></span>
+<span id="cb10-2"><a></a>Case <span class="st">"N"</span>: MsgBox <span class="st">"North"</span></span>
+<span id="cb10-3"><a></a>Case <span class="st">"S"</span>: MsgBox <span class="st">"South"</span></span>
+<span id="cb10-4"><a></a>Case <span class="kw">Else</span>: MsgBox <span class="st">"Other"</span></span>
+<span id="cb10-5"><a></a><span class="kw">End Select</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
 </section>
 <section id="with-blocks-for-clarity" class="slide level2">
 <h2>With blocks for clarity</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a></a>With Worksheets("Report")</span>
-<span id="cb10-2"><a></a>    .Range("A1").Value = "Title"</span>
-<span id="cb10-3"><a></a>    .Range("A2").Font.Bold = True</span>
-<span id="cb10-4"><a></a>End With</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb11-1"><a></a>With Worksheets(<span class="st">"Report"</span>)</span>
+<span id="cb11-2"><a></a>    .Range(<span class="st">"A1"</span>).Value = <span class="st">"Title"</span></span>
+<span id="cb11-3"><a></a>    .Range(<span class="st">"A2"</span>).Font.Bold = <span class="kw">True</span></span>
+<span id="cb11-4"><a></a>End With</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Reduces repetition; groups related actions</li>
 </ul>
 </section>
 <section id="readingwriting-ranges-fast" class="slide level2">
 <h2>Reading/writing ranges fast</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a></a>Dim data</span>
-<span id="cb11-2"><a></a>Dim rng As Range</span>
-<span id="cb11-3"><a></a>Set rng = Range("A1:D1000")</span>
-<span id="cb11-4"><a></a>data = rng.Value ' 2D array</span>
-<span id="cb11-5"><a></a>' ... process in memory ...</span>
-<span id="cb11-6"><a></a>rng.Value = data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb12-1"><a></a><span class="kw">Dim</span> data</span>
+<span id="cb12-2"><a></a><span class="kw">Dim</span> rng <span class="kw">As</span> Range</span>
+<span id="cb12-3"><a></a><span class="kw">Set </span>rng = Range(<span class="st">"A1:D1000"</span>)</span>
+<span id="cb12-4"><a></a>data = rng.Value <span class="co">' 2D array</span></span>
+<span id="cb12-5"><a></a><span class="co">' ... process in memory ...</span></span>
+<span id="cb12-6"><a></a>rng.Value = data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Better than cell‑by‑cell loops</li>
 </ul>
 </section>
 <section id="finding-last-row" class="slide level2">
 <h2>Finding last row</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a></a>Dim lastRow As Long</span>
-<span id="cb12-2"><a></a>lastRow = Cells(Rows.Count, 1).End(xlUp).Row</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb13-1"><a></a><span class="kw">Dim</span> lastRow <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb13-2"><a></a>lastRow = Cells(Rows.Count, 1).End(xlUp).Row</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Common pattern for dynamic ranges</li>
 </ul>
 </section>
+<section id="finding-last-column" class="slide level2">
+<h2>Finding last column</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb14-1"><a></a><span class="kw">Dim</span> lastCol <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb14-2"><a></a>lastCol = Cells(1, Columns.Count).End(xlToLeft).Column</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="specialcells-for-speed" class="slide level2">
+<h2>SpecialCells for speed</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb15-1"><a></a><span class="kw">Dim</span> vis <span class="kw">As</span> Range</span>
+<span id="cb15-2"><a></a><span class="kw">On</span> <span class="kw">Error</span> <span class="kw">Resume</span> <span class="kw">Next</span></span>
+<span id="cb15-3"><a></a><span class="kw">Set </span>vis = Range(<span class="st">"A1:A1000"</span>).SpecialCells(xlCellTypeVisible)</span>
+<span id="cb15-4"><a></a><span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> 0</span>
+<span id="cb15-5"><a></a><span class="kw">If Not</span> vis Is <span class="kw">Nothing</span> <span class="kw">Then</span> vis.Value = <span class="st">"X"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Use after filters; also useful: <code>xlCellTypeConstants</code>, <code>xlCellTypeFormulas</code></li>
+</ul>
+</section>
+<section id="sorting-and-filtering" class="slide level2">
+<h2>Sorting and filtering</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb16-1"><a></a>With Range(<span class="st">"A1"</span>).CurrentRegion</span>
+<span id="cb16-2"><a></a>    .Sort Key1:=.Columns(1), Order1:=xlAscending, Header:=xlYes</span>
+<span id="cb16-3"><a></a>    .AutoFilter Field:=2, Criteria1:<span class="st">"&gt;=100"</span></span>
+<span id="cb16-4"><a></a>End With</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Prefer operating on <code>CurrentRegion</code>/table ranges</li>
+</ul>
+</section>
 <section id="interacting-with-files" class="slide level2">
 <h2>Interacting with files</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>Open "C:\\temp\\out.txt" For Output As #1</span>
-<span id="cb13-2"><a></a>Print #1, "Hello file"</span>
-<span id="cb13-3"><a></a>Close #1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb17-1"><a></a>Open <span class="st">"C:</span><span class="sc">\\</span><span class="st">temp</span><span class="sc">\\</span><span class="st">out.txt"</span> <span class="kw">For </span>Output <span class="kw">As</span> #1</span>
+<span id="cb17-2"><a></a>Print #1, <span class="st">"Hello file"</span></span>
+<span id="cb17-3"><a></a>Close #1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Prefer built‑in workbook I/O for Excel formats</li>
 </ul>
 </section>
 <section id="csv-export" class="slide level2">
 <h2>CSV export</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a></a>ActiveSheet.Copy</span>
-<span id="cb14-2"><a></a>ActiveWorkbook.SaveAs "C:\\temp\\out.csv", xlCSVUTF8</span>
-<span id="cb14-3"><a></a>ActiveWorkbook.Close False</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb18-1"><a></a>ActiveSheet.Copy</span>
+<span id="cb18-2"><a></a>ActiveWorkbook.SaveAs <span class="st">"C:</span><span class="sc">\\</span><span class="st">temp</span><span class="sc">\\</span><span class="st">out.csv"</span>, xlCSVUTF8</span>
+<span id="cb18-3"><a></a>ActiveWorkbook.Close <span class="kw">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="basic-error-handling-template" class="slide level2">
 <h2>Basic error handling template</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a></a>Sub Template()</span>
-<span id="cb15-2"><a></a>On Error GoTo Fail</span>
-<span id="cb15-3"><a></a>    ' work</span>
-<span id="cb15-4"><a></a>    Exit Sub</span>
-<span id="cb15-5"><a></a>Fail:</span>
-<span id="cb15-6"><a></a>    MsgBox Err.Number &amp; ": " &amp; Err.Description</span>
-<span id="cb15-7"><a></a>End Sub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb19-1"><a></a><span class="kw">Sub </span>Template()</span>
+<span id="cb19-2"><a></a><span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> Fail</span>
+<span id="cb19-3"><a></a>    <span class="co">' work</span></span>
+<span id="cb19-4"><a></a>    <span class="kw">Exit Sub</span></span>
+<span id="cb19-5"><a></a>Fail:</span>
+<span id="cb19-6"><a></a>    MsgBox Err.Number &amp; <span class="st">": "</span> &amp; Err.Description</span>
+<span id="cb19-7"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Add minimal assertions</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb20-1"><a></a><span class="kw">Public</span> <span class="kw">Sub </span>AssertTrue(<span class="kw">ByVal</span> cond <span class="kw">As</span> <span class="dt">Boolean</span>, <span class="kw">ByVal</span> msg <span class="kw">As</span> <span class="dt">String</span>)</span>
+<span id="cb20-2"><a></a>    <span class="kw">If Not</span> cond <span class="kw">Then</span> Err.Raise vbObjectError + 1000, , msg</span>
+<span id="cb20-3"><a></a><span class="kw">End Sub</span></span>
+<span id="cb20-4"><a></a></span>
+<span id="cb20-5"><a></a><span class="kw">Sub </span>Test_Assert()</span>
+<span id="cb20-6"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> Fail</span>
+<span id="cb20-7"><a></a>    AssertTrue 1 + 1 = 2, <span class="st">"Math broke"</span></span>
+<span id="cb20-8"><a></a>    MsgBox <span class="st">"OK"</span></span>
+<span id="cb20-9"><a></a>    <span class="kw">Exit Sub</span></span>
+<span id="cb20-10"><a></a>Fail:</span>
+<span id="cb20-11"><a></a>    MsgBox Err.Description</span>
+<span id="cb20-12"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="inputbox-patterns" class="slide level2">
 <h2>InputBox patterns</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a></a>Dim n As Variant</span>
-<span id="cb16-2"><a></a>n = InputBox("How many rows?", "Input", 10)</span>
-<span id="cb16-3"><a></a>If IsNumeric(n) Then Range("A1").Resize(n, 1).Value = 1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb21-1"><a></a><span class="kw">Dim</span> n <span class="kw">As</span> Variant</span>
+<span id="cb21-2"><a></a>n = InputBox(<span class="st">"How many rows?"</span>, <span class="st">"Input"</span>, 10)</span>
+<span id="cb21-3"><a></a><span class="kw">If </span>IsNumeric(n) <span class="kw">Then</span> Range(<span class="st">"A1"</span>).Resize(n, 1).Value = 1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="userdefined-worksheet-functions-udf" class="slide level2">
 <h2>User‑defined worksheet functions (UDF)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a></a>Function IsPrime(n As Long) As Boolean</span>
-<span id="cb17-2"><a></a>    Dim i As Long</span>
-<span id="cb17-3"><a></a>    If n &lt; 2 Then Exit Function</span>
-<span id="cb17-4"><a></a>    For i = 2 To Sqr(n)</span>
-<span id="cb17-5"><a></a>        If n Mod i = 0 Then Exit Function</span>
-<span id="cb17-6"><a></a>    Next i</span>
-<span id="cb17-7"><a></a>    IsPrime = True</span>
-<span id="cb17-8"><a></a>End Function</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb22-1"><a></a><span class="kw">Function </span>IsPrime(n <span class="kw">As</span> <span class="dt">Long</span>) <span class="kw">As</span> <span class="dt">Boolean</span></span>
+<span id="cb22-2"><a></a>    <span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb22-3"><a></a>    <span class="kw">If </span>n &lt; 2 <span class="kw">Then</span> <span class="kw">Exit Function</span></span>
+<span id="cb22-4"><a></a>    <span class="kw">For </span>i = 2 <span class="kw">To</span> Sqr(n)</span>
+<span id="cb22-5"><a></a>        <span class="kw">If </span>n Mod i = 0 <span class="kw">Then</span> <span class="kw">Exit Function</span></span>
+<span id="cb22-6"><a></a>    <span class="kw">Next </span>i</span>
+<span id="cb22-7"><a></a>    IsPrime = <span class="kw">True</span></span>
+<span id="cb22-8"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Use carefully; they recalc often</li>
 </ul>
@@ -413,12 +500,9 @@ Juan F. Imbet
 <li>Output a clean table to a new sheet</li>
 </ul>
 </section>
-<section id="reallife-analogy-building-blocks" class="slide level2">
-<h2>Real‑life analogy: building blocks</h2>
-<ul>
-<li>Loops = assembly line, Conditionals = quality checks</li>
-<li>Functions = mini‑machines that produce a result</li>
-</ul>
+<section class="slide level2">
+
+<!-- removed by request: analogy content (deleted) -->
 </section>
 <section id="where-to-go-next" class="slide level2">
 <h2>Where to go next</h2>
@@ -435,17 +519,17 @@ Juan F. Imbet
 </section>
 <section id="dictionaries-scripting.dictionary" class="slide level2">
 <h2>Dictionaries (Scripting.Dictionary)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a></a>Dim d As Object: Set d = CreateObject("Scripting.Dictionary")</span>
-<span id="cb18-2"><a></a>d("A") = 1: d("B") = 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb23-1"><a></a><span class="kw">Dim</span> d <span class="kw">As</span> <span class="dt">Object</span>: <span class="kw">Set </span>d = CreateObject(<span class="st">"Scripting.Dictionary"</span>)</span>
+<span id="cb23-2"><a></a>d(<span class="st">"A"</span>) = 1: d(<span class="st">"B"</span>) = 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Great for counting/grouping</li>
 </ul>
 </section>
 <section id="timer-and-performance" class="slide level2">
 <h2>Timer and performance</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource vba number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a></a>Dim t As Double: t = Timer</span>
-<span id="cb19-2"><a></a>' work</span>
-<span id="cb19-3"><a></a>MsgBox "Secs: " &amp; Format(Timer - t, "0.00")</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb24-1"><a></a><span class="kw">Dim</span> t <span class="kw">As</span> <span class="dt">Double</span>: t = Timer</span>
+<span id="cb24-2"><a></a><span class="co">' work</span></span>
+<span id="cb24-3"><a></a>MsgBox <span class="st">"Secs: "</span> &amp; Format(Timer - t, <span class="st">"0.00"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="modularization" class="slide level2">
 <h2>Modularization</h2>
@@ -453,6 +537,16 @@ Juan F. Imbet
 <li>Small subs that call each other</li>
 <li>Clear inputs/outputs; avoid global state</li>
 </ul>
+<p>Pattern: one public entrypoint that calls private helpers</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb25-1"><a></a><span class="kw">Public</span> <span class="kw">Sub </span>BuildReport()</span>
+<span id="cb25-2"><a></a>    PrepareSheet</span>
+<span id="cb25-3"><a></a>    LoadData</span>
+<span id="cb25-4"><a></a>    FormatReport</span>
+<span id="cb25-5"><a></a><span class="kw">End Sub</span></span>
+<span id="cb25-6"><a></a></span>
+<span id="cb25-7"><a></a><span class="kw">Private</span> <span class="kw">Sub </span>PrepareSheet(): <span class="kw">End Sub</span></span>
+<span id="cb25-8"><a></a><span class="kw">Private</span> <span class="kw">Sub </span>LoadData(): <span class="kw">End Sub</span></span>
+<span id="cb25-9"><a></a><span class="kw">Private</span> <span class="kw">Sub </span>FormatReport(): <span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="testing-mindset" class="slide level2">
 <h2>Testing mindset</h2>
@@ -460,15 +554,10 @@ Juan F. Imbet
 <li>Create a Test sheet; write simple asserts via MsgBox/Debug.Print</li>
 </ul>
 </section>
-<section id="knowledge-check-quiz" class="slide level2">
-<h2>Knowledge check (quiz)</h2>
-<ul>
-<li>When to use For vs For Each?</li>
-<li>Why read/write ranges as arrays?</li>
-<li>One benefit of Select Case over multiple Ifs?</li>
-</ul>
-</section>
 <section id="next-steps-preview" class="slide level2">
+<h2>Next steps preview</h2>
+</section>
+<section id="next-steps-preview-1" class="slide level2">
 <h2>Next steps preview</h2>
 <ul>
 <li>UserForms, Events, Class modules</li>

@@ -19,7 +19,7 @@ execute:
 ## Why big data tools?
 
 - Memory won’t hold everything; need out‑of‑core and parallelism
-- Analogy: more conveyor belts and bigger warehouses
+
 
 ---
 
@@ -41,6 +41,12 @@ res = q.collect()
 ```
 
 - Lazy builds a plan; executes once → fast
+
+---
+
+## Predicate pushdown
+
+- Filters and projections applied early to reduce IO
 
 ---
 
@@ -70,6 +76,33 @@ df.with_columns((pl.col("a") * 2).alias("a2"))
 
 ```python
 df.groupby("a").agg(pl.col("b").sum())
+```
+
+---
+
+## Polars window functions
+
+```python
+ret.with_columns(
+  pl.col('ret').rolling_mean(window_size=21).over('symbol').alias('m21')
+)
+```
+
+---
+
+## Explain and inspect plan
+
+```python
+q = ret.lazy().group_by('symbol').agg(pl.col('ret').std())
+print(q.explain())
+```
+
+---
+
+## Streaming CSV read
+
+```python
+pl.scan_csv('big.csv').filter(pl.col('a')>0).select(['a','b']).collect()
 ```
 
 ---
@@ -109,6 +142,52 @@ monthly.head().compute()
 
 ---
 
+## Partitions and persist
+
+```python
+df = df.repartition(npartitions=8).persist()
+```
+
+---
+
+## Shuffles and groupby scale
+
+- Wide groupby/joins require shuffles; watch cluster memory
+
+---
+
+## Memory tips
+
+- Use categories, drop columns, write Parquet with snappy/zstd
+
+---
+
+## Parquet advantages
+
+- Columnar, compressed, predicate pushdown; better than CSV at scale
+
+---
+
+## read_csv blocksize
+
+```python
+dd.read_csv('*.csv', blocksize='64MB')
+```
+
+---
+
+## Schedulers
+
+- threads, processes, distributed; choose per workload
+
+---
+
+## Diagnostics dashboard
+
+- `client = Client()`; track tasks, memory, workers via dashboard
+
+---
+
 ## When to use which?
 
 - Polars: single‑node speed, expressive API
@@ -128,10 +207,7 @@ monthly.head().compute()
 
 ---
 
-## Real‑life analogy
-
-- Dask = many workers on an assembly line
-- Polars = one very fast worker with a smart plan
+<!-- removed by request: analogy content -->
 
 ---
 

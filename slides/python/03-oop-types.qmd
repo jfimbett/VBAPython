@@ -19,7 +19,7 @@ execute:
 ## Why OOP?
 
 - Organize code around data + behavior
-- Analogy: blueprint → objects (houses)
+
 
 ---
 
@@ -72,7 +72,7 @@ class Savings(Account):
 ## Composition over inheritance
 
 - Combine objects to build bigger ones
-- Lego bricks vs extending a single brick
+
 
 ---
 
@@ -173,6 +173,161 @@ class C:
 ## Type checking tools
 
 - mypy, pyright; gradual typing in practice
+
+---
+
+## Encapsulation conventions
+
+- Use leading underscore `_attr` to signal internal attributes
+- Avoid exposing mutable references; return copies or read-only views
+
+---
+
+## Name mangling (double underscore)
+
+```python
+class Safe:
+    def __init__(self):
+        self.__pin = 1234  # becomes _Safe__pin
+    def check(self, x):
+        return x == self.__pin
+```
+
+---
+
+## __slots__ to save memory
+
+```python
+class Point2D:
+    __slots__ = ("x", "y")
+    def __init__(self, x: float, y: float):
+        self.x, self.y = x, y
+```
+
+- Prevents dynamic attributes; reduces per-instance memory
+
+---
+
+## Abstract Base Classes (ABC)
+
+```python
+from abc import ABC, abstractmethod
+
+class PriceSource(ABC):
+    @abstractmethod
+    def get_price(self, symbol: str) -> float: ...
+
+class YahooSource(PriceSource):
+    def get_price(self, symbol): return 123.45
+```
+
+---
+
+## Multiple inheritance and MRO
+
+- Use sparingly; inspect Method Resolution Order via `C.mro()`
+
+---
+
+## Dataclasses: default_factory
+
+```python
+from dataclasses import dataclass, field
+
+@dataclass
+class Portfolio:
+    name: str
+    positions: dict[str, float] = field(default_factory=dict)
+```
+
+---
+
+## Dataclasses: post-init and validation
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Trade:
+    symbol: str
+    qty: int
+    def __post_init__(self):
+        if self.qty == 0:
+            raise ValueError("qty must be non-zero")
+```
+
+---
+
+## Protocols with example
+
+```python
+from typing import Protocol
+
+class HasArea(Protocol):
+    def area(self) -> float: ...
+
+class Circle:
+    def __init__(self, r: float): self.r = r
+    def area(self) -> float: return 3.1416*self.r*self.r
+```
+
+---
+
+## Generic classes
+
+```python
+from typing import Generic, TypeVar
+T = TypeVar('T')
+
+class Box(Generic[T]):
+    def __init__(self, value: T): self.value = value
+```
+
+---
+
+## TypedDict and NewType
+
+```python
+from typing import TypedDict, NewType
+
+class UserTD(TypedDict):
+    id: int
+    name: str
+
+UserId = NewType('UserId', int)
+```
+
+---
+
+## Context managers in classes
+
+```python
+class Locker:
+    def __enter__(self): print("lock"); return self
+    def __exit__(self, exc_type, exc, tb): print("unlock"); return False
+```
+
+---
+
+## Operator overloading
+
+```python
+from dataclasses import dataclass
+@dataclass(frozen=True)
+class Vec:
+    x: float; y: float
+    def __add__(self, o): return Vec(self.x+o.x, self.y+o.y)
+    def __lt__(self, o): return (self.x, self.y) < (o.x, o.y)
+```
+
+---
+
+## Enum for choices
+
+```python
+from enum import Enum, auto
+class Side(Enum): BUY = auto(); SELL = auto()
+```
 
 ---
 

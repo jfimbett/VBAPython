@@ -9,7 +9,7 @@ format:
     slide-number: true
     toc: false
     incremental: false
-    highlight-style: a11y-light
+    highlight-style: github
     code-fold: false
     df-print: default
     preview-links: auto

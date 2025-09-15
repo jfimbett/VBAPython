@@ -15,47 +15,103 @@ format:
 execute:
   enabled: false
 ---
-
-## Agenda
-
-- Build solid foundations for VBA programming
-- Variables, types, functions, loops, conditionals, cell references
 - Input/Output patterns and exercises
 
 ---
+ 
+ - Input/Output patterns and exercises
+ 
+ ---
+---
 
-## Subroutines: tasks you can run
+## Procedures: Subs and Functions
 
-```vba
+::: columns
+::: column
+Subroutines (Subs)
+
+```vb
 Sub Greet()
     MsgBox "Welcome!"
 End Sub
 ```
 
 - Keep them short and focused
+:::
+::: column
+Functions
 
----
-
-## Functions: return a value
-
-```vba
+```vb
 Function NetPrice(price As Double, tax As Double) As Double
     NetPrice = price * (1 + tax)
 End Function
 ```
 
 - Can be used in cells too
+:::
+:::
+
+---
+
+## Procedure signatures: ByRef/ByVal, Optional, ParamArray
+
+```vb
+Sub Discount(ByRef price As Double, ByVal rate As Double)
+    price = price * (1 - rate)
+End Sub
+
+Sub Demo()
+    Dim p As Double: p = 100
+    Discount p, 0.1 ' p becomes 90
+End Sub
+
+Function Concat(Optional sep As String = ", ", ParamArray items() As Variant) As String
+    Dim i As Long
+    For i = LBound(items) To UBound(items)
+        Concat = Concat & IIf(Len(Concat) > 0, sep, "") & CStr(items(i))
+    Next
+End Function
+```
+
+- `ByRef`: caller’s variable is modified; `ByVal`: copy only
+- Optional parameters and `ParamArray` for flexible APIs
 
 ---
 
 ## Variables and constants
 
-```vba
+```vb
 Dim qty As Long
 Const TaxRate As Double = 0.16
 ```
 
 - Constants express business rules clearly
+
+---
+
+## Strings and dates
+
+```vb
+Dim s As String: s = Trim$(UCase$("  hello  ")) ' "HELLO"
+Dim d As Date: d = DateSerial(2025, 9, 15) + TimeSerial(9, 30, 0)
+Debug.Print Format$(d, "yyyy-mm-dd hh:nn")
+```
+
+- Use `$`-suffixed functions (e.g., `Trim$`) for string-returning variants
+- Prefer `DateSerial`, `TimeSerial` for safe construction; `Format$` for display
+
+---
+
+## Type conversion and validation
+
+```vb
+Dim v As Variant, n As Double
+v = Range("B1").Value
+If IsNumeric(v) Then n = CDbl(v) Else n = 0
+```
+
+- Guard conversions with `IsNumeric`, `IsDate`, `IsError`
+- `CStr`, `CLng`, `CDbl`, `CDate` for explicit casts
 
 ---
 
@@ -69,7 +125,7 @@ Const TaxRate As Double = 0.16
 
 ## Arrays
 
-```vba
+```vb
 Dim arr(1 To 3) As Long
 arr(1) = 10: arr(2) = 20: arr(3) = 30
 ```
@@ -78,45 +134,38 @@ arr(1) = 10: arr(2) = 20: arr(3) = 30
 
 ---
 
-## For loop
+## Loop patterns: For, For Each, Do While
 
-```vba
+```vb
+' For loop with counter
 Dim i As Long
 For i = 1 To 10
     Cells(i, 1).Value = i
 Next i
-```
 
----
-
-## For Each loop
-
-```vba
+' For Each over a range (safer for collections)
 Dim c As Range
 For Each c In Range("A1:A10")
     c.Value = c.Row
 Next c
-```
 
-- Safer for collections
-
----
-
-## While/Do loops
-
-```vba
-Dim i As Long: i = 1
-Do While i <= 10
-    Cells(i, 2).Value = i * 2
-    i = i + 1
+' Do While with guard
+Dim k As Long: k = 1
+Do While k <= 10
+    Cells(k, 2).Value = k * 2
+    k = k + 1
 Loop
 ```
 
 ---
 
-## If..ElseIf..Else
+## Branching: If vs Select Case
 
-```vba
+::: columns
+::: column
+If..ElseIf..Else
+
+```vb
 If qty = 0 Then
     MsgBox "Empty"
 ElseIf qty < 10 Then
@@ -125,27 +174,25 @@ Else
     MsgBox "OK"
 End If
 ```
+:::
+::: column
+Select Case
 
----
-
-## Select Case
-
-```vba
+```vb
 Select Case UCase$(Range("B1").Value)
-Case "N"
-    MsgBox "North"
-Case "S"
-    MsgBox "South"
-Case Else
-    MsgBox "Other"
+Case "N": MsgBox "North"
+Case "S": MsgBox "South"
+Case Else: MsgBox "Other"
 End Select
 ```
+:::
+:::
 
 ---
 
 ## With blocks for clarity
 
-```vba
+```vb
 With Worksheets("Report")
     .Range("A1").Value = "Title"
     .Range("A2").Font.Bold = True
@@ -158,7 +205,7 @@ End With
 
 ## Reading/writing ranges fast
 
-```vba
+```vb
 Dim data
 Dim rng As Range
 Set rng = Range("A1:D1000")
@@ -173,7 +220,7 @@ rng.Value = data
 
 ## Finding last row
 
-```vba
+```vb
 Dim lastRow As Long
 lastRow = Cells(Rows.Count, 1).End(xlUp).Row
 ```
@@ -182,9 +229,45 @@ lastRow = Cells(Rows.Count, 1).End(xlUp).Row
 
 ---
 
+## Finding last column
+
+```vb
+Dim lastCol As Long
+lastCol = Cells(1, Columns.Count).End(xlToLeft).Column
+```
+
+---
+
+## SpecialCells for speed
+
+```vb
+Dim vis As Range
+On Error Resume Next
+Set vis = Range("A1:A1000").SpecialCells(xlCellTypeVisible)
+On Error GoTo 0
+If Not vis Is Nothing Then vis.Value = "X"
+```
+
+- Use after filters; also useful: `xlCellTypeConstants`, `xlCellTypeFormulas`
+
+---
+
+## Sorting and filtering
+
+```vb
+With Range("A1").CurrentRegion
+    .Sort Key1:=.Columns(1), Order1:=xlAscending, Header:=xlYes
+    .AutoFilter Field:=2, Criteria1:">=100"
+End With
+```
+
+- Prefer operating on `CurrentRegion`/table ranges
+
+---
+
 ## Interacting with files
 
-```vba
+```vb
 Open "C:\\temp\\out.txt" For Output As #1
 Print #1, "Hello file"
 Close #1
@@ -196,7 +279,7 @@ Close #1
 
 ## CSV export
 
-```vba
+```vb
 ActiveSheet.Copy
 ActiveWorkbook.SaveAs "C:\\temp\\out.csv", xlCSVUTF8
 ActiveWorkbook.Close False
@@ -206,7 +289,7 @@ ActiveWorkbook.Close False
 
 ## Basic error handling template
 
-```vba
+```vb
 Sub Template()
 On Error GoTo Fail
     ' work
@@ -216,11 +299,28 @@ Fail:
 End Sub
 ```
 
+Add minimal assertions
+
+```vb
+Public Sub AssertTrue(ByVal cond As Boolean, ByVal msg As String)
+    If Not cond Then Err.Raise vbObjectError + 1000, , msg
+End Sub
+
+Sub Test_Assert()
+    On Error GoTo Fail
+    AssertTrue 1 + 1 = 2, "Math broke"
+    MsgBox "OK"
+    Exit Sub
+Fail:
+    MsgBox Err.Description
+End Sub
+```
+
 ---
 
 ## InputBox patterns
 
-```vba
+```vb
 Dim n As Variant
 n = InputBox("How many rows?", "Input", 10)
 If IsNumeric(n) Then Range("A1").Resize(n, 1).Value = 1
@@ -230,7 +330,7 @@ If IsNumeric(n) Then Range("A1").Resize(n, 1).Value = 1
 
 ## User‑defined worksheet functions (UDF)
 
-```vba
+```vb
 Function IsPrime(n As Long) As Boolean
     Dim i As Long
     If n < 2 Then Exit Function
@@ -267,10 +367,7 @@ End Function
 
 ---
 
-## Real‑life analogy: building blocks
-
-- Loops = assembly line, Conditionals = quality checks
-- Functions = mini‑machines that produce a result
+<!-- removed by request: analogy content (deleted) -->
 
 ---
 
@@ -289,7 +386,7 @@ End Function
 
 ## Dictionaries (Scripting.Dictionary)
 
-```vba
+```vb
 Dim d As Object: Set d = CreateObject("Scripting.Dictionary")
 d("A") = 1: d("B") = 2
 ```
@@ -300,7 +397,7 @@ d("A") = 1: d("B") = 2
 
 ## Timer and performance
 
-```vba
+```vb
 Dim t As Double: t = Timer
 ' work
 MsgBox "Secs: " & Format(Timer - t, "0.00")
@@ -313,6 +410,20 @@ MsgBox "Secs: " & Format(Timer - t, "0.00")
 - Small subs that call each other
 - Clear inputs/outputs; avoid global state
 
+Pattern: one public entrypoint that calls private helpers
+
+```vb
+Public Sub BuildReport()
+    PrepareSheet
+    LoadData
+    FormatReport
+End Sub
+
+Private Sub PrepareSheet(): End Sub
+Private Sub LoadData(): End Sub
+Private Sub FormatReport(): End Sub
+```
+
 ---
 
 ## Testing mindset
@@ -321,14 +432,7 @@ MsgBox "Secs: " & Format(Timer - t, "0.00")
 
 ---
 
-## Knowledge check (quiz)
-
-- When to use For vs For Each?
-- Why read/write ranges as arrays?
-- One benefit of Select Case over multiple Ifs?
-
----
-
+## Next steps preview
 ## Next steps preview
 
 - UserForms, Events, Class modules

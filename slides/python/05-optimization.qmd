@@ -19,7 +19,7 @@ execute:
 ## Why optimize?
 
 - Find best parameters or satisfy equations
-- Analogy: finding the lowest valley in a landscape
+
 
 ---
 
@@ -53,6 +53,13 @@ def F(v):
     return [x**2 + y**2 - 1, x - y]
 sol = opt.root(F, [0.5, 0.1])
 ```
+
+---
+
+## Designing objectives
+
+- Smooth and well-scaled objectives converge faster
+- Prefer returning scalar; avoid non-differentiable kinks if possible
 
 ---
 
@@ -115,6 +122,16 @@ coef, *_ = np.linalg.lstsq(A, y, rcond=None)
 
 ---
 
+## Supplying Jacobian/Hessian
+
+```python
+def f(x): ...
+def jac(x): ...
+opt.minimize(f, x0, jac=jac, method='BFGS')
+```
+
+---
+
 ## Scaling and constraints
 
 - Scale variables; use bounds/constraints
@@ -122,10 +139,64 @@ coef, *_ = np.linalg.lstsq(A, y, rcond=None)
 
 ---
 
+## Bounds and linear constraints
+
+```python
+from scipy.optimize import Bounds, LinearConstraint
+bounds = Bounds(0, 1)
+A = [[1, 1]]; lb=[1]; ub=[1]
+lin = LinearConstraint(A, lb, ub)
+opt.minimize(var, x0, bounds=bounds, constraints=[lin])
+```
+
+---
+
 ## Diagnostics
 
 - Check status, fun, grad, nfev
 - Plot objective over iterations when possible
+
+---
+
+## Callbacks and termination
+
+```python
+def cb(xk): print(xk)
+opt.minimize(f, x0, callback=cb, options={"maxiter": 200})
+```
+
+---
+
+## Linear programming (HiGHS)
+
+```python
+from scipy.optimize import linprog
+c = [1, 2]; A_ub=[[1,1]]; b_ub=[3]
+linprog(c, A_ub=A_ub, b_ub=b_ub)
+```
+
+---
+
+## Global optimization (basinhopping)
+
+```python
+from scipy.optimize import basinhopping
+res = basinhopping(lambda x: (x[0]-3)**2 + 10*abs(np.sin(x[0])), x0=[0.0])
+```
+
+---
+
+## Trust-constr highlights
+
+- Handles bounds + (non)linear constraints with Jacobians
+- Good default for complex constrained problems
+
+---
+
+## Debugging failures
+
+- Inspect `res.message`, try different initial guesses
+- Check gradients numerically; rescale variables
 
 ---
 
@@ -141,9 +212,7 @@ coef, *_ = np.linalg.lstsq(A, y, rcond=None)
 
 ---
 
-## Real‑life analogy
-
-- Tuning a recipe: adjust ingredients to reach best taste
+<!-- removed by request: analogy content -->
 
 ---
 

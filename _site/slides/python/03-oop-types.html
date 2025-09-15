@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f54fa83ccd8f86fe7238c9291c42d766.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.23">
 
   <meta name="author" content="Juan F. Imbet">
   <title>Intro to VBA and Python (10x3h) – Python Session 3 — OOP and Types</title>
@@ -56,46 +56,46 @@
         -khtml-user-select: none; -moz-user-select: none;
         -ms-user-select: none; user-select: none;
         padding: 0 4px; width: 4em;
-        color: #767676;
       }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
     div.sourceCode
-      { color: #545454; background-color: #fefefe; }
+      { color: #24292e;  }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #545454; } /* Normal */
-    code span.al { color: #7928a1; } /* Alert */
-    code span.an { color: #696969; } /* Annotation */
-    code span.at { color: #a55a00; } /* Attribute */
-    code span.bn { color: #7928a1; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #d91e18; } /* ControlFlow */
-    code span.ch { color: #008000; } /* Char */
-    code span.cn { color: #d91e18; } /* Constant */
-    code span.co { color: #696969; } /* Comment */
-    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
-    code span.do { color: #696969; font-style: italic; } /* Documentation */
-    code span.dt { color: #7928a1; } /* DataType */
-    code span.dv { color: #7928a1; } /* DecVal */
-    code span.er { color: #7928a1; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #a55a00; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #696969; } /* Information */
-    code span.kw { color: #d91e18; } /* Keyword */
-    code span.op { color: #00769e; } /* Operator */
-    code span.ot { color: #d91e18; } /* Other */
-    code span.pp { color: #7928a1; } /* Preprocessor */
-    code span.sc { color: #00769e; } /* SpecialChar */
-    code span.ss { color: #008000; } /* SpecialString */
-    code span.st { color: #008000; } /* String */
-    code span.va { color: #a55a00; } /* Variable */
-    code span.vs { color: #008000; } /* VerbatimString */
-    code span.wa { color: #696969; font-style: italic; } /* Warning */
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-51ca31f879033f291de59c5b755a141e.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="styles.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -224,7 +224,6 @@ Juan F. Imbet
 <h2>Why OOP?</h2>
 <ul>
 <li>Organize code around data + behavior</li>
-<li>Analogy: blueprint → objects (houses)</li>
 </ul>
 </section>
 <section id="basic-class" class="slide level2">
@@ -265,7 +264,6 @@ Juan F. Imbet
 <h2>Composition over inheritance</h2>
 <ul>
 <li>Combine objects to build bigger ones</li>
-<li>Lego bricks vs extending a single brick</li>
 </ul>
 </section>
 <section id="dataclasses" class="slide level2">
@@ -350,6 +348,118 @@ Juan F. Imbet
 <ul>
 <li>mypy, pyright; gradual typing in practice</li>
 </ul>
+</section>
+<section id="encapsulation-conventions" class="slide level2">
+<h2>Encapsulation conventions</h2>
+<ul>
+<li>Use leading underscore <code>_attr</code> to signal internal attributes</li>
+<li>Avoid exposing mutable references; return copies or read-only views</li>
+</ul>
+</section>
+<section id="name-mangling-double-underscore" class="slide level2">
+<h2>Name mangling (double underscore)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">class</span> Safe:</span>
+<span id="cb9-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb9-3"><a></a>        <span class="va">self</span>.__pin <span class="op">=</span> <span class="dv">1234</span>  <span class="co"># becomes _Safe__pin</span></span>
+<span id="cb9-4"><a></a>    <span class="kw">def</span> check(<span class="va">self</span>, x):</span>
+<span id="cb9-5"><a></a>        <span class="cf">return</span> x <span class="op">==</span> <span class="va">self</span>.__pin</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="slots-to-save-memory" class="slide level2">
+<h2><strong>slots</strong> to save memory</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">class</span> Point2D:</span>
+<span id="cb10-2"><a></a>    <span class="va">__slots__</span> <span class="op">=</span> (<span class="st">"x"</span>, <span class="st">"y"</span>)</span>
+<span id="cb10-3"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x: <span class="bu">float</span>, y: <span class="bu">float</span>):</span>
+<span id="cb10-4"><a></a>        <span class="va">self</span>.x, <span class="va">self</span>.y <span class="op">=</span> x, y</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Prevents dynamic attributes; reduces per-instance memory</li>
+</ul>
+</section>
+<section id="abstract-base-classes-abc" class="slide level2">
+<h2>Abstract Base Classes (ABC)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> abc <span class="im">import</span> ABC, abstractmethod</span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a><span class="kw">class</span> PriceSource(ABC):</span>
+<span id="cb11-4"><a></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb11-5"><a></a>    <span class="kw">def</span> get_price(<span class="va">self</span>, symbol: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">float</span>: ...</span>
+<span id="cb11-6"><a></a></span>
+<span id="cb11-7"><a></a><span class="kw">class</span> YahooSource(PriceSource):</span>
+<span id="cb11-8"><a></a>    <span class="kw">def</span> get_price(<span class="va">self</span>, symbol): <span class="cf">return</span> <span class="fl">123.45</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="multiple-inheritance-and-mro" class="slide level2">
+<h2>Multiple inheritance and MRO</h2>
+<ul>
+<li>Use sparingly; inspect Method Resolution Order via <code>C.mro()</code></li>
+</ul>
+</section>
+<section id="dataclasses-default_factory" class="slide level2">
+<h2>Dataclasses: default_factory</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass, field</span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a><span class="at">@dataclass</span></span>
+<span id="cb12-4"><a></a><span class="kw">class</span> Portfolio:</span>
+<span id="cb12-5"><a></a>    name: <span class="bu">str</span></span>
+<span id="cb12-6"><a></a>    positions: <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">float</span>] <span class="op">=</span> field(default_factory<span class="op">=</span><span class="bu">dict</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="dataclasses-post-init-and-validation" class="slide level2">
+<h2>Dataclasses: post-init and validation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb13-2"><a></a></span>
+<span id="cb13-3"><a></a><span class="at">@dataclass</span></span>
+<span id="cb13-4"><a></a><span class="kw">class</span> Trade:</span>
+<span id="cb13-5"><a></a>    symbol: <span class="bu">str</span></span>
+<span id="cb13-6"><a></a>    qty: <span class="bu">int</span></span>
+<span id="cb13-7"><a></a>    <span class="kw">def</span> __post_init__(<span class="va">self</span>):</span>
+<span id="cb13-8"><a></a>        <span class="cf">if</span> <span class="va">self</span>.qty <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb13-9"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"qty must be non-zero"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="protocols-with-example" class="slide level2">
+<h2>Protocols with example</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">from</span> typing <span class="im">import</span> Protocol</span>
+<span id="cb14-2"><a></a></span>
+<span id="cb14-3"><a></a><span class="kw">class</span> HasArea(Protocol):</span>
+<span id="cb14-4"><a></a>    <span class="kw">def</span> area(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">float</span>: ...</span>
+<span id="cb14-5"><a></a></span>
+<span id="cb14-6"><a></a><span class="kw">class</span> Circle:</span>
+<span id="cb14-7"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, r: <span class="bu">float</span>): <span class="va">self</span>.r <span class="op">=</span> r</span>
+<span id="cb14-8"><a></a>    <span class="kw">def</span> area(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">float</span>: <span class="cf">return</span> <span class="fl">3.1416</span><span class="op">*</span><span class="va">self</span>.r<span class="op">*</span><span class="va">self</span>.r</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="generic-classes" class="slide level2">
+<h2>Generic classes</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">from</span> typing <span class="im">import</span> Generic, TypeVar</span>
+<span id="cb15-2"><a></a>T <span class="op">=</span> TypeVar(<span class="st">'T'</span>)</span>
+<span id="cb15-3"><a></a></span>
+<span id="cb15-4"><a></a><span class="kw">class</span> Box(Generic[T]):</span>
+<span id="cb15-5"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, value: T): <span class="va">self</span>.value <span class="op">=</span> value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="typeddict-and-newtype" class="slide level2">
+<h2>TypedDict and NewType</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="im">from</span> typing <span class="im">import</span> TypedDict, NewType</span>
+<span id="cb16-2"><a></a></span>
+<span id="cb16-3"><a></a><span class="kw">class</span> UserTD(TypedDict):</span>
+<span id="cb16-4"><a></a>    <span class="bu">id</span>: <span class="bu">int</span></span>
+<span id="cb16-5"><a></a>    name: <span class="bu">str</span></span>
+<span id="cb16-6"><a></a></span>
+<span id="cb16-7"><a></a>UserId <span class="op">=</span> NewType(<span class="st">'UserId'</span>, <span class="bu">int</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="context-managers-in-classes" class="slide level2">
+<h2>Context managers in classes</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">class</span> Locker:</span>
+<span id="cb17-2"><a></a>    <span class="kw">def</span> <span class="fu">__enter__</span>(<span class="va">self</span>): <span class="bu">print</span>(<span class="st">"lock"</span>)<span class="op">;</span> <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb17-3"><a></a>    <span class="kw">def</span> <span class="fu">__exit__</span>(<span class="va">self</span>, exc_type, exc, tb): <span class="bu">print</span>(<span class="st">"unlock"</span>)<span class="op">;</span> <span class="cf">return</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="operator-overloading" class="slide level2">
+<h2>Operator overloading</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb18-2"><a></a><span class="at">@dataclass</span>(frozen<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-3"><a></a><span class="kw">class</span> Vec:</span>
+<span id="cb18-4"><a></a>    x: <span class="bu">float</span><span class="op">;</span> y: <span class="bu">float</span></span>
+<span id="cb18-5"><a></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, o): <span class="cf">return</span> Vec(<span class="va">self</span>.x<span class="op">+</span>o.x, <span class="va">self</span>.y<span class="op">+</span>o.y)</span>
+<span id="cb18-6"><a></a>    <span class="kw">def</span> <span class="fu">__lt__</span>(<span class="va">self</span>, o): <span class="cf">return</span> (<span class="va">self</span>.x, <span class="va">self</span>.y) <span class="op">&lt;</span> (o.x, o.y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="enum-for-choices" class="slide level2">
+<h2>Enum for choices</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">from</span> enum <span class="im">import</span> Enum, auto</span>
+<span id="cb19-2"><a></a><span class="kw">class</span> Side(Enum): BUY <span class="op">=</span> auto()<span class="op">;</span> SELL <span class="op">=</span> auto()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="knowledge-check-quiz" class="slide level2">
 <h2>Knowledge check (quiz)</h2>

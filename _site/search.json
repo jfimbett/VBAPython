@@ -4,70 +4,70 @@
     "href": "slides/vba/01-intro-vba.html#welcome",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Welcome",
-    "text": "Welcome\n\nCourse: Intro to VBA and Python (10 sessions x ~3 hours)\nToday: VBA overview, macros, security, the Visual Basic Editor (VBE), Win/Mac differences\nGoal: Build confidence to automate simple tasks in Excel using VBA"
+    "text": "Welcome\n\nCourse: Intro to VBA and Python (10 sessions × ~3 h)\nToday: VBA overview, macros, security, the Visual Basic Editor (VBE), Win/Mac differences\nGoal: Build confidence to automate simple tasks in Excel using VBA"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#what-is-vba",
     "href": "slides/vba/01-intro-vba.html#what-is-vba",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "What is VBA?",
-    "text": "What is VBA?\n\nVisual Basic for Applications, built into Office (Excel, Word, etc.)\nLets you automate repetitive tasks and build custom tools\nThink of it as a personal assistant living inside Excel"
+    "text": "What is VBA?\n\nVisual Basic for Applications (VBA) is a programming language embedded inside Office apps (Excel, Word, PowerPoint, Access).\nRuns inside the host application process (Excel), giving access to its Object Model: Application → Workbooks → Worksheets → Range.\nGreat for automating repetitive tasks, building custom functions and UI (forms, buttons), and integrating with files and data.\nCross‑platform note: VBA exists on Windows and Mac, but some integrations are Windows‑only (see next slide)."
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#why-learn-vba-in-2025",
     "href": "slides/vba/01-intro-vba.html#why-learn-vba-in-2025",
     "title": "VBA Session 1 — Introduction to VBA",
-    "section": "Why learn VBA in 2025?",
-    "text": "Why learn VBA in 2025?\n\nExcel remains the lingua franca of business\nQuick wins: automate reports, cleanup, formatting\nBridges to other tools (Power Query, Python via xlwings, etc.)"
+    "section": "Why learn VBA in 2025?",
+    "text": "Why learn VBA in 2025?\n\nExcel remains the lingua franca of business.\nQuick wins: automate reports, cleanup, formatting.\nBridges to other tools (Power Query, Python via xlwings, etc.)."
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#macro-security-mindset",
     "href": "slides/vba/01-intro-vba.html#macro-security-mindset",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Macro security mindset",
-    "text": "Macro security mindset\n\nMacros can run code; treat files like executables\nOnly enable content from trusted sources\nUse signed macros in corporate environments"
+    "text": "Macro security mindset\n\nMacros can run code; treat files like executables.\nOnly enable content from trusted sources.\nUse signed macros in corporate environments.\n\nWindows (Trust Center): File → Options → Trust Center → Trust Center Settings → Macro Settings\nRecommended for learning: “Disable all macros with notification” + add a Trusted Location for your course folder.\nConsider enabling Protected View for files from the internet; unblock via file Properties → Unblock.\nMac (Trust Center): Excel → Preferences → Security & Privacy\nSimilar options: enable with notification; manage access to Visual Basic project if prompted.\nSigning: use a code signing certificate to sign VBA projects (SelfCert.exe on Windows for local testing)."
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#enable-developer-tab-windows",
     "href": "slides/vba/01-intro-vba.html#enable-developer-tab-windows",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Enable Developer tab (Windows)",
-    "text": "Enable Developer tab (Windows)\n\nFile → Options → Customize Ribbon\nCheck “Developer”\nClick OK; Developer tab appears"
+    "text": "Enable Developer tab (Windows)\n\nFile → Options → Customize Ribbon\nUnder Main Tabs, check Developer and click OK"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#enable-developer-tab-mac",
     "href": "slides/vba/01-intro-vba.html#enable-developer-tab-mac",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Enable Developer tab (Mac)",
-    "text": "Enable Developer tab (Mac)\n\nExcel → Preferences → Ribbon & Toolbar\nCheck “Developer”\nSave; Developer tab appears"
+    "text": "Enable Developer tab (Mac)\n\nExcel → Preferences → Ribbon & Toolbar\nSelect Main Tabs and check Developer\nClick Save; the Developer tab appears"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#recording-a-macro-windows",
     "href": "slides/vba/01-intro-vba.html#recording-a-macro-windows",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Recording a macro (Windows)",
-    "text": "Recording a macro (Windows)\n\nDeveloper → Record Macro\nGive it a name, store location (This Workbook/Personal Macro Workbook)\nDo actions; Stop Recording; inspect code in VBE"
+    "text": "Recording a macro (Windows)\n\nDeveloper → Record Macro\nGive it a name, store location (This Workbook/Personal Macro Workbook)\nDo actions; Stop Recording; inspect code in VBE\nUse “Use Relative References” when you want actions relative to the active cell\nNaming: no spaces, start with a letter; use verbs, e.g., FormatHeader\nStorage: This Workbook = ships with file; Personal Macro Workbook = available to all workbooks\nView/Edit quickly: Developer → Macros → select → Edit (opens VBE)"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#recording-a-macro-mac",
     "href": "slides/vba/01-intro-vba.html#recording-a-macro-mac",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Recording a macro (Mac)",
-    "text": "Recording a macro (Mac)\n\nDeveloper → Record Macro (similar flow)\nDifferences: some keyboard shortcuts, dialog layouts\nOutcome: generates VBA you can study and tweak"
+    "text": "Recording a macro (Mac)\n\nDeveloper → Record Macro (similar flow)\nDifferences: some keyboard shortcuts, dialog layouts\nOutcome: generates VBA you can study and tweak\nRelative References also available from the Developer tab\nUse a short keyboard shortcut cautiously (may conflict); consider assigning to a shape/button instead\nStorage locations mirror Windows; Personal Macro Workbook exists on Mac too"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#the-visual-basic-editor-vbe",
     "href": "slides/vba/01-intro-vba.html#the-visual-basic-editor-vbe",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "The Visual Basic Editor (VBE)",
-    "text": "The Visual Basic Editor (VBE)\n\nOpen with Alt+F11 (Windows) or Option+F11 (Mac)\nProject Explorer, Properties Window, Code Pane\nModules vs ThisWorkbook vs Sheet objects"
+    "text": "The Visual Basic Editor (VBE)\n\nOpen with Alt+F11 (Windows) or Option+F11 (Mac)\nProject Explorer, Properties Window, Code Pane\nModules vs ThisWorkbook vs Sheet objects\nImmediate Window (Ctrl+G): print values with Debug.Print, test small snippets\nInsert a Module: VBE → Insert → Module (stores your Sub procedures)\nRun code: press F5 in VBE, or assign to a shape/button on the sheet"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#hello-world-vba",
     "href": "slides/vba/01-intro-vba.html#hello-world-vba",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Hello, world (VBA)",
-    "text": "Hello, world (VBA)\nSub HelloWorld()\n    MsgBox \"Hello from VBA!\"\nEnd Sub\n\nAnalogy: like telling Excel to display a post‑it note"
+    "text": "Hello, world (VBA)\n Sub HelloWorld()\n     MsgBox \"Hello from VBA!\"\n End Sub\n\nHow to run it: place cursor inside HelloWorld and press F5 (or click Run ▶)\nAssign to a button: Insert → Shapes → pick a shape → right‑click → Assign Macro → choose HelloWorld"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#anatomy-of-a-sub-procedure",
@@ -102,14 +102,14 @@
     "href": "slides/vba/01-intro-vba.html#referencing-cells",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Referencing cells",
-    "text": "Referencing cells\nSub SetA1()\n    Range(\"A1\").Value = \"Hi\"\nEnd Sub\n\nRange, Cells, Selection\nQualify with Worksheets(“Sheet1”).Range(“A1”) to be precise"
+    "text": "Referencing cells\nSub SetA1()\n    Range(\"A1\").Value = \"Hi\"\nEnd Sub\n\nRange, Cells, Selection\nQualify with Worksheets(“Sheet1”).Range(“A1”) to be precise\nQualify fully when multiple workbooks: Workbooks(\"Book1.xlsx\").Worksheets(\"Sheet1\").Range(\"A1\")\nCells(row, col) uses numbers: Cells(1, 1) is A1; can combine: Range(Cells(1,1), Cells(10,2))"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#selecting-vs-directly-writing",
     "href": "slides/vba/01-intro-vba.html#selecting-vs-directly-writing",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Selecting vs directly writing",
-    "text": "Selecting vs directly writing\n\nAvoid Select/Activate when possible; write directly\n\nWorksheets(\"Sheet1\").Range(\"A1\").Value = \"Direct write\""
+    "text": "Selecting vs directly writing\n\nAvoid Select/Activate when possible; write directly\n\nWorksheets(\"Sheet1\").Range(\"A1\").Value = \"Direct write\"\nWith Worksheets(\"Sheet1\")\n    .Range(\"B1\").Value = \"With block\"\n    .Cells(2, 1).Value = 123\nEnd With"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#ifthen-logic",
@@ -123,14 +123,14 @@
     "href": "slides/vba/01-intro-vba.html#loops-do-it-repeatedly",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Loops: Do it repeatedly",
-    "text": "Loops: Do it repeatedly\nDim i As Long\nFor i = 1 To 10\n    Cells(i, 1).Value = i\nNext i\n\nFor, For Each, Do While"
+    "text": "Loops: Do it repeatedly\nDim i As Long\nFor i = 1 To 10\n    Cells(i, 1).Value = i\nNext i\n\nDim c As Range\nFor Each c In Range(\"A1:A10\")\n    c.Value = c.Value & \"!\"\nNext c\n\nFor ... Next: use a counter variable for numeric ranges\nFor Each ... Next: iterate items in a collection (Worksheets, Shapes, or cells in a Range)\nDo While/Do Until: loop while/until a condition is satisfied (see next slide)"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#inputbox-and-msgbox",
     "href": "slides/vba/01-intro-vba.html#inputbox-and-msgbox",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "InputBox and MsgBox",
-    "text": "InputBox and MsgBox\nDim name As String\nname = InputBox(\"Your name?\")\nMsgBox \"Hi \" & name\n\nSimple UI for quick interactions"
+    "text": "InputBox and MsgBox\nDim name As String\nname = InputBox(\"Your name?\")\nMsgBox \"Hi \" & name\n\nSimple UI for quick interactions\n\nAdvanced: prompt for a Range safely\nSub PickRange()\n    Dim rng As Range\n    On Error Resume Next\n    Set rng = Application.InputBox(\"Select a range\", Type:=8)\n    On Error GoTo 0\n    If rng Is Nothing Then\n        MsgBox \"No selection\"\n    Else\n        MsgBox \"You picked \" & rng.Address\n    End If\nEnd Sub"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#recording-vs-writing-by-hand",
@@ -144,21 +144,21 @@
     "href": "slides/vba/01-intro-vba.html#win-vs-mac-differences-overview",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Win vs Mac differences (overview)",
-    "text": "Win vs Mac differences (overview)\n\nShortcuts (Alt vs Option), some dialogs differ\nFile system paths differ\nMany object model calls are the same"
+    "text": "Win vs Mac differences (overview)\n\nShortcuts (Alt vs Option), some dialogs differ\nFile system paths differ\nMany object model calls are the same\n\nDetails that matter: - Paths: Windows uses C:\\Users\\...\\file.xlsx; Mac uses /Users/you/file.xlsx; combine with Application.PathSeparator - File dialogs: Application.FileDialog(msoFileDialogFilePicker) works on both, but filters and default folders behave slightly differently - API calls: Windows allows Declare PtrSafe Function to call Win32 APIs; Mac lacks Win32 — avoid OS API calls for portability - Add‑ins: .xlam works both; COM add‑ins are Windows‑only"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#personal-macro-workbook",
     "href": "slides/vba/01-intro-vba.html#personal-macro-workbook",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Personal Macro Workbook",
-    "text": "Personal Macro Workbook\n\nStore macros globally\nLives as PERSONAL.XLSB\nGreat for universal utilities"
+    "text": "Personal Macro Workbook\n\nStore macros globally\nLives as PERSONAL.XLSB\nGreat for universal utilities\n\nCreate it: Record a macro and choose “Personal Macro Workbook” → Excel creates PERSONAL.XLSB automatically Locations - Windows: %APPDATA%\\Microsoft\\Excel\\XLStart\\PERSONAL.XLSB - Mac: ~/Library/Group Containers/UBF8T346G9.Office/User Content/Startup/Excel/PERSONAL.XLSB Tips - Make a backup before migrating; copy the file to the same XLStart location on another machine - Show/Hide: View → Unhide/Hide (PERSONAL.XLSB)"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#error-handling-basics",
     "href": "slides/vba/01-intro-vba.html#error-handling-basics",
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Error handling basics",
-    "text": "Error handling basics\nOn Error GoTo CleanUp\n' risky code\nCleanUp:\n    If Err.Number &lt;&gt; 0 Then MsgBox Err.Description\n\nStart simple; add structure as you grow"
+    "text": "Error handling basics\nSub DoWork()\n    On Error GoTo CleanUp\n    Dim prevCalc As XlCalculation\n    prevCalc = Application.Calculation\n    Application.ScreenUpdating = False\n    Application.EnableEvents = False\n    Application.Calculation = xlCalculationManual\n\n    ' ... risky code here ...\n\nDone:\n    Application.Calculation = prevCalc\n    Application.EnableEvents = True\n    Application.ScreenUpdating = True\n    Exit Sub\n\nCleanUp:\n    MsgBox \"Error \" & Err.Number & \": \" & Err.Description, vbExclamation, \"DoWork\"\n    Resume Done\nEnd Sub\n\nStart simple; add structure as you grow"
   },
   {
     "objectID": "slides/vba/01-intro-vba.html#best-practices-cheatsheet",
@@ -312,35 +312,35 @@
     "href": "slides/vba/02-vba-platforms-macros.html#win-vs-mac-file-paths",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Win vs Mac: file paths",
-    "text": "Win vs Mac: file paths\n\nWindows: C:...\nMac: /Users/you/Documents/…\nUse Application.OperatingSystem to branch when needed\n\nIf InStr(Application.OperatingSystem, \"Mac\") &gt; 0 Then\n    ' Mac path logic\nElse\n    ' Windows path logic\nEnd If"
+    "text": "Win vs Mac: file paths\n\nWindows: C:...\nMac: /Users/you/Documents/…\nUse Application.OperatingSystem to branch when needed\n\nPublic Function IsMac() As Boolean\n    IsMac = (InStr(Application.OperatingSystem, \"Mac\") &gt; 0)\nEnd Function\n\nIf InStr(Application.OperatingSystem, \"Mac\") &gt; 0 Then\n    ' Mac path logic\nElse\n    ' Windows path logic\nEnd If"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#dialog-differences",
     "href": "slides/vba/02-vba-platforms-macros.html#dialog-differences",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Dialog differences",
-    "text": "Dialog differences\n\nFile pickers, message boxes, and fonts dialogs differ slightly\nAbstract with small helper functions"
+    "text": "Dialog differences\n\nFile pickers, message boxes, and fonts dialogs differ slightly\nAbstract with small helper functions\n\nPublic Function PickFile(Optional title As String = \"Pick a file\") As String\n    Dim fd As FileDialog\n    Set fd = Application.FileDialog(msoFileDialogFilePicker)\n    With fd\n        .Title = title\n        .AllowMultiSelect = False\n        If .Show = -1 Then PickFile = .SelectedItems(1)\n    End With\nEnd Function"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#example-save-csv-crossplatform",
     "href": "slides/vba/02-vba-platforms-macros.html#example-save-csv-crossplatform",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Example: Save CSV cross‑platform",
-    "text": "Example: Save CSV cross‑platform\nSub SaveCsv()\n    Dim path As String\n    If InStr(Application.OperatingSystem, \"Mac\") &gt; 0 Then\n        path = \"/Users/you/Desktop/out.csv\"\n    Else\n        path = \"C:\\\\Users\\\\you\\\\Desktop\\\\out.csv\"\n    End If\n    ActiveWorkbook.SaveAs Filename:=path, FileFormat:=xlCSVUTF8\nEnd Sub"
+    "text": "Example: Save CSV cross‑platform\nSub SaveCsv()\n    Dim path As String\n    path = GetDesktopPath() & Application.PathSeparator & \"out.csv\"\n    ActiveWorkbook.SaveAs Filename:=path, FileFormat:=xlCSVUTF8\nEnd Sub\nPublic Function GetDesktopPath() As String\n    If IsMac() Then\n        GetDesktopPath = Environ$(\"HOME\") & \"/Desktop\"\n    Else\n        GetDesktopPath = Environ$(\"USERPROFILE\") & \"\\Desktop\"\n    End If\nEnd Function"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#organizing-modules",
     "href": "slides/vba/02-vba-platforms-macros.html#organizing-modules",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Organizing modules",
-    "text": "Organizing modules\n\nBaseline folders: Modules/, Forms/, Classes/\nKeep utilities in a separate module (e.g., modUtils)\nOne responsibility per module where possible"
+    "text": "Organizing modules\n\nBaseline folders: Modules/, Forms/, Classes/\nKeep utilities in a separate module (e.g., modUtils)\nOne responsibility per module where possible\n\nRecommended baseline modules - modUtils: paths, OS detection, dialogs, logging - modPerf: performance toggles wrapper - modExport: SaveAs/Export wrappers"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#sub-vs-function",
     "href": "slides/vba/02-vba-platforms-macros.html#sub-vs-function",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Sub vs Function",
-    "text": "Sub vs Function\nFunction Add(a As Double, b As Double) As Double\n    Add = a + b\nEnd Function\n\nSub UseAdd()\n    Range(\"A1\").Value = Add(2, 3)\nEnd Sub\n\nFunction returns a value; Sub performs actions"
+    "text": "Sub vs Function\nFunction Add(a As Double, b As Double) As Double\n    Add = a + b\nEnd Function\n\nSub UseAdd()\n    Range(\"A1\").Value = Add(2, 3)\nEnd Sub\n\nFunction returns a value; Sub performs actions\n\nAlso useful: Optional parameters and ByRef/ByVal\nSub ResizeCol(ByVal col As Long, Optional width As Double = 12#)\n    Worksheets(1).Columns(col).ColumnWidth = width\nEnd Sub"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#public-vs-private-scope",
@@ -354,14 +354,14 @@
     "href": "slides/vba/02-vba-platforms-macros.html#error-handling-patterns",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Error handling patterns",
-    "text": "Error handling patterns\nSub DoWork()\nOn Error GoTo Fail\n    ' ...\n    Exit Sub\nFail:\n    MsgBox \"Error: \" & Err.Number & \" - \" & Err.Description\nEnd Sub\n\nAdd logging to a hidden sheet for audits"
+    "text": "Error handling patterns\nSub DoWork()\nOn Error GoTo Fail\n    ' ...\n    Exit Sub\nFail:\n    MsgBox \"Error: \" & Err.Number & \" - \" & Err.Description\nEnd Sub\n\nAdd logging to a hidden sheet for audits\n\nSub LogError(context As String)\n    On Error Resume Next\n    With ThisWorkbook.Worksheets(\"Log\")\n        .Cells(.Rows.Count, 1).End(xlUp).Offset(1).Resize(1, 2).Value = Array(Now, context)\n    End With\nEnd Sub"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#loop-patterns",
     "href": "slides/vba/02-vba-platforms-macros.html#loop-patterns",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Loop patterns",
-    "text": "Loop patterns\n\nFor i = 1 To n\nFor Each cell In Range(…)\nDo While condition\n\nPrefer For Each for collections (fewer index mistakes)"
+    "text": "Loop patterns\n\nFor i = 1 To n\nFor Each cell In Range(…)\nDo While condition\n\nPrefer For Each for collections (fewer index mistakes)\nBatching: prefer reading/writing arrays\nDim arr, rng As Range\nSet rng = Range(\"A1:D1000\")\narr = rng.Value ' 2D variant array\n' process arr in memory\nrng.Value = arr"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#working-with-sheets-and-workbooks",
@@ -375,21 +375,21 @@
     "href": "slides/vba/02-vba-platforms-macros.html#performance-tips",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Performance tips",
-    "text": "Performance tips\nApplication.ScreenUpdating = False\nApplication.Calculation = xlCalculationManual\n' ... work ...\nApplication.Calculation = xlCalculationAutomatic\nApplication.ScreenUpdating = True\n\nBatch writes; avoid cell‑by‑cell loops when possible"
+    "text": "Performance tips\nApplication.ScreenUpdating = False\nApplication.Calculation = xlCalculationManual\n' ... work ...\nApplication.Calculation = xlCalculationAutomatic\nApplication.ScreenUpdating = True\n\nBatch writes; avoid cell‑by‑cell loops when possible\n\nWrapper for safety and readability\nPublic Sub WithPerformance(ByVal taskName As String, ByVal work As String)\n    Dim prevCalc As XlCalculation\n    prevCalc = Application.Calculation\n    Application.ScreenUpdating = False\n    Application.EnableEvents = False\n    Application.Calculation = xlCalculationManual\n    On Error GoTo Clean\n    Application.Run work ' call a Sub by name\nClean:\n    Application.Calculation = prevCalc\n    Application.EnableEvents = True\n    Application.ScreenUpdating = True\n    If Err.Number &lt;&gt; 0 Then LogError taskName & \": \" & Err.Number & \" \" & Err.Description\nEnd Sub"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#inputoutput-basics",
     "href": "slides/vba/02-vba-platforms-macros.html#inputoutput-basics",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Input/Output basics",
-    "text": "Input/Output basics\n\nInputBox, MsgBox, file read/write\nCSV vs XLSX vs XLSB tradeoffs"
+    "text": "Input/Output basics\n\nInputBox, MsgBox, file read/write\nCSV vs XLSX vs XLSB tradeoffs\n\nTrusted Locations tip (Windows) - File → Options → Trust Center → Trust Center Settings → Trusted Locations → add your course folder to reduce prompts"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#example-summarize-a-column",
     "href": "slides/vba/02-vba-platforms-macros.html#example-summarize-a-column",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Example: Summarize a column",
-    "text": "Example: Summarize a column\nFunction SumCol(rng As Range) As Double\n    Dim c As Range, s As Double\n    For Each c In rng\n        If IsNumeric(c.Value) Then s = s + c.Value\n    Next c\n    SumCol = s\nEnd Function"
+    "text": "Example: Summarize a column\nFunction SumCol(rng As Range) As Double\n    Dim c As Range, s As Double\n    For Each c In rng\n        If IsNumeric(c.Value) Then s = s + c.Value\n    Next c\n    SumCol = s\nEnd Function\nRefactor idea: use WorksheetFunction\nFunction SumColFast(rng As Range) As Double\n    SumColFast = Application.WorksheetFunction.Sum(rng)\nEnd Function"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#assigning-macros-to-shapes",
@@ -459,7 +459,7 @@
     "href": "slides/vba/02-vba-platforms-macros.html#config-via-hidden-sheet",
     "title": "VBA Session 2 — Macros, Platforms, and Productivity",
     "section": "Config via hidden sheet",
-    "text": "Config via hidden sheet\n\nStore base paths, sheet names, parameters\nRead once at startup; validate"
+    "text": "Config via hidden sheet\n\nStore base paths, sheet names, parameters\nRead once at startup; validate\n\nPublic Function GetCfg(key As String) As String\n    Dim m As Range\n    Set m = Worksheets(\"Config\").Range(\"A:B\").Find(What:=key, LookAt:=xlWhole)\n    If Not m Is Nothing Then GetCfg = m.Offset(0, 1).Value\nEnd Function"
   },
   {
     "objectID": "slides/vba/02-vba-platforms-macros.html#knowledge-check-quiz",
@@ -592,7 +592,7 @@
     "href": "slides/vba/03-vba-programming-basics.html#basic-error-handling-template",
     "title": "VBA Session 3 — Programming Basics",
     "section": "Basic error handling template",
-    "text": "Basic error handling template\nSub Template()\nOn Error GoTo Fail\n    ' work\n    Exit Sub\nFail:\n    MsgBox Err.Number & \": \" & Err.Description\nEnd Sub"
+    "text": "Basic error handling template\nSub Template()\nOn Error GoTo Fail\n    ' work\n    Exit Sub\nFail:\n    MsgBox Err.Number & \": \" & Err.Description\nEnd Sub\nAdd minimal assertions\nPublic Sub AssertTrue(ByVal cond As Boolean, ByVal msg As String)\n    If Not cond Then Err.Raise vbObjectError + 1000, , msg\nEnd Sub\n\nSub Test_Assert()\n    On Error GoTo Fail\n    AssertTrue 1 + 1 = 2, \"Math broke\"\n    MsgBox \"OK\"\n    Exit Sub\nFail:\n    MsgBox Err.Description\nEnd Sub"
   },
   {
     "objectID": "slides/vba/03-vba-programming-basics.html#inputbox-patterns",
@@ -669,7 +669,7 @@
     "href": "slides/vba/03-vba-programming-basics.html#modularization",
     "title": "VBA Session 3 — Programming Basics",
     "section": "Modularization",
-    "text": "Modularization\n\nSmall subs that call each other\nClear inputs/outputs; avoid global state"
+    "text": "Modularization\n\nSmall subs that call each other\nClear inputs/outputs; avoid global state\n\nPattern: one public entrypoint that calls private helpers\nPublic Sub BuildReport()\n    PrepareSheet\n    LoadData\n    FormatReport\nEnd Sub\n\nPrivate Sub PrepareSheet(): End Sub\nPrivate Sub LoadData(): End Sub\nPrivate Sub FormatReport(): End Sub"
   },
   {
     "objectID": "slides/vba/03-vba-programming-basics.html#testing-mindset",
@@ -690,7 +690,7 @@
     "href": "slides/vba/03-vba-programming-basics.html#next-steps-preview",
     "title": "VBA Session 3 — Programming Basics",
     "section": "Next steps preview",
-    "text": "Next steps preview\n\nUserForms, Events, Class modules"
+    "text": "Next steps preview"
   },
   {
     "objectID": "slides/python/01-setup-env.html#welcome",
@@ -704,7 +704,7 @@
     "href": "slides/python/01-setup-env.html#why-environments",
     "title": "Python Session 1 — Setup and Tools",
     "section": "Why environments?",
-    "text": "Why environments?\n\nKeep projects isolated → fewer dependency conflicts\nAnalogy: separate kitchens so recipes don’t mix ingredients"
+    "text": "Why environments?\n\nKeep projects isolated → fewer dependency conflicts"
   },
   {
     "objectID": "slides/python/01-setup-env.html#conda-vs-pip-mental-model",
@@ -1117,7 +1117,7 @@
     "href": "slides/python/03-oop-types.html#why-oop",
     "title": "Python Session 3 — OOP and Types",
     "section": "Why OOP?",
-    "text": "Why OOP?\n\nOrganize code around data + behavior\nAnalogy: blueprint → objects (houses)"
+    "text": "Why OOP?\n\nOrganize code around data + behavior"
   },
   {
     "objectID": "slides/python/03-oop-types.html#basic-class",
@@ -1152,7 +1152,7 @@
     "href": "slides/python/03-oop-types.html#composition-over-inheritance",
     "title": "Python Session 3 — OOP and Types",
     "section": "Composition over inheritance",
-    "text": "Composition over inheritance\n\nCombine objects to build bigger ones\nLego bricks vs extending a single brick"
+    "text": "Composition over inheritance\n\nCombine objects to build bigger ones"
   },
   {
     "objectID": "slides/python/03-oop-types.html#dataclasses",
@@ -1250,7 +1250,7 @@
     "href": "slides/python/04-numpy-pandas.html#why-numpy",
     "title": "Python Session 4 — NumPy and pandas",
     "section": "Why NumPy?",
-    "text": "Why NumPy?\n\nFast vectorized operations on arrays\nAnalogy: work with whole trays, not single candies"
+    "text": "Why NumPy?\n\nFast vectorized operations on arrays"
   },
   {
     "objectID": "slides/python/04-numpy-pandas.html#create-arrays",
@@ -1397,7 +1397,7 @@
     "href": "slides/python/05-optimization.html#why-optimize",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Why optimize?",
-    "text": "Why optimize?\n\nFind best parameters or satisfy equations\nAnalogy: finding the lowest valley in a landscape"
+    "text": "Why optimize?\n\nFind best parameters or satisfy equations"
   },
   {
     "objectID": "slides/python/05-optimization.html#scipy-optimize",
@@ -1628,7 +1628,7 @@
     "href": "slides/python/07-bigdata.html#why-big-data-tools",
     "title": "Python Session 7 — Big Data with Polars and Dask",
     "section": "Why big data tools?",
-    "text": "Why big data tools?\n\nMemory won’t hold everything; need out‑of‑core and parallelism\nAnalogy: more conveyor belts and bigger warehouses"
+    "text": "Why big data tools?\n\nMemory won’t hold everything; need out‑of‑core and parallelism"
   },
   {
     "objectID": "slides/python/07-bigdata.html#polars-intro",
@@ -1727,5 +1727,593 @@
     "title": "Python Session 7 — Big Data with Polars and Dask",
     "section": "Wrap‑up",
     "text": "Wrap‑up\n\nYou can process large datasets with Polars/Dask patterns"
+  },
+  {
+    "objectID": "slides/python/01-setup-env.html#mamba-faster-conda",
+    "href": "slides/python/01-setup-env.html#mamba-faster-conda",
+    "title": "Python Session 1 — Setup and Tools",
+    "section": "Mamba (faster conda)",
+    "text": "Mamba (faster conda)\n\nDrop-in replacement for many conda commands, much faster solver\nInstall once, then use mamba instead of conda for installs\n\nconda install -n base -c conda-forge mamba -y\nmamba create -n course310 python=3.10 -y\nmamba install numpy pandas jupyterlab -y"
+  },
+  {
+    "objectID": "slides/python/02-python-basics.html#lambdas-and-itertools-bonus",
+    "href": "slides/python/02-python-basics.html#lambdas-and-itertools-bonus",
+    "title": "Python Session 2 — Python Basics",
+    "section": "Lambdas and itertools (bonus)",
+    "text": "Lambdas and itertools (bonus)\nfrom itertools import accumulate, chain\ndouble = lambda x: 2*x\nlist(accumulate([1,2,3]))  # [1, 3, 6]\nlist(chain([1,2], [3,4]))  # [1,2,3,4]"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#encapsulation-conventions",
+    "href": "slides/python/03-oop-types.html#encapsulation-conventions",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Encapsulation conventions",
+    "text": "Encapsulation conventions\n\nUse leading underscore _attr to signal internal attributes\nAvoid exposing mutable references; return copies or read-only views"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#name-mangling-double-underscore",
+    "href": "slides/python/03-oop-types.html#name-mangling-double-underscore",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Name mangling (double underscore)",
+    "text": "Name mangling (double underscore)\nclass Safe:\n    def __init__(self):\n        self.__pin = 1234  # becomes _Safe__pin\n    def check(self, x):\n        return x == self.__pin"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#slots-to-save-memory",
+    "href": "slides/python/03-oop-types.html#slots-to-save-memory",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "slots to save memory",
+    "text": "slots to save memory\nclass Point2D:\n    __slots__ = (\"x\", \"y\")\n    def __init__(self, x: float, y: float):\n        self.x, self.y = x, y\n\nPrevents dynamic attributes; reduces per-instance memory"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#abstract-base-classes-abc",
+    "href": "slides/python/03-oop-types.html#abstract-base-classes-abc",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Abstract Base Classes (ABC)",
+    "text": "Abstract Base Classes (ABC)\nfrom abc import ABC, abstractmethod\n\nclass PriceSource(ABC):\n    @abstractmethod\n    def get_price(self, symbol: str) -&gt; float: ...\n\nclass YahooSource(PriceSource):\n    def get_price(self, symbol): return 123.45"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#multiple-inheritance-and-mro",
+    "href": "slides/python/03-oop-types.html#multiple-inheritance-and-mro",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Multiple inheritance and MRO",
+    "text": "Multiple inheritance and MRO\n\nUse sparingly; inspect Method Resolution Order via C.mro()"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#dataclasses-default_factory",
+    "href": "slides/python/03-oop-types.html#dataclasses-default_factory",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Dataclasses: default_factory",
+    "text": "Dataclasses: default_factory\nfrom dataclasses import dataclass, field\n\n@dataclass\nclass Portfolio:\n    name: str\n    positions: dict[str, float] = field(default_factory=dict)"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#dataclasses-post-init-and-validation",
+    "href": "slides/python/03-oop-types.html#dataclasses-post-init-and-validation",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Dataclasses: post-init and validation",
+    "text": "Dataclasses: post-init and validation\nfrom dataclasses import dataclass\n\n@dataclass\nclass Trade:\n    symbol: str\n    qty: int\n    def __post_init__(self):\n        if self.qty == 0:\n            raise ValueError(\"qty must be non-zero\")"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#protocols-with-example",
+    "href": "slides/python/03-oop-types.html#protocols-with-example",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Protocols with example",
+    "text": "Protocols with example\nfrom typing import Protocol\n\nclass HasArea(Protocol):\n    def area(self) -&gt; float: ...\n\nclass Circle:\n    def __init__(self, r: float): self.r = r\n    def area(self) -&gt; float: return 3.1416*self.r*self.r"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#generic-classes",
+    "href": "slides/python/03-oop-types.html#generic-classes",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Generic classes",
+    "text": "Generic classes\nfrom typing import Generic, TypeVar\nT = TypeVar('T')\n\nclass Box(Generic[T]):\n    def __init__(self, value: T): self.value = value"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#typeddict-and-newtype",
+    "href": "slides/python/03-oop-types.html#typeddict-and-newtype",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "TypedDict and NewType",
+    "text": "TypedDict and NewType\nfrom typing import TypedDict, NewType\n\nclass UserTD(TypedDict):\n    id: int\n    name: str\n\nUserId = NewType('UserId', int)"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#context-managers-in-classes",
+    "href": "slides/python/03-oop-types.html#context-managers-in-classes",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Context managers in classes",
+    "text": "Context managers in classes\nclass Locker:\n    def __enter__(self): print(\"lock\"); return self\n    def __exit__(self, exc_type, exc, tb): print(\"unlock\"); return False"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#operator-overloading",
+    "href": "slides/python/03-oop-types.html#operator-overloading",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Operator overloading",
+    "text": "Operator overloading\nfrom dataclasses import dataclass\n@dataclass(frozen=True)\nclass Vec:\n    x: float; y: float\n    def __add__(self, o): return Vec(self.x+o.x, self.y+o.y)\n    def __lt__(self, o): return (self.x, self.y) &lt; (o.x, o.y)"
+  },
+  {
+    "objectID": "slides/python/03-oop-types.html#enum-for-choices",
+    "href": "slides/python/03-oop-types.html#enum-for-choices",
+    "title": "Python Session 3 — OOP and Types",
+    "section": "Enum for choices",
+    "text": "Enum for choices\nfrom enum import Enum, auto\nclass Side(Enum): BUY = auto(); SELL = auto()"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#boolean-indexing",
+    "href": "slides/python/04-numpy-pandas.html#boolean-indexing",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Boolean indexing",
+    "text": "Boolean indexing\nmask = x % 2 == 0\nx[mask]"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#axis-semantics",
+    "href": "slides/python/04-numpy-pandas.html#axis-semantics",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Axis semantics",
+    "text": "Axis semantics\n\naxis=0 → down rows (per column)\naxis=1 → across columns (per row)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#missing-values",
+    "href": "slides/python/04-numpy-pandas.html#missing-values",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Missing values",
+    "text": "Missing values\ndf.isna().sum()\ndf.fillna(0)\ndf.dropna(subset=[\"close\"]).shape"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#method-chaining-style",
+    "href": "slides/python/04-numpy-pandas.html#method-chaining-style",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Method chaining style",
+    "text": "Method chaining style\nsummary = (\n  px.dropna(subset=[\"ret\"])  \n    .groupby(\"symbol\")\n    .agg(vol=(\"ret\",\"std\"), mean=(\"ret\",\"mean\"))\n    .reset_index()\n)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#categorical-dtype",
+    "href": "slides/python/04-numpy-pandas.html#categorical-dtype",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Categorical dtype",
+    "text": "Categorical dtype\npx['symbol'] = px['symbol'].astype('category')\npx['symbol'].cat.codes.head()"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#datetime-ops",
+    "href": "slides/python/04-numpy-pandas.html#datetime-ops",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Datetime ops",
+    "text": "Datetime ops\npx['month'] = px['date'].dt.to_period('M')\npx.groupby(['month','symbol'])['close'].last()"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#groupby-custom-functions",
+    "href": "slides/python/04-numpy-pandas.html#groupby-custom-functions",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Groupby: custom functions",
+    "text": "Groupby: custom functions\ndef sharpe(x):\n    return x.mean()/x.std()\npx.groupby('symbol')['ret'].apply(sharpe).sort_values(ascending=False).head()"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#join-types-overview",
+    "href": "slides/python/04-numpy-pandas.html#join-types-overview",
+    "title": "Python Session 4 — NumPy and pandas",
+    "section": "Join types overview",
+    "text": "Join types overview\n\ninner, left, right, outer; be explicit and check sizes before/after"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#designing-objectives",
+    "href": "slides/python/05-optimization.html#designing-objectives",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Designing objectives",
+    "text": "Designing objectives\n\nSmooth and well-scaled objectives converge faster\nPrefer returning scalar; avoid non-differentiable kinks if possible"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#supplying-jacobianhessian",
+    "href": "slides/python/05-optimization.html#supplying-jacobianhessian",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Supplying Jacobian/Hessian",
+    "text": "Supplying Jacobian/Hessian\ndef f(x): ...\ndef jac(x): ...\nopt.minimize(f, x0, jac=jac, method='BFGS')"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#bounds-and-linear-constraints",
+    "href": "slides/python/05-optimization.html#bounds-and-linear-constraints",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Bounds and linear constraints",
+    "text": "Bounds and linear constraints\nfrom scipy.optimize import Bounds, LinearConstraint\nbounds = Bounds(0, 1)\nA = [[1, 1]]; lb=[1]; ub=[1]\nlin = LinearConstraint(A, lb, ub)\nopt.minimize(var, x0, bounds=bounds, constraints=[lin])"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#callbacks-and-termination",
+    "href": "slides/python/05-optimization.html#callbacks-and-termination",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Callbacks and termination",
+    "text": "Callbacks and termination\ndef cb(xk): print(xk)\nopt.minimize(f, x0, callback=cb, options={\"maxiter\": 200})"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#linear-programming-highs",
+    "href": "slides/python/05-optimization.html#linear-programming-highs",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Linear programming (HiGHS)",
+    "text": "Linear programming (HiGHS)\nfrom scipy.optimize import linprog\nc = [1, 2]; A_ub=[[1,1]]; b_ub=[3]\nlinprog(c, A_ub=A_ub, b_ub=b_ub)"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#global-optimization-basinhopping",
+    "href": "slides/python/05-optimization.html#global-optimization-basinhopping",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Global optimization (basinhopping)",
+    "text": "Global optimization (basinhopping)\nfrom scipy.optimize import basinhopping\nres = basinhopping(lambda x: (x[0]-3)**2 + 10*abs(np.sin(x[0])), x0=[0.0])"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#trust-constr-highlights",
+    "href": "slides/python/05-optimization.html#trust-constr-highlights",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Trust-constr highlights",
+    "text": "Trust-constr highlights\n\nHandles bounds + (non)linear constraints with Jacobians\nGood default for complex constrained problems"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#debugging-failures",
+    "href": "slides/python/05-optimization.html#debugging-failures",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Debugging failures",
+    "text": "Debugging failures\n\nInspect res.message, try different initial guesses\nCheck gradients numerically; rescale variables"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#flask-project-structure",
+    "href": "slides/python/06-web-apps.html#flask-project-structure",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Flask project structure",
+    "text": "Flask project structure\nmyapp/\n    app.py\n    templates/\n    static/"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#static-files",
+    "href": "slides/python/06-web-apps.html#static-files",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Static files",
+    "text": "Static files\n\nPlace CSS/JS in static/; link via url_for('static', filename='app.css')"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#error-handling",
+    "href": "slides/python/06-web-apps.html#error-handling",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Error handling",
+    "text": "Error handling\n@app.errorhandler(404)\ndef not_found(e): return (\"Missing\", 404)"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#logging",
+    "href": "slides/python/06-web-apps.html#logging",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Logging",
+    "text": "Logging\nimport logging; logging.basicConfig(level=logging.INFO)\napp.logger.info(\"started\")"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#sessions-and-cookies",
+    "href": "slides/python/06-web-apps.html#sessions-and-cookies",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Sessions and cookies",
+    "text": "Sessions and cookies\napp.secret_key = \"change-me\"\nsession['user'] = 'ana'"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#csrf-and-forms",
+    "href": "slides/python/06-web-apps.html#csrf-and-forms",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "CSRF and forms",
+    "text": "CSRF and forms\n\nUse WTForms/Flask-WTF for CSRF tokens on POST forms"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#file-uploads",
+    "href": "slides/python/06-web-apps.html#file-uploads",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "File uploads",
+    "text": "File uploads\nf = request.files['file']\nf.save('uploads/data.csv')"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#streamlit-session-state",
+    "href": "slides/python/06-web-apps.html#streamlit-session-state",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Streamlit: session state",
+    "text": "Streamlit: session state\nimport streamlit as st\nst.session_state.setdefault('count', 0)"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#streamlit-caching-nuances",
+    "href": "slides/python/06-web-apps.html#streamlit-caching-nuances",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Streamlit: caching nuances",
+    "text": "Streamlit: caching nuances\n\nst.cache_data for data; st.cache_resource for models/clients"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#deployment-checklist",
+    "href": "slides/python/06-web-apps.html#deployment-checklist",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Deployment checklist",
+    "text": "Deployment checklist\n\nProcfile/requirements, gunicorn app:app, env vars"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#predicate-pushdown",
+    "href": "slides/python/07-bigdata.html#predicate-pushdown",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Predicate pushdown",
+    "text": "Predicate pushdown\n\nFilters and projections applied early to reduce IO"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#polars-window-functions",
+    "href": "slides/python/07-bigdata.html#polars-window-functions",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Polars window functions",
+    "text": "Polars window functions\nret.with_columns(\n  pl.col('ret').rolling_mean(window_size=21).over('symbol').alias('m21')\n)"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#explain-and-inspect-plan",
+    "href": "slides/python/07-bigdata.html#explain-and-inspect-plan",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Explain and inspect plan",
+    "text": "Explain and inspect plan\nq = ret.lazy().group_by('symbol').agg(pl.col('ret').std())\nprint(q.explain())"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#streaming-csv-read",
+    "href": "slides/python/07-bigdata.html#streaming-csv-read",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Streaming CSV read",
+    "text": "Streaming CSV read\npl.scan_csv('big.csv').filter(pl.col('a')&gt;0).select(['a','b']).collect()"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#partitions-and-persist",
+    "href": "slides/python/07-bigdata.html#partitions-and-persist",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Partitions and persist",
+    "text": "Partitions and persist\ndf = df.repartition(npartitions=8).persist()"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#shuffles-and-groupby-scale",
+    "href": "slides/python/07-bigdata.html#shuffles-and-groupby-scale",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Shuffles and groupby scale",
+    "text": "Shuffles and groupby scale\n\nWide groupby/joins require shuffles; watch cluster memory"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#memory-tips",
+    "href": "slides/python/07-bigdata.html#memory-tips",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Memory tips",
+    "text": "Memory tips\n\nUse categories, drop columns, write Parquet with snappy/zstd"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#parquet-advantages",
+    "href": "slides/python/07-bigdata.html#parquet-advantages",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Parquet advantages",
+    "text": "Parquet advantages\n\nColumnar, compressed, predicate pushdown; better than CSV at scale"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#read_csv-blocksize",
+    "href": "slides/python/07-bigdata.html#read_csv-blocksize",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "read_csv blocksize",
+    "text": "read_csv blocksize\ndd.read_csv('*.csv', blocksize='64MB')"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#schedulers",
+    "href": "slides/python/07-bigdata.html#schedulers",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Schedulers",
+    "text": "Schedulers\n\nthreads, processes, distributed; choose per workload"
+  },
+  {
+    "objectID": "slides/python/07-bigdata.html#diagnostics-dashboard",
+    "href": "slides/python/07-bigdata.html#diagnostics-dashboard",
+    "title": "Python Session 7 — Big Data with Polars and Dask",
+    "section": "Diagnostics dashboard",
+    "text": "Diagnostics dashboard\n\nclient = Client(); track tasks, memory, workers via dashboard"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#how-vba-relates-to-windows-vs-mac",
+    "href": "slides/vba/01-intro-vba.html#how-vba-relates-to-windows-vs-mac",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "How VBA relates to Windows vs Mac",
+    "text": "How VBA relates to Windows vs Mac\n\nWindows: Excel exposes rich automation via COM/ActiveX; VBA can call Windows APIs and Office libraries broadly.\nMac: Same VBA language and Excel Object Model for most tasks; no COM/ActiveX, some features differ (File dialogs, Add‑ins, some APIs).\nBitness matters on Windows (32/64‑bit Office) when declaring external PtrSafe APIs; use LongPtr where appropriate.\nTakeaway: Core Excel automation is portable; system‑level integrations tend to be Windows‑specific."
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#excel-ui-tour-winmac",
+    "href": "slides/vba/01-intro-vba.html#excel-ui-tour-winmac",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Excel UI tour (Win/Mac)",
+    "text": "Excel UI tour (Win/Mac)\n\nWindows screenshot: Excel workbook with the Ribbon showing the Developer tab\nMac screenshot: Excel for Mac with Developer tab visible\nCallouts: Record Macro button, Visual Basic button, Macros list\n\n\n\n\n\n\n\nNote: Screenshots are Microsoft’s copyrighted content; used under Microsoft’s screenshot permission guidelines. We only resize and include full attributions."
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#opening-the-vbe-stepbystep",
+    "href": "slides/vba/01-intro-vba.html#opening-the-vbe-stepbystep",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Opening the VBE (step‑by‑step)",
+    "text": "Opening the VBE (step‑by‑step)\n\nWindows: Use Alt+F11, or Ribbon → Developer → Visual Basic\nMac: Use Option+F11, or Ribbon → Developer → Visual Basic\nVerify the Project Explorer (left) and Properties (bottom‑left); if hidden: View → Project Explorer, View → Properties Window"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#select-case-cleaner-branching",
+    "href": "slides/vba/01-intro-vba.html#select-case-cleaner-branching",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Select Case (cleaner branching)",
+    "text": "Select Case (cleaner branching)\nSelect Case Range(\"B1\").Value\n    Case \"A\", \"B\"\n        MsgBox \"Group 1\"\n    Case \"C\"\n        MsgBox \"Group 2\"\n    Case Else\n        MsgBox \"Other\"\nEnd Select\n\nEasier to read than nested Ifs for discrete categories"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#for-each-loop-items-directly",
+    "href": "slides/vba/01-intro-vba.html#for-each-loop-items-directly",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "For Each (loop items directly)",
+    "text": "For Each (loop items directly)\nDim c As Range\nFor Each c In Worksheets(\"Sheet1\").Range(\"A1:A10\")\n    If Len(c.Value) &gt; 0 Then c.Font.Bold = True\nNext c\n\nUse For Each for collections (Worksheets, Shapes, Cells in a Range)\nExit For to break early; Do While/Do Until for condition‑based loops"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#image-credits",
+    "href": "slides/vba/01-intro-vba.html#image-credits",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Image credits",
+    "text": "Image credits\n\nExcel (Windows) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/a8/Excel_2010.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.\nExcel (Mac) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/ab/Excel_for_Mac_screenshot.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.\nVisual Basic Editor screenshot: https://learn.microsoft.com/en-us/office/vba/images/5d9acd78-5168-4a0c-83b6-3f1e440bf649.png — Microsoft Learn. Used with permission from Microsoft. No modifications beyond resizing."
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#do-while-do-until",
+    "href": "slides/vba/01-intro-vba.html#do-while-do-until",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Do While / Do Until",
+    "text": "Do While / Do Until\nDim r As Long\nr = 1\nDo While Cells(r, 1).Value &lt;&gt; \"\"\n    Cells(r, 2).Value = Len(Cells(r, 1).Value)\n    r = r + 1\nLoop\n\nDo While condition ... Loop: runs while condition is True\nDo Until condition ... Loop: runs until condition becomes True\nPrefer guard rails: increment counters, add max-iteration safety to avoid infinite loops\n\nDim tries As Long\ntries = 0\nDo\n    tries = tries + 1\n    If tries &gt; 1000 Then Exit Do ' safety\n    ' ... work ...\nLoop Until Application.CountA(Range(\"A1:A10\")) = 10\n\nTip: Choose For when you know counts, For Each for collections, Do While/Until for condition-driven loops"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#arrays-static-vs-dynamic",
+    "href": "slides/vba/01-intro-vba.html#arrays-static-vs-dynamic",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Arrays (static vs dynamic)",
+    "text": "Arrays (static vs dynamic)\n' Static array (fixed size)\nDim a(1 To 5) As Long\na(1) = 10\n\n' Dynamic array (resize later)\nDim b() As Double\nReDim b(1 To 3)\nb(3) = 1.23\nReDim Preserve b(1 To 5) ' keep existing values\n\nStatic arrays: fastest, but fixed bounds\nDynamic arrays: ReDim to set size; ReDim Preserve to keep values (only last dimension can be preserved)\nBounds defaults: if unspecified, VBA uses zero-based; prefer explicit 1 To N for clarity"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#collections-and-dictionary",
+    "href": "slides/vba/01-intro-vba.html#collections-and-dictionary",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Collections and Dictionary",
+    "text": "Collections and Dictionary\n' Collection (built-in)\nDim coll As New Collection\ncoll.Add \"Alice\"\ncoll.Add \"Bob\"\nDim item As Variant\nFor Each item In coll\n    Debug.Print item\nNext\n\n' Scripting.Dictionary (Windows; add reference or late-bind)\nDim dict As Object\nSet dict = CreateObject(\"Scripting.Dictionary\")\ndict(\"FR\") = \"France\"\ndict(\"ES\") = \"Spain\"\nIf dict.Exists(\"FR\") Then Debug.Print dict(\"FR\")\n\nCollection: ordered, allows duplicates, 1-based indexing via Item\nDictionary: key→value map, fast lookup; on Mac, available via AppleScript support but often easiest to simulate with Collection or use array lookups\nTip: For portability, prefer Collection or arrays unless you really need keyed lookup"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#subs-vs-functions-udfs",
+    "href": "slides/vba/01-intro-vba.html#subs-vs-functions-udfs",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Subs vs Functions (UDFs)",
+    "text": "Subs vs Functions (UDFs)\n' Sub performs actions\nSub ClearData()\n    Worksheets(\"Sheet1\").Range(\"A2:D1000\").ClearContents\nEnd Sub\n\n' Function returns a value (UDF)\nPublic Function AddTax(amount As Double, rate As Double) As Double\n    AddTax = amount * (1 + rate)\nEnd Function\n\nSub: run from VBE, buttons, or macros dialog; can modify workbook state\nFunction: returns a value; can be used in worksheet cells as a UDF\nUDF caveats: should be pure (no side effects UI/file I/O) for worksheet recalculation; otherwise Excel may return #VALUE!"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#scope-and-lifetime",
+    "href": "slides/vba/01-intro-vba.html#scope-and-lifetime",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Scope and lifetime",
+    "text": "Scope and lifetime\nOption Explicit\n\nPublic Const VAT As Double = 0.20 ' project-wide constant (in a standard module)\nPrivate totalRuns As Long          ' module-level state\n\nPublic Sub RunTask()\n    totalRuns = totalRuns + 1\n    Dim localMsg As String ' procedure scope\n    localMsg = \"Run #\" & totalRuns\n    Debug.Print localMsg\nEnd Sub\n\nPrivate Function Hidden() As Boolean ' not visible outside module\n    Hidden = True\nEnd Function\n\nPublic Sub Remember()\n    Static last As Long ' retains value across calls\n    last = last + 1\n    Debug.Print last\nEnd Sub\n\nPublic Enum Status\n    stPending = 0\n    stDone = 1\n    stError = 2\nEnd Enum\n\nPublic vs Private: controls visibility across modules\nOption Private Module: hides public procedures from the Macros dialog\nStatic variables: keep value between calls (use sparingly)\nPrefer Const and Enum to remove magic numbers"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#debugging-essentials",
+    "href": "slides/vba/01-intro-vba.html#debugging-essentials",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Debugging essentials",
+    "text": "Debugging essentials\n\nBreakpoints (click left margin), Step Into F8, Step Over Shift+F8, Step Out Ctrl+Shift+F8\nImmediate window Ctrl+G: evaluate (? Range(\"A1\").Value) or call procedures\nWatches/Locals windows: inspect variables live\nDebug.Print for tracing; Stop statement to break programmatically\n\nSub Trace()\n    Debug.Print Now, \"Start\"\n    Dim i As Long\n    For i = 1 To 3\n        Debug.Print \"i=\", i\n    Next\n    Debug.Print Now, \"End\"\nEnd Sub\n\nTip: Reproduce fast; isolate into small test Subs; comment out non-essential code while debugging"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#worksheetfunction-and-application-helpers",
+    "href": "slides/vba/01-intro-vba.html#worksheetfunction-and-application-helpers",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "WorksheetFunction and Application helpers",
+    "text": "WorksheetFunction and Application helpers\n' WorksheetFunction raises errors on failure\nDim pos As Long\npos = Application.WorksheetFunction.Match(\"Key\", Range(\"A1:A100\"), 0)\n\n' Safer pattern: Application.Match returns Variant (Error when not found)\nDim v As Variant\nv = Application.Match(\"Key\", Range(\"A1:A100\"), 0)\nIf IsError(v) Then\n    MsgBox \"Not found\"\nElse\n    pos = CLng(v)\nEnd If\n\n' Other useful helpers\nDim sumA As Double\nsumA = Application.WorksheetFunction.Sum(Range(\"A1:A10\"))\nDim nonEmpty As Long\nnonEmpty = Application.WorksheetFunction.CountA(Range(\"A:A\"))\n\nPrefer Application.Match for lookup to avoid runtime errors; check with IsError\nMany Excel functions are available via WorksheetFunction"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#events-basics-workbook-worksheet",
+    "href": "slides/vba/01-intro-vba.html#events-basics-workbook-worksheet",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Events basics (Workbook, Worksheet)",
+    "text": "Events basics (Workbook, Worksheet)\n' In ThisWorkbook code-behind\nPrivate Sub Workbook_Open()\n    MsgBox \"Welcome!\"\nEnd Sub\n\n' In a Sheet module (e.g., Sheet1)\nPrivate Sub Worksheet_Change(ByVal Target As Range)\n    On Error GoTo Done\n    If Intersect(Target, Me.Range(\"A:A\")) Is Nothing Then Exit Sub\n    Application.EnableEvents = False\n    Target.Offset(0, 1).Value = UCase$(Target.Value)\nDone:\n    Application.EnableEvents = True\nEnd Sub\n\nPlace event code in the correct object module (ThisWorkbook, specific Sheet)\nAlways guard with Application.EnableEvents = False/True inside change events\nAdd quick exit guards with Intersect to limit scope"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#recording-a-macro-winmac",
+    "href": "slides/vba/01-intro-vba.html#recording-a-macro-winmac",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Recording a macro (Win/Mac)",
+    "text": "Recording a macro (Win/Mac)\n\n\nWindows\n\nDeveloper → Record Macro\nName, choose storage (This Workbook/Personal)\nDo actions → Stop → inspect in VBE\nUse “Use Relative References” for relative actions\nNaming: start with a letter; verbs like FormatHeader\nQuick edit: Developer → Macros → Edit\n\n\nMac\n\nDeveloper → Record Macro (similar flow)\nSome shortcuts/dialogs differ slightly\nRelative References also available\nPrefer shape/button over keyboard shortcut (conflicts)\nStorage mirrors Windows; Personal Macro Workbook exists\n\n\nCommon tips\n- Treat recorder output as a starting point; refactor to remove Select/Activate\n- Store personal utilities in PERSONAL.XLSB when appropriate"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#procedures-variables-and-types",
+    "href": "slides/vba/01-intro-vba.html#procedures-variables-and-types",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Procedures, variables, and types",
+    "text": "Procedures, variables, and types\n\n\nSub procedures and variables\nSub MyTask()\n    ' your steps here\nEnd Sub\n\nSub Boxes()\n    Dim total As Long ' variable declaration\n    total = 42\n    MsgBox total\nEnd Sub\n\nSub = a routine you can run; lives in a Module\nDim name As Type declares storage\n\n\nTypes and Option Explicit\n\nCommon types: Integer, Long, Double, String, Boolean, Date\nVariant can hold anything (flexible but slower)\nPrefer explicit types for clarity and speed\n\nOption Explicit ' require declarations\nSub Safer()\n    Dim count As Long\n    count = 10\n    MsgBox count\nEnd Sub\n\nOption Explicit → fewer typos, clearer code"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#branching-if-vs-select-case",
+    "href": "slides/vba/01-intro-vba.html#branching-if-vs-select-case",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Branching: If vs Select Case",
+    "text": "Branching: If vs Select Case\n\n\nIf…Then\nIf Range(\"A1\").Value &gt; 0 Then\n    MsgBox \"Positive\"\nElse\n    MsgBox \"Non‑positive\"\nEnd If\n\nGreat for simple conditions and ranges\n\n\nSelect Case\nSelect Case Range(\"B1\").Value\n    Case \"A\", \"B\": MsgBox \"Group 1\"\n    Case \"C\": MsgBox \"Group 2\"\n    Case Else: MsgBox \"Other\"\nEnd Select\n\nCleaner than nested Ifs for discrete categories"
+  },
+  {
+    "objectID": "slides/vba/02-vba-platforms-macros.html#accessing-macros-winmac",
+    "href": "slides/vba/02-vba-platforms-macros.html#accessing-macros-winmac",
+    "title": "VBA Session 2 — Macros, Platforms, and Productivity",
+    "section": "Accessing macros (Win/Mac)",
+    "text": "Accessing macros (Win/Mac)\n\n\nWindows\n\nDeveloper tab → Macros (Alt+F8)\nAssign to buttons, shapes, or shortcuts\nCheck Trust Center settings\n\n\nMac\n\nDeveloper tab → Macros\nCustomize Ribbon & Toolbar for quick access\nSome shortcuts differ"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#procedures-subs-and-functions",
+    "href": "slides/vba/03-vba-programming-basics.html#procedures-subs-and-functions",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Procedures: Subs and Functions",
+    "text": "Procedures: Subs and Functions\n\n\nSubroutines (Subs)\nSub Greet()\n    MsgBox \"Welcome!\"\nEnd Sub\n\nKeep them short and focused\n\n\nFunctions\nFunction NetPrice(price As Double, tax As Double) As Double\n    NetPrice = price * (1 + tax)\nEnd Function\n\nCan be used in cells too"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#procedure-signatures-byrefbyval-optional-paramarray",
+    "href": "slides/vba/03-vba-programming-basics.html#procedure-signatures-byrefbyval-optional-paramarray",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Procedure signatures: ByRef/ByVal, Optional, ParamArray",
+    "text": "Procedure signatures: ByRef/ByVal, Optional, ParamArray\nSub Discount(ByRef price As Double, ByVal rate As Double)\n    price = price * (1 - rate)\nEnd Sub\n\nSub Demo()\n    Dim p As Double: p = 100\n    Discount p, 0.1 ' p becomes 90\nEnd Sub\n\nFunction Concat(Optional sep As String = \", \", ParamArray items() As Variant) As String\n    Dim i As Long\n    For i = LBound(items) To UBound(items)\n        Concat = Concat & IIf(Len(Concat) &gt; 0, sep, \"\") & CStr(items(i))\n    Next\nEnd Function\n\nByRef: caller’s variable is modified; ByVal: copy only\nOptional parameters and ParamArray for flexible APIs"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#strings-and-dates",
+    "href": "slides/vba/03-vba-programming-basics.html#strings-and-dates",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Strings and dates",
+    "text": "Strings and dates\nDim s As String: s = Trim$(UCase$(\"  hello  \")) ' \"HELLO\"\nDim d As Date: d = DateSerial(2025, 9, 15) + TimeSerial(9, 30, 0)\nDebug.Print Format$(d, \"yyyy-mm-dd hh:nn\")\n\nUse $-suffixed functions (e.g., Trim$) for string-returning variants\nPrefer DateSerial, TimeSerial for safe construction; Format$ for display"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#type-conversion-and-validation",
+    "href": "slides/vba/03-vba-programming-basics.html#type-conversion-and-validation",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Type conversion and validation",
+    "text": "Type conversion and validation\nDim v As Variant, n As Double\nv = Range(\"B1\").Value\nIf IsNumeric(v) Then n = CDbl(v) Else n = 0\n\nGuard conversions with IsNumeric, IsDate, IsError\nCStr, CLng, CDbl, CDate for explicit casts"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#loop-patterns-for-for-each-do-while",
+    "href": "slides/vba/03-vba-programming-basics.html#loop-patterns-for-for-each-do-while",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Loop patterns: For, For Each, Do While",
+    "text": "Loop patterns: For, For Each, Do While\n' For loop with counter\nDim i As Long\nFor i = 1 To 10\n    Cells(i, 1).Value = i\nNext i\n\n' For Each over a range (safer for collections)\nDim c As Range\nFor Each c In Range(\"A1:A10\")\n    c.Value = c.Row\nNext c\n\n' Do While with guard\nDim k As Long: k = 1\nDo While k &lt;= 10\n    Cells(k, 2).Value = k * 2\n    k = k + 1\nLoop"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#branching-if-vs-select-case",
+    "href": "slides/vba/03-vba-programming-basics.html#branching-if-vs-select-case",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Branching: If vs Select Case",
+    "text": "Branching: If vs Select Case\n\n\nIf..ElseIf..Else\nIf qty = 0 Then\n    MsgBox \"Empty\"\nElseIf qty &lt; 10 Then\n    MsgBox \"Low\"\nElse\n    MsgBox \"OK\"\nEnd If\n\nSelect Case\nSelect Case UCase$(Range(\"B1\").Value)\nCase \"N\": MsgBox \"North\"\nCase \"S\": MsgBox \"South\"\nCase Else: MsgBox \"Other\"\nEnd Select"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#finding-last-column",
+    "href": "slides/vba/03-vba-programming-basics.html#finding-last-column",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Finding last column",
+    "text": "Finding last column\nDim lastCol As Long\nlastCol = Cells(1, Columns.Count).End(xlToLeft).Column"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#specialcells-for-speed",
+    "href": "slides/vba/03-vba-programming-basics.html#specialcells-for-speed",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "SpecialCells for speed",
+    "text": "SpecialCells for speed\nDim vis As Range\nOn Error Resume Next\nSet vis = Range(\"A1:A1000\").SpecialCells(xlCellTypeVisible)\nOn Error GoTo 0\nIf Not vis Is Nothing Then vis.Value = \"X\"\n\nUse after filters; also useful: xlCellTypeConstants, xlCellTypeFormulas"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#sorting-and-filtering",
+    "href": "slides/vba/03-vba-programming-basics.html#sorting-and-filtering",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Sorting and filtering",
+    "text": "Sorting and filtering\nWith Range(\"A1\").CurrentRegion\n    .Sort Key1:=.Columns(1), Order1:=xlAscending, Header:=xlYes\n    .AutoFilter Field:=2, Criteria1:\"&gt;=100\"\nEnd With\n\nPrefer operating on CurrentRegion/table ranges"
+  },
+  {
+    "objectID": "slides/vba/01-intro-vba.html#image-credits-1",
+    "href": "slides/vba/01-intro-vba.html#image-credits-1",
+    "title": "VBA Session 1 — Introduction to VBA",
+    "section": "Image credits",
+    "text": "Image credits\n\nExcel (Windows) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/a8/Excel_2010.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.\nExcel (Mac) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/ab/Excel_for_Mac_screenshot.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.\nVisual Basic Editor screenshot: https://learn.microsoft.com/en-us/office/vba/images/5d9acd78-5168-4a0c-83b6-3f1e440bf649.png — Microsoft Learn. Used with permission from Microsoft. No modifications beyond resizing."
+  },
+  {
+    "objectID": "slides/vba/02-vba-platforms-macros.html#exercise-cleanup-report-1",
+    "href": "slides/vba/02-vba-platforms-macros.html#exercise-cleanup-report-1",
+    "title": "VBA Session 2 — Macros, Platforms, and Productivity",
+    "section": "Exercise: cleanup report",
+    "text": "Exercise: cleanup report\n\nOpen a messy sheet; record cleanup\nRefactor to parameterize sheet/ranges\nAdd error handling and performance guards"
+  },
+  {
+    "objectID": "slides/vba/02-vba-platforms-macros.html#case-study-crossplatform-export-1",
+    "href": "slides/vba/02-vba-platforms-macros.html#case-study-crossplatform-export-1",
+    "title": "VBA Session 2 — Macros, Platforms, and Productivity",
+    "section": "Case study: cross‑platform export",
+    "text": "Case study: cross‑platform export\n\nRequirement: Export active sheet as CSV to Desktop\nDesign: path helper + SaveAs wrapper + logging"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#next-steps-preview-1",
+    "href": "slides/vba/03-vba-programming-basics.html#next-steps-preview-1",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "Next steps preview",
+    "text": "Next steps preview\n\nUserForms, Events, Class modules"
+  },
+  {
+    "objectID": "slides/vba/03-vba-programming-basics.html#section",
+    "href": "slides/vba/03-vba-programming-basics.html#section",
+    "title": "VBA Session 3 — Programming Basics",
+    "section": "—",
+    "text": "—"
   }
 ]

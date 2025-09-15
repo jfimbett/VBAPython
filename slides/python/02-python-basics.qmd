@@ -196,10 +196,14 @@ with open("notes.txt", "w", encoding="utf-8") as f:
 
 ---
 
-## Real‑life analogy
+## Lambdas and itertools (bonus)
 
-- Data structures = containers in a workshop
-- Use the right one to work faster and safer
+```python
+from itertools import accumulate, chain
+double = lambda x: 2*x
+list(accumulate([1,2,3]))  # [1, 3, 6]
+list(chain([1,2], [3,4]))  # [1,2,3,4]
+```
 
 ---
 
