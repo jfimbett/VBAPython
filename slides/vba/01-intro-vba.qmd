@@ -4,43 +4,59 @@ subtitle: "Macros, the VBE, and cross‑platform basics (Win/Mac)"
 author: "Juan F. Imbet"
 institute: "Paris Dauphine University-PSL"
 format:
-  revealjs:
-    theme: white
-    css: styles.css
-    slide-number: true
-    chalkboard: true
-    preview-links: auto
-    footer: "Intro to VBA and Python"
-    include-in-header: ../../tikzjax.html
-execute:
-  enabled: false
+    revealjs:
+        slide-level: 1
+include-in-header:
+    - ../../tikzjax.html
 ---
 
 ## Welcome
 
 - Course: Intro to VBA and Python (10 sessions × ~3 h)
-- Today: VBA overview, macros, security, the Visual Basic Editor (VBE), Win/Mac differences
+- Today: General Introduction
 - Goal: Build confidence to automate simple tasks in Excel using VBA
+
+## Information 
+
+- Juan F. Imbet, Assistant Professor of Finance. 
+- juan.imbet@dauphine.psl.eu 
+- Office: P606
+- Office hours by appointment
+
+---
+
+## Bit about me
+
+- Engineering background, PhD in Finance (Pompeu Fabra University)
+- Research in Asset Pricing, Corporate Finance, Asset Management, and Computational Finance. 
+- Teaching in Finance Theory, Programming, and Artificial Intelligence.
+- Consulting Private Equity Firms in implementing AI enhanced investment processes.
+
+## Grading 
+
+- Group Project 40% (topic joint with Aymeric Kalife's class, 100% Python)
+- Final Exam 50% (less focus on exact syntax, more on concepts and problem solving)
+- Class Participation 10%
 
 ---
 
 ## What is VBA?
 
 - Visual Basic for Applications (VBA) is a programming language embedded inside Office apps (Excel, Word, PowerPoint, Access).
-- Runs inside the host application process (Excel), giving access to its Object Model: `Application → Workbooks → Worksheets → Range`.
+- Runs inside the host application process (Excel), giving access to its Object Model: e.g. `Application → Workbooks → Worksheets → Range`.
 - Great for automating repetitive tasks, building custom functions and UI (forms, buttons), and integrating with files and data.
-- Cross‑platform note: VBA exists on Windows and Mac, but some integrations are Windows‑only (see next slide).
+- Cross‑platform note: VBA exists on Windows and Mac, but some integrations are Windows‑only. Companies use VBA almost exclusively on Windows.
+- Mac users can still run most VBA code. 
 
 ---
 
 ## How VBA relates to Windows vs Mac
 
 - **Windows:** Excel exposes rich automation via COM/ActiveX; VBA can call Windows APIs and Office libraries broadly.
+- COM/ActiveX is a Windows feature that enables inter-application communication and advanced integrations.
 - **Mac:** Same VBA language and Excel Object Model for most tasks; no COM/ActiveX, some features differ (File dialogs, Add‑ins, some APIs).
-- **Bitness matters on Windows** (32/64‑bit Office) when declaring external `PtrSafe` APIs; use `LongPtr` where appropriate.
-- **Takeaway:** Core Excel automation is portable; system‑level integrations tend to be Windows‑specific.
+- **Bitness matters on Windows** (32/64‑bit Office).
 
----
 
 ## Why learn VBA in 2025?
 
@@ -48,13 +64,21 @@ execute:
 - Quick wins: automate reports, cleanup, formatting.
 - Bridges to other tools (Power Query, Python via xlwings, etc.).
 
+## Disadvantages of VBA
+
+- Old language (from 1993); lacks modern features (e.g., no classes, limited error handling).
+- Not easy to debug or test.
+- Grammar is not the most friendly.
+
 ---
 
 ## Macro security mindset
 
+- A Macro is the common name for some VBA code embedded in an Office document.
 - Macros can run code; treat files like executables.
 - Only enable content from trusted sources.
 - Use signed macros in corporate environments.
+- A signed macro is one that has been digitally signed with a certificate to verify its authenticity.
 
 **Windows (Trust Center):** File → Options → Trust Center → Trust Center Settings → Macro Settings  
 Recommended for learning: "Disable all macros with notification" + add a Trusted Location for your course folder.  
@@ -63,8 +87,6 @@ Consider enabling Protected View for files from the internet; unblock via file P
 **Mac (Trust Center):** Excel → Preferences → Security & Privacy  
 Similar options: enable with notification; manage access to Visual Basic project if prompted.
 
-**Signing:** use a code signing certificate to sign VBA projects (SelfCert.exe on Windows for local testing).
-
 ---
 
 ## Enable Developer tab (Windows)
@@ -72,7 +94,6 @@ Similar options: enable with notification; manage access to Visual Basic project
 1. File → **Options** → **Customize Ribbon**
 2. Under **Main Tabs**, check **Developer** and click **OK**
 
----
 
 ## Enable Developer tab (Mac)
 
@@ -96,8 +117,6 @@ Similar options: enable with notification; manage access to Visual Basic project
 ![](https://upload.wikimedia.org/wikipedia/en/a/ab/Excel_for_Mac_screenshot.png){fig-alt="Excel for Mac UI" fig-cap="Excel (Mac) — UI overview. Image: Microsoft product screenshot via Wikipedia. Used with permission from Microsoft (no modifications except resizing)." width=100%}
 :::
 :::
-
-Note: Screenshots are Microsoft's copyrighted content; used under Microsoft's screenshot permission guidelines. We only resize and include full attributions.
 
 ---
 
@@ -125,9 +144,10 @@ Mac
 :::
 :::
 
-Common tips  
-- Treat recorder output as a starting point; refactor to remove Select/Activate  
-- Store personal utilities in PERSONAL.XLSB when appropriate
+## Relative References
+
+- Relative References toggle (Windows/Mac) controls whether recorded actions use absolute cell references (e.g., `Range("A1")`) or relative to the active cell (e.g., `ActiveCell.Offset(0, 0)`).
+- Use the `Use Relative References` button on the Developer tab before starting to record.
 
 ---
 
@@ -136,30 +156,24 @@ Common tips
 - Open with Alt+F11 (Windows) or Option+F11 (Mac)
 - Project Explorer, Properties Window, Code Pane
 - Modules vs ThisWorkbook vs Sheet objects
-- Immediate Window (`Ctrl+G`): print values with `Debug.Print`, test small snippets
 - Insert a Module: VBE → Insert → Module (stores your `Sub` procedures)
 - Run code: press `F5` in VBE, or assign to a shape/button on the sheet
 
----
 
 ## Opening the VBE (step‑by‑step)
 
 - Windows: Use `Alt+F11`, or Ribbon → Developer → Visual Basic
 - Mac: Use `Option+F11`, or Ribbon → Developer → Visual Basic
 - Verify the Project Explorer (left) and Properties (bottom‑left); if hidden: View → Project Explorer, View → Properties Window
+- Use View menu to show/hide panes if your layout differs.
 
-::: columns
-::: column
-![](https://learn.microsoft.com/en-us/office/vba/images/5d9acd78-5168-4a0c-83b6-3f1e440bf649.png){fig-alt="Visual Basic Editor showing macro code" fig-cap="Visual Basic Editor — example macro code (source: Microsoft Learn)." width=100%}
-:::
-::: column
-![](https://learn.microsoft.com/en-us/office/vba/images/0d8a2b2e-a5b9-46a2-8bf2-0a3b7c6e2f02.png){fig-alt="VBE windows (Project/Properties/Code/Immediate)" fig-cap="Visual Basic Editor panes (Project, Properties, Code, Immediate) — Microsoft Learn." width=100%}
-:::
-:::
 
 ---
 
 ## Hello, world (VBA)
+
+- Macros start with a `Sub` procedure, and end with `End Sub`.
+- VBA has reserved words (e.g., `Sub`, `Dim`, `If`, `Then`, `End`); case-insensitive but prefer standard casing.
 
 ```vb
  Sub HelloWorld()
@@ -196,9 +210,11 @@ End Sub
 ::: column
 Types and Option Explicit
 
-- Common types: Integer, Long, Double, String, Boolean, Date
-- Variant can hold anything (flexible but slower)
+- Common types: `Integer`, `Long`, `Double`, `String`, `Boolean`, `Date`
+- `Variant` can hold anything (flexible but slower)
 - Prefer explicit types for clarity and speed
+- Not all types are available on Mac. 
+- The `Option Explicit` statement forces variable declaration, reducing typos and bugs.
 
 ```vb
 Option Explicit ' require declarations
@@ -216,6 +232,20 @@ End Sub
 ---
 
 ## Scope and lifetime
+
+- What variables are visible where, and how long they last. 
+- `Public` vs `Private`: controls visibility across modules
+- `Public` = visible everywhere; `Private` = only inside the module
+- `Const` for constants, variables that are not meant to change. 
+- Constants are stored more efficiently in memory since their values do not change.
+- `Sub` procedures can also be declared as `Public` or `Private`.
+- If no declaration is given, `Sub` procedures are `Public` by default.
+- `Enum` for named integer constants.
+- Defining variables outside any procedure makes them module-level (retain value while module is loaded).
+
+---
+
+## Example 
 
 ```vb
 Option Explicit
@@ -247,14 +277,23 @@ Public Enum Status
 End Enum
 ```
 
-- `Public` vs `Private`: controls visibility across modules
-- `Option Private Module`: hides public procedures from the Macros dialog
-- `Static` variables: keep value between calls (use sparingly)
-- Prefer `Const` and `Enum` to remove magic numbers
-
 ---
 
+## Debugging 
+
+- Large programs rarely run perfectly the first time.
+- Understanding the values that variables take at different points in execution is key to finding and fixing bugs.
+- To write something in the debugging output window, use `Debug.Print`.
+- This output can be viewed in the Immediate Window (Ctrl+G in Windows or Cmd+G in Mac).
+
+
 ## Referencing cells
+
+- VBA can access and manipulate Excel cells directly.
+- Absolute reference example uses the `Range` object.
+- Relative reference example uses `ActiveCell` and `Offset`.
+- `ActiveCell` is the currently selected cell in the active worksheet.
+- `Offset` is used to refer to a cell that is a specific number of rows and columns away from another cell.
 
 ```vb
 Sub SetA1()
@@ -262,16 +301,18 @@ Sub SetA1()
 End Sub
 ```
 
-- Range, Cells, Selection
 - Qualify with Worksheets("Sheet1").Range("A1") to be precise
 - Qualify fully when multiple workbooks: `Workbooks("Book1.xlsx").Worksheets("Sheet1").Range("A1")`
 - `Cells(row, col)` uses numbers: `Cells(1, 1)` is A1; can combine: `Range(Cells(1,1), Cells(10,2))`
+- Useful for loops. 
 
 ---
 
 ## Selecting vs directly writing
 
 - Avoid Select/Activate when possible; write directly
+
+Do this 
 
 ```vb
 Worksheets("Sheet1").Range("A1").Value = "Direct write"
@@ -281,9 +322,20 @@ With Worksheets("Sheet1")
 End With
 ```
 
+Not this
+
+```vb
+Worksheets("Sheet1").Select
+Range("A1").Select
+Selection.Value = "Indirect write"
+Range("B1").Select
+ActiveCell.Value = "Indirect with ActiveCell"
+```
+
+
 ---
 
-## Branching: If vs Select Case
+## Conditionals
 
 ::: columns
 ::: column
@@ -318,6 +370,8 @@ End Select
 
 ## Loops: Do it repeatedly
 
+- You need to define the variable that controls the loop.
+
 ```vb
 Dim i As Long
 For i = 1 To 10
@@ -326,31 +380,50 @@ Next i
 
 Dim c As Range
 For Each c In Range("A1:A10")
-    c.Value = c.Value & "!"
+    c.Value = c.Value & "!" ' The & concatenates strings
 Next c
+
+Dim k As Long
+k = 1
+Do While k <= 10
+    Cells(k, 2).Value = k * 2
+    k = k + 1
+Loop
+
+Dim tries As Long
+tries = 0
+Do
+    tries = tries + 1
+Loop Until tries >= 10
 ```
 
 - `For ... Next`: use a counter variable for numeric ranges
 - `For Each ... Next`: iterate items in a collection (`Worksheets`, `Shapes`, or cells in a `Range`)
 - `Do While`/`Do Until`: loop while/until a condition is satisfied (see next slide)
 
+
+
 ---
 
 ## Debugging essentials
 
-- Breakpoints (click left margin), Step Into `F8`, Step Over `Shift+F8`, Step Out `Ctrl+Shift+F8`
+- Breakpoints (click left margin), the code execution will pause there.
+- Step Into `F8`, Step Over `Shift+F8`, Step Out `Ctrl+Shift+F8`
 - Immediate window `Ctrl+G`: evaluate (`? Range("A1").Value`) or call procedures
-- Watches/Locals windows: inspect variables live
 - `Debug.Print` for tracing; `Stop` statement to break programmatically
+
+## How to inspect variables live
+
+- Use the Locals window (View → Locals Window) to see all local variables and their current values when paused at a breakpoint.
+- Not all variables may have their values shown in the Locals window, especially if they are complex objects or if the code is not currently within the scope where the variable is defined.
+
 
 ```vb
 Sub Trace()
-    Debug.Print Now, "Start"
-    Dim i As Long
-    For i = 1 To 3
-        Debug.Print "i=", i
-    Next
-    Debug.Print Now, "End"
+   Dim c As Long
+    For c = 1 To 10
+        c = c + 1
+    Next c
 End Sub
 ```
 
@@ -413,17 +486,13 @@ Sub PickRange()
 End Sub
 ```
 
----
-
-## Recording vs writing by hand
-
-- Recorder shows object model usage
-- Hand‑writing gives cleaner, faster code
-- Use both: record → refactor
 
 ---
 
 ## Arrays (static vs dynamic)
+
+- An array is a collection of values indexed by number.
+- `Static` arrays have fixed size; `Dynamic` arrays can be resized with `ReDim`.
 
 ```vb
 ' Static array (fixed size)
@@ -435,15 +504,20 @@ Dim b() As Double
 ReDim b(1 To 3)
 b(3) = 1.23
 ReDim Preserve b(1 To 5) ' keep existing values
+ReDim b(1 To 2) ' loses existing values
 ```
 
 - Static arrays: fastest, but fixed bounds
-- Dynamic arrays: `ReDim` to set size; `ReDim Preserve` to keep values (only last dimension can be preserved)
-- Bounds defaults: if unspecified, VBA uses zero-based; prefer explicit `1 To N` for clarity
+- Dynamic arrays: `ReDim` to set size; `ReDim Preserve` to keep values.
+- Bounds defaults: if unspecified, VBA uses zero-based indexing; prefer explicit `1 To N` for clarity
+- Many programming languages use zero-based indexing; VBA defaults to zero-based if no bounds are specified, but using `1 To N` is clearer for Excel users.
 
 ---
 
 ## Collections and Dictionary
+
+- Two main collection types: `Collection` (built-in) and `Scripting.Dictionary` (Windows).
+- Collections have no fixed size; Dictionaries map keys to values.
 
 ```vb
 ' Collection (built-in)
@@ -455,7 +529,7 @@ For Each item In coll
     Debug.Print item
 Next
 
-' Scripting.Dictionary (Windows; add reference or late-bind)
+' Scripting.Dictionary (Windows)
 Dim dict As Object
 Set dict = CreateObject("Scripting.Dictionary")
 dict("FR") = "France"
@@ -466,10 +540,27 @@ If dict.Exists("FR") Then Debug.Print dict("FR")
 - Collection: ordered, allows duplicates, 1-based indexing via `Item`
 - Dictionary: key→value map, fast lookup; on Mac, available via AppleScript support but often easiest to simulate with `Collection` or use array lookups
 - Tip: For portability, prefer `Collection` or arrays unless you really need keyed lookup
+- `Dim` vs `Set', Dim declares a variable; `Set` assigns an object reference.
+- An object reference points to an instance of an object (like a `Collection` or `Dictionary`).
 
 ---
 
-## Subs vs Functions (UDFs)
+## Object references
+
+- If you modify an object through one reference, the changes are reflected when accessing it through another reference.
+
+Example 
+
+```vb
+Dim coll1 As New Collection
+Dim coll2 As Collection
+Set coll2 = coll1 ' coll2 now references the same Collection as coll1
+coll1.Add "Item1"
+Debug.Print coll2.Count ' Outputs 1, as coll2 references the same Collection
+```
+---
+
+## Subs vs Functions (User Defined Functions - UDFs)
 
 ```vb
 ' Sub performs actions
@@ -477,7 +568,7 @@ Sub ClearData()
     Worksheets("Sheet1").Range("A2:D1000").ClearContents
 End Sub
 
-' Function returns a value (UDF)
+' Function returns a value (UDF) name the variable that captures the return value as the function name
 Public Function AddTax(amount As Double, rate As Double) As Double
     AddTax = amount * (1 + rate)
 End Function
@@ -485,36 +576,39 @@ End Function
 
 - `Sub`: run from VBE, buttons, or macros dialog; can modify workbook state
 - `Function`: returns a value; can be used in worksheet cells as a UDF
-- UDF caveats: should be pure (no side effects UI/file I/O) for worksheet recalculation; otherwise Excel may return `#VALUE!`
+- UDF caveats: should be pure (function of inputs only); avoid side effects (changing sheets)
+- For security UDFs are not allowed to modify the Excel environment (e.g., changing cell values, formatting, or interacting with other applications). They should only compute and return values based on their input parameters.
 
 ---
 
-## WorksheetFunction and Application helpers
+## The `Workbook`, `Worksheet` and `WorksheetFunction` objects
+
+- Each workbook and worksheet has its own code module (ThisWorkbook, Sheet1, etc.)
+- They allow access to events (open, close, change, etc.)
+- They also allow access to standard excel formulas. 
+- Use `ThisWorkbook` to refer to the workbook containing the code.
+- Some common events:
+  - `Workbook_Open`: runs when the workbook opens
+  - `Workbook_BeforeClose`: runs before the workbook closes
+  - `Worksheet_Change`: runs when a cell value changes in that sheet
+- This is the main reason why Office applications ask to enable macros when opening files with VBA code.
 
 ```vb
-' WorksheetFunction raises errors on failure
-Dim pos As Long
-pos = Application.WorksheetFunction.Match("Key", Range("A1:A100"), 0)
-
-' Safer pattern: Application.Match returns Variant (Error when not found)
-Dim v As Variant
-v = Application.Match("Key", Range("A1:A100"), 0)
-If IsError(v) Then
-    MsgBox "Not found"
-Else
-    pos = CLng(v)
-End If
-
-' Other useful helpers
-Dim sumA As Double
-sumA = Application.WorksheetFunction.Sum(Range("A1:A10"))
-Dim nonEmpty As Long
-nonEmpty = Application.WorksheetFunction.CountA(Range("A:A"))
+Private Sub Workbook_Open()
+    MsgBox "Welcome!"
+End Sub
 ```
 
-- Prefer `Application.Match` for lookup to avoid runtime errors; check with `IsError`
-- Many Excel functions are available via `WorksheetFunction`
+---
 
+## Access to standard Excel formulas
+
+```vb
+Sub UseExcelFunction()
+    Dim result As Double
+    result = Application.WorksheetFunction.Sum(Range("A1:A10"))
+    MsgBox "Sum is " & result
+End Sub
 ---
 
 ## Win vs Mac differences (overview)
@@ -531,39 +625,15 @@ Details that matter:
 
 ---
 
-## Personal Macro Workbook
-
-- Store macros globally
-- Lives as PERSONAL.XLSB
-- Great for universal utilities
-
-Create it: Record a macro and choose "Personal Macro Workbook" → Excel creates PERSONAL.XLSB automatically
-Locations
-- Windows: `%APPDATA%\Microsoft\Excel\XLStart\PERSONAL.XLSB`
-- Mac: `~/Library/Group Containers/UBF8T346G9.Office/User Content/Startup/Excel/PERSONAL.XLSB`
-Tips
-- Make a backup before migrating; copy the file to the same XLStart location on another machine
-- Show/Hide: View → Unhide/Hide (PERSONAL.XLSB)
-
----
-
 ## Error handling basics
 
 ```vb
 Sub DoWork()
-    On Error GoTo CleanUp
-    Dim prevCalc As XlCalculation
-    prevCalc = Application.Calculation
-    Application.ScreenUpdating = False
-    Application.EnableEvents = False
-    Application.Calculation = xlCalculationManual
-
+    On Error GoTo CleanUp ' jump to CleanUp on error
     ' ... risky code here ...
 
 Done:
-    Application.Calculation = prevCalc
-    Application.EnableEvents = True
-    Application.ScreenUpdating = True
+    ' What to do when done
     Exit Sub
 
 CleanUp:
@@ -576,111 +646,40 @@ End Sub
 
 ---
 
-## Events basics (Workbook, Worksheet)
+## Variable Types 
+
+- `Integer`: -32,768 to 32,767 (2 bytes)
+- `Long`: -2,147,483,648 to 2,147,483,647 (4 bytes)
+- `Single`: Single-precision floating point (4 bytes)
+- `Double`: Double-precision floating point (8 bytes)
+- `String`: Text (up to ~2 billion characters)
+- `Boolean`: True/False (2 bytes)
+- `Date`: Dates and times (8 bytes)
+- `Variant`: Can hold any type; default if no type specified (16 bytes + data)
+- Prefer explicit types for clarity and performance; `Variant` is flexible but slower and uses more memory
+- Not all types are available on Mac.
+
+---
+
+## Your first serious program (exercise in class)
+
+- For your first exercise you are going to estimate the value of $\pi$ using a Monte Carlo method.
+- Imagin e a square of side 2 (from -1 to 1 in both x and y) that contains a circle of radius 1.
+- The area of the square is 4, and the area of the circle is $\pi$.
+- You are going to randomly generate points in the square, and count how many fall inside the circle as a fraction of the total points.
+- This fraction multiplied by 4 will give you an estimate of $\pi$.
+
+Your task
+- Create a UDF `EstimatePi(n As Long) As Double` that takes the number of random points to generate as input, and returns the estimate of $\pi$.
+- Use `x = Rnd` to generate random numbers between 0 and 1; scale it to -1 to 1.
+- Return the estimate.
+- Your function should be available in the worksheet as e.g. `=EstimatePi(10000)`.
 
 ```vb
-' In ThisWorkbook code-behind
-Private Sub Workbook_Open()
-    MsgBox "Welcome!"
-End Sub
-
-' In a Sheet module (e.g., Sheet1)
-Private Sub Worksheet_Change(ByVal Target As Range)
-    On Error GoTo Done
-    If Intersect(Target, Me.Range("A:A")) Is Nothing Then Exit Sub
-    Application.EnableEvents = False
-    Target.Offset(0, 1).Value = UCase$(Target.Value)
-Done:
-    Application.EnableEvents = True
-End Sub
+Function EstimatePi(n As Long) As Double
+    ' your code here
+End Function
 ```
 
-- Place event code in the correct object module (`ThisWorkbook`, specific `Sheet`)
-- Always guard with `Application.EnableEvents = False/True` inside change events
-- Add quick exit guards with `Intersect` to limit scope
-
----
-
-## Best practices cheat‑sheet
-
-- Option Explicit
-- Avoid Select/Activate
-- Name ranges; avoid magic coordinates
-- Comment intent, not the obvious
-
----
-
-## Mini‑exercise 1
-
-- Record a macro that formats a header row
-- Then rewrite it to avoid Select/Activate
-- Compare line count and clarity
-
----
-
-## Mini‑exercise 2
-
-- Write a Sub that fills A1:A20 with squares of 1..20
-- Show a MsgBox when done
-
----
-
-## Where to find help
-
-- Object Browser (F2), MSDN docs, community forums
-- Read recorded macros and simplify
-
----
-
-## Common pitfalls (VBA newcomers)
-
-- Relying on Select/Activate everywhere → fragile
-- Not using Option Explicit → typos hide bugs
-- Hard‑coding sheet names/paths → parameterize
-
----
-
-## Keyboard shortcuts (Win/Mac)
-
-- Open VBE: Alt+F11 (Win), Option+F11 (Mac)
-- Run macro: Alt+F8 (Win/Mac)
-- Step through: F8 (Win/Mac)
-
----
-
-## Object model mental model
-
-- Application → Workbooks → Worksheets → Range
-- Think nested boxes; qualify references from outer to inner
-
----
-
-## Little refactor challenge
-
-- Record a macro; then: remove Select, add Option Explicit
-- Use With blocks and qualified references
-
----
-
-## Quick cheat‑sheet
-
-- Range("A1").Value, Cells(r, c).Value
-- .CurrentRegion, .UsedRange
-- MsgBox, InputBox
-
----
-
-## Mini case study
-
-- Monthly report cleanup: record → refactor → parameterize sheet
-- Add error handling and performance toggles
-
----
-
-## Image credits
-
-- Excel (Windows) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/a8/Excel_2010.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.
-- Excel (Mac) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/ab/Excel_for_Mac_screenshot.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.
-- Visual Basic Editor screenshot: https://learn.microsoft.com/en-us/office/vba/images/5d9acd78-5168-4a0c-83b6-3f1e440bf649.png — Microsoft Learn. Used with permission from Microsoft. No modifications beyond resizing.
 
 

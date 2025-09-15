@@ -4,16 +4,10 @@ subtitle: "Windows vs Mac, recording/refactoring, organizing modules"
 author: "Juan F. Imbet"
 institute: "Paris Dauphine University-PSL"
 format:
-  revealjs:
-    theme: white
-    css: styles.css
-    slide-number: true
-    chalkboard: true
-    preview-links: auto
-    footer: "Intro to VBA and Python"
-    include-in-header: ../../tikzjax.html
-execute:
-  enabled: false
+    revealjs:
+        slide-level: 1
+include-in-header:
+    - ../../tikzjax.html
 ---
 
 ## Agenda

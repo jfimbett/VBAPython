@@ -4,24 +4,12 @@ subtitle: "Routines, variables, functions, references, loops, conditionals, I/O"
 author: "Juan F. Imbet"
 institute: "Paris Dauphine University-PSL"
 format:
-  revealjs:
-    theme: white
-    css: styles.css
-    slide-number: true
-    chalkboard: true
-    preview-links: auto
-    footer: "Intro to VBA and Python"
-    include-in-header: ../../tikzjax.html
-execute:
-  enabled: false
----
-- Input/Output patterns and exercises
-
+    revealjs:
+        slide-level: 1
+include-in-header:
+    - ../../tikzjax.html
 ---
  
- - Input/Output patterns and exercises
- 
- ---
 ---
 
 ## Procedures: Subs and Functions

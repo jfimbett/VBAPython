@@ -28,38 +28,10 @@ execute:
 metadata-files: []
 
 website:
-  title: "Intro to VBA and Python (10x3h)"
+  title: "Introduction to VBA and Python"
   navbar:
     right:
       - text: Home
         href: README.md
-      - text: VBA
-        menu:
-          - text: Session 1 - Intro to VBA
-            href: slides/vba/01-intro-vba.qmd
-          - text: Session 2 - Macros & Platforms
-            href: slides/vba/02-vba-platforms-macros.qmd
-          - text: Session 3 - Programming Basics
-            href: slides/vba/03-vba-programming-basics.qmd
-      - text: Python
-        menu:
-          - text: Session 1 - Setup & Tools
-            href: slides/python/01-setup-env.qmd
-          - text: Session 2 - Python Basics
-            href: slides/python/02-python-basics.qmd
-          - text: Session 3 - OOP & Types
-            href: slides/python/03-oop-types.qmd
-          - text: Session 4 - NumPy & Pandas
-            href: slides/python/04-numpy-pandas.qmd
-          - text: Session 5 - Optimization
-            href: slides/python/05-optimization.qmd
-          - text: Session 6 - Flask & Streamlit
-            href: slides/python/06-web-apps.qmd
-          - text: Session 7 - Big Data (Polars/Dask)
-            href: slides/python/07-bigdata.qmd
-      - text: Exercises
-        menu:
-          - text: VBA Exercises
-            href: exercises/vba/index.qmd
-          - text: Python Exercises
-            href: exercises/python/index.qmd
+      - text: Day 1 — Intro to VBA
+        href: slides/vba/01-intro-vba.qmd

@@ -18,7 +18,8 @@
     .card:hover{transform:translateY(-2px); box-shadow:0 10px 20px rgba(37,150,190,.18)}
     .card h3{margin:0 0 8px; font-size:18px; color:var(--blue)}
     .card p{margin:0 0 10px; font-size:14px; color:#333}
-    .card a{display:inline-block; color:#fff; background:var(--blue); text-decoration:none; padding:8px 12px; border-radius:6px; font-weight:700}
+  .card a{display:inline-block; color:#fff; background:var(--blue); text-decoration:none; padding:8px 12px; border-radius:6px; font-weight:700}
+  .card .disabled{display:inline-block; color:#888; background:#eee; padding:8px 12px; border-radius:6px; font-weight:700}
     footer{padding:24px; text-align:center; color:#555; border-top:1px solid #eee}
   </style>
   <!-- This file is copied to _site/index.html; links assume it lives under _site/ -->
@@ -26,70 +27,18 @@
 </head>
 <body>
   <header>
-    <h1>Intro to VBA and Python — Slide Decks</h1>
-    <p class="lead">10 sessions • 3 hours each • Finance‑oriented examples with the top‑20 US tickers</p>
+    <h1>Introduction to VBA and Python</h1>
+    <p class="lead">Juan F. Imbet — <a href="mailto:juan.imbet@dauphine.psl.eu">juan.imbet@dauphine.psl.eu</a></p>
   </header>
 
   <section class="grid">
-    <!-- VBA -->
     <div class="card">
-      <h3>VBA 1 — Introduction to VBA</h3>
-      <p>Macros, VBE, security, quick wins.</p>
+      <h3>Day 1 — Introduction to VBA</h3>
+      <p>Macros, VBE, security, and quick automation wins.</p>
       <a href="slides/vba/01-intro-vba.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>VBA 2 — Macros & Platforms</h3>
-      <p>Windows vs Mac, recorder → refactor, organization.</p>
-      <a href="slides/vba/02-vba-platforms-macros.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>VBA 3 — Programming Basics</h3>
-      <p>Subs, functions, loops, conditionals, I/O.</p>
-      <a href="slides/vba/03-vba-programming-basics.html">Open deck</a>
-    </div>
-
-    <!-- Python -->
-    <div class="card">
-      <h3>Py 1 — Setup & Tools</h3>
-      <p>Conda, Python, pip, reproducible envs.</p>
-      <a href="slides/python/01-setup-env.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>Py 2 — Python Basics</h3>
-      <p>Syntax, data structures, control flow.</p>
-      <a href="slides/python/02-python-basics.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>Py 3 — OOP & Types</h3>
-      <p>Classes, dataclasses, typing.</p>
-      <a href="slides/python/03-oop-types.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>Py 4 — NumPy & pandas</h3>
-      <p>Arrays, vectorization, tabular analytics.</p>
-      <a href="slides/python/04-numpy-pandas.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>Py 5 — Optimization</h3>
-      <p>Roots, minimization, Markowitz example.</p>
-      <a href="slides/python/05-optimization.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>Py 6 — Flask & Streamlit</h3>
-      <p>APIs and data apps with minimal code.</p>
-      <a href="slides/python/06-web-apps.html">Open deck</a>
-    </div>
-    <div class="card">
-      <h3>Py 7 — Big Data</h3>
-      <p>Polars and Dask, lazy compute and scaling.</p>
-      <a href="slides/python/07-bigdata.html">Open deck</a>
     </div>
   </section>
 
-  <footer>
-    <div>
-      You are viewing the compiled site. Open this page directly at <code>_site/index.html</code> after rendering.
-    </div>
-  </footer>
+  
 </body>
 </html>

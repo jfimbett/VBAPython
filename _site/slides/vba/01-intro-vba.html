@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.23">
 
   <meta name="author" content="Juan F. Imbet">
-  <title>Intro to VBA and Python (10x3h) – VBA Session 1 — Introduction to VBA</title>
+  <title>Introduction to VBA and Python – VBA Session 1 — Introduction to VBA</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -97,12 +97,9 @@
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="../../styles.css">
-  <link rel="stylesheet" href="styles.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -220,71 +217,104 @@ Juan F. Imbet
 </div>
 
 </section>
-<section id="welcome" class="slide level2">
-<h2>Welcome</h2>
+<section class="slide level1">
+
+<h2 id="welcome">Welcome</h2>
 <ul>
 <li>Course: Intro to VBA and Python (10&nbsp;sessions ×&nbsp;~3&nbsp;h)</li>
-<li>Today: VBA overview, macros, security, the Visual Basic Editor (VBE), Win/Mac differences</li>
+<li>Today: General Introduction</li>
 <li>Goal: Build confidence to automate simple tasks in Excel using VBA</li>
 </ul>
+<h2 id="information">Information</h2>
+<ul>
+<li>Juan F. Imbet, Assistant Professor of Finance.</li>
+<li>juan.imbet@dauphine.psl.eu</li>
+<li>Office: P606</li>
+<li>Office hours by appointment</li>
+</ul>
 </section>
-<section id="what-is-vba" class="slide level2">
-<h2>What is VBA?</h2>
+<section class="slide level1">
+
+<h2 id="bit-about-me">Bit about me</h2>
+<ul>
+<li>Engineering background, PhD in Finance (Pompeu Fabra University)</li>
+<li>Research in Asset Pricing, Corporate Finance, Asset Management, and Computational Finance.</li>
+<li>Teaching in Finance Theory, Programming, and Artificial Intelligence.</li>
+<li>Consulting Private Equity Firms in implementing AI enhanced investment processes.</li>
+</ul>
+<h2 id="grading">Grading</h2>
+<ul>
+<li>Group Project 40% (topic joint with Aymeric Kalife’s class, 100% Python)</li>
+<li>Final Exam 50% (less focus on exact syntax, more on concepts and problem solving)</li>
+<li>Class Participation 10%</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="what-is-vba">What is VBA?</h2>
 <ul>
 <li>Visual Basic for Applications (VBA) is a programming language embedded inside Office apps (Excel, Word, PowerPoint, Access).</li>
-<li>Runs inside the host application process (Excel), giving access to its Object Model: <code>Application → Workbooks → Worksheets → Range</code>.</li>
+<li>Runs inside the host application process (Excel), giving access to its Object Model: e.g.&nbsp;<code>Application → Workbooks → Worksheets → Range</code>.</li>
 <li>Great for automating repetitive tasks, building custom functions and UI (forms, buttons), and integrating with files and data.</li>
-<li>Cross‑platform note: VBA exists on Windows and Mac, but some integrations are Windows‑only (see next slide).</li>
+<li>Cross‑platform note: VBA exists on Windows and Mac, but some integrations are Windows‑only. Companies use VBA almost exclusively on Windows.</li>
+<li>Mac users can still run most VBA code.</li>
 </ul>
 </section>
-<section id="how-vba-relates-to-windows-vs-mac" class="slide level2">
-<h2>How VBA relates to Windows vs&nbsp;Mac</h2>
+<section class="slide level1">
+
+<h2 id="how-vba-relates-to-windows-vs-mac">How VBA relates to Windows vs&nbsp;Mac</h2>
 <ul>
 <li><strong>Windows:</strong> Excel exposes rich automation via COM/ActiveX; VBA can call Windows APIs and Office libraries broadly.</li>
+<li>COM/ActiveX is a Windows feature that enables inter-application communication and advanced integrations.</li>
 <li><strong>Mac:</strong> Same VBA language and Excel Object Model for most tasks; no COM/ActiveX, some features differ (File dialogs, Add‑ins, some APIs).</li>
-<li><strong>Bitness matters on Windows</strong> (32/64‑bit Office) when declaring external <code>PtrSafe</code> APIs; use <code>LongPtr</code> where appropriate.</li>
-<li><strong>Takeaway:</strong> Core Excel automation is portable; system‑level integrations tend to be Windows‑specific.</li>
+<li><strong>Bitness matters on Windows</strong> (32/64‑bit Office).</li>
 </ul>
-</section>
-<section id="why-learn-vba-in-2025" class="slide level2">
-<h2>Why learn VBA in&nbsp;2025?</h2>
+<h2 id="why-learn-vba-in-2025">Why learn VBA in&nbsp;2025?</h2>
 <ul>
 <li>Excel remains the lingua franca of business.</li>
 <li>Quick wins: automate reports, cleanup, formatting.</li>
 <li>Bridges to other tools (Power&nbsp;Query, Python via xlwings, etc.).</li>
 </ul>
-</section>
-<section id="macro-security-mindset" class="slide level2">
-<h2>Macro security mindset</h2>
+<h2 id="disadvantages-of-vba">Disadvantages of VBA</h2>
 <ul>
+<li>Old language (from 1993); lacks modern features (e.g., no classes, limited error handling).</li>
+<li>Not easy to debug or test.</li>
+<li>Grammar is not the most friendly.</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="macro-security-mindset">Macro security mindset</h2>
+<ul>
+<li>A Macro is the common name for some VBA code embedded in an Office document.</li>
 <li>Macros can run code; treat files like executables.</li>
 <li>Only enable content from trusted sources.</li>
 <li>Use signed macros in corporate environments.</li>
+<li>A signed macro is one that has been digitally signed with a certificate to verify its authenticity.</li>
 </ul>
 <p><strong>Windows (Trust&nbsp;Center):</strong> File&nbsp;→ Options&nbsp;→ Trust&nbsp;Center&nbsp;→ Trust&nbsp;Center&nbsp;Settings&nbsp;→ Macro&nbsp;Settings<br>
 Recommended for learning: “Disable all macros with notification” + add a Trusted Location for your course folder.<br>
 Consider enabling Protected View for files from the internet; unblock via file Properties&nbsp;→ Unblock.</p>
 <p><strong>Mac (Trust&nbsp;Center):</strong> Excel&nbsp;→ Preferences&nbsp;→ Security&nbsp;&amp;&nbsp;Privacy<br>
 Similar options: enable with notification; manage access to Visual Basic project if prompted.</p>
-<p><strong>Signing:</strong> use a code signing certificate to sign VBA projects (SelfCert.exe on Windows for local testing).</p>
 </section>
-<section id="enable-developer-tab-windows" class="slide level2">
-<h2>Enable Developer tab (Windows)</h2>
+<section class="slide level1">
+
+<h2 id="enable-developer-tab-windows">Enable Developer tab (Windows)</h2>
 <ol type="1">
 <li>File&nbsp;→ <strong>Options</strong>&nbsp;→ <strong>Customize&nbsp;Ribbon</strong></li>
 <li>Under <strong>Main&nbsp;Tabs</strong>, check <strong>Developer</strong> and click <strong>OK</strong></li>
 </ol>
-</section>
-<section id="enable-developer-tab-mac" class="slide level2">
-<h2>Enable Developer tab (Mac)</h2>
+<h2 id="enable-developer-tab-mac">Enable Developer tab (Mac)</h2>
 <ol type="1">
 <li>Excel&nbsp;→ <strong>Preferences</strong>&nbsp;→ <strong>Ribbon&nbsp;&amp;&nbsp;Toolbar</strong></li>
 <li>Select <strong>Main&nbsp;Tabs</strong> and check <strong>Developer</strong></li>
 <li>Click <strong>Save</strong>; the Developer tab appears</li>
 </ol>
 </section>
-<section id="excel-ui-tour-winmac" class="slide level2">
-<h2>Excel UI tour (Win/Mac)</h2>
+<section class="slide level1">
+
+<h2 id="excel-ui-tour-winmac">Excel UI tour (Win/Mac)</h2>
 <ul>
 <li>Windows screenshot: Excel workbook with the Ribbon showing the Developer tab</li>
 <li>Mac screenshot: Excel for Mac with Developer tab visible</li>
@@ -296,10 +326,10 @@ Similar options: enable with notification; manage access to Visual Basic project
 </div><div class="column">
 <p><img data-src="https://upload.wikimedia.org/wikipedia/en/a/ab/Excel_for_Mac_screenshot.png" style="width:100.0%" data-fig-cap="Excel (Mac) — UI overview. Image: Microsoft product screenshot via Wikipedia. Used with permission from Microsoft (no modifications except resizing)." alt="Excel for Mac UI"></p>
 </div></div>
-<p>Note: Screenshots are Microsoft’s copyrighted content; used under Microsoft’s screenshot permission guidelines. We only resize and include full attributions.</p>
 </section>
-<section id="recording-a-macro-winmac" class="slide level2">
-<h2>Recording a macro (Win/Mac)</h2>
+<section class="slide level1">
+
+<h2 id="recording-a-macro-winmac">Recording a macro (Win/Mac)</h2>
 <div class="columns">
 <div class="column">
 <p>Windows</p>
@@ -321,37 +351,37 @@ Similar options: enable with notification; manage access to Visual Basic project
 <li>Storage mirrors Windows; Personal Macro Workbook exists</li>
 </ul>
 </div></div>
-<p>Common tips<br>
-- Treat recorder output as a starting point; refactor to remove Select/Activate<br>
-- Store personal utilities in PERSONAL.XLSB when appropriate</p>
+<h2 id="relative-references">Relative References</h2>
+<ul>
+<li>Relative References toggle (Windows/Mac) controls whether recorded actions use absolute cell references (e.g., <code>Range("A1")</code>) or relative to the active cell (e.g., <code>ActiveCell.Offset(0, 0)</code>).</li>
+<li>Use the <code>Use Relative References</code> button on the Developer tab before starting to record.</li>
+</ul>
 </section>
-<section id="the-visual-basic-editor-vbe" class="slide level2">
-<h2>The Visual Basic Editor (VBE)</h2>
+<section class="slide level1">
+
+<h2 id="the-visual-basic-editor-vbe">The Visual Basic Editor (VBE)</h2>
 <ul>
 <li>Open with Alt+F11 (Windows) or Option+F11 (Mac)</li>
 <li>Project Explorer, Properties Window, Code Pane</li>
 <li>Modules vs ThisWorkbook vs Sheet objects</li>
-<li>Immediate Window (<code>Ctrl+G</code>): print values with <code>Debug.Print</code>, test small snippets</li>
 <li>Insert a Module: VBE&nbsp;→ Insert&nbsp;→ Module (stores your <code>Sub</code> procedures)</li>
 <li>Run code: press <code>F5</code> in VBE, or assign to a shape/button on the sheet</li>
 </ul>
-</section>
-<section id="opening-the-vbe-stepbystep" class="slide level2">
-<h2>Opening the VBE (step‑by‑step)</h2>
+<h2 id="opening-the-vbe-stepbystep">Opening the VBE (step‑by‑step)</h2>
 <ul>
 <li>Windows: Use <code>Alt+F11</code>, or Ribbon → Developer → Visual Basic</li>
 <li>Mac: Use <code>Option+F11</code>, or Ribbon → Developer → Visual Basic</li>
 <li>Verify the Project Explorer (left) and Properties (bottom‑left); if hidden: View → Project Explorer, View → Properties Window</li>
+<li>Use View menu to show/hide panes if your layout differs.</li>
 </ul>
-<div class="columns">
-<div class="column">
-<p><img data-src="https://learn.microsoft.com/en-us/office/vba/images/5d9acd78-5168-4a0c-83b6-3f1e440bf649.png" style="width:100.0%" data-fig-cap="Visual Basic Editor — example macro code (source: Microsoft Learn)." alt="Visual Basic Editor showing macro code"></p>
-</div><div class="column">
-<p><img data-src="https://learn.microsoft.com/en-us/office/vba/images/0d8a2b2e-a5b9-46a2-8bf2-0a3b7c6e2f02.png" style="width:100.0%" data-fig-cap="Visual Basic Editor panes (Project, Properties, Code, Immediate) — Microsoft Learn." alt="VBE windows (Project/Properties/Code/Immediate)"></p>
-</div></div>
 </section>
-<section id="hello-world-vba" class="slide level2">
-<h2>Hello, world (VBA)</h2>
+<section class="slide level1">
+
+<h2 id="hello-world-vba">Hello, world (VBA)</h2>
+<ul>
+<li>Macros start with a <code>Sub</code> procedure, and end with <code>End Sub</code>.</li>
+<li>VBA has reserved words (e.g., <code>Sub</code>, <code>Dim</code>, <code>If</code>, <code>Then</code>, <code>End</code>); case-insensitive but prefer standard casing.</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb1-1"><a></a> <span class="kw">Sub </span>HelloWorld()</span>
 <span id="cb1-2"><a></a>     MsgBox <span class="st">"Hello from VBA!"</span></span>
 <span id="cb1-3"><a></a> <span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -360,8 +390,9 @@ Similar options: enable with notification; manage access to Visual Basic project
 <li>Assign to a button: Insert → Shapes → pick a shape → right‑click → Assign Macro → choose <code>HelloWorld</code></li>
 </ul>
 </section>
-<section id="procedures-variables-and-types" class="slide level2">
-<h2>Procedures, variables, and types</h2>
+<section class="slide level1">
+
+<h2 id="procedures-variables-and-types">Procedures, variables, and types</h2>
 <div class="columns">
 <div class="column">
 <p>Sub procedures and variables</p>
@@ -381,9 +412,11 @@ Similar options: enable with notification; manage access to Visual Basic project
 </div><div class="column">
 <p>Types and Option Explicit</p>
 <ul>
-<li>Common types: Integer, Long, Double, String, Boolean, Date</li>
-<li>Variant can hold anything (flexible but slower)</li>
+<li>Common types: <code>Integer</code>, <code>Long</code>, <code>Double</code>, <code>String</code>, <code>Boolean</code>, <code>Date</code></li>
+<li><code>Variant</code> can hold anything (flexible but slower)</li>
 <li>Prefer explicit types for clarity and speed</li>
+<li>Not all types are available on Mac.</li>
+<li>The <code>Option Explicit</code> statement forces variable declaration, reducing typos and bugs.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb3-1"><a></a><span class="kw">Option</span> <span class="kw">Explicit</span> <span class="co">' require declarations</span></span>
 <span id="cb3-2"><a></a><span class="kw">Sub </span>Safer()</span>
@@ -396,8 +429,24 @@ Similar options: enable with notification; manage access to Visual Basic project
 </ul>
 </div></div>
 </section>
-<section id="scope-and-lifetime" class="slide level2">
-<h2>Scope and lifetime</h2>
+<section class="slide level1">
+
+<h2 id="scope-and-lifetime">Scope and lifetime</h2>
+<ul>
+<li>What variables are visible where, and how long they last.</li>
+<li><code>Public</code> vs <code>Private</code>: controls visibility across modules</li>
+<li><code>Public</code> = visible everywhere; <code>Private</code> = only inside the module</li>
+<li><code>Const</code> for constants, variables that are not meant to change.</li>
+<li>Constants are stored more efficiently in memory since their values do not change.</li>
+<li><code>Sub</code> procedures can also be declared as <code>Public</code> or <code>Private</code>.</li>
+<li>If no declaration is given, <code>Sub</code> procedures are <code>Public</code> by default.</li>
+<li><code>Enum</code> for named integer constants.</li>
+<li>Defining variables outside any procedure makes them module-level (retain value while module is loaded).</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<h2 id="example">Example</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb4-1"><a></a><span class="kw">Option</span> <span class="kw">Explicit</span></span>
 <span id="cb4-2"><a></a></span>
 <span id="cb4-3"><a></a><span class="kw">Public</span> <span class="kw">Const</span> VAT <span class="kw">As</span> <span class="dt">Double</span> = 0.20 <span class="co">' project-wide constant (in a standard module)</span></span>
@@ -425,389 +474,370 @@ Similar options: enable with notification; manage access to Visual Basic project
 <span id="cb4-25"><a></a>    stDone = 1</span>
 <span id="cb4-26"><a></a>    stError = 2</span>
 <span id="cb4-27"><a></a><span class="kw">End Enum</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li><code>Public</code> vs <code>Private</code>: controls visibility across modules</li>
-<li><code>Option Private Module</code>: hides public procedures from the Macros dialog</li>
-<li><code>Static</code> variables: keep value between calls (use sparingly)</li>
-<li>Prefer <code>Const</code> and <code>Enum</code> to remove magic numbers</li>
-</ul>
 </section>
-<section id="referencing-cells" class="slide level2">
-<h2>Referencing cells</h2>
+<section class="slide level1">
+
+<h2 id="debugging">Debugging</h2>
+<ul>
+<li>Large programs rarely run perfectly the first time.</li>
+<li>Understanding the values that variables take at different points in execution is key to finding and fixing bugs.</li>
+<li>To write something in the debugging output window, use <code>Debug.Print</code>.</li>
+<li>This output can be viewed in the Immediate Window (Ctrl+G in Windows or Cmd+G in Mac).</li>
+</ul>
+<h2 id="referencing-cells">Referencing cells</h2>
+<ul>
+<li>VBA can access and manipulate Excel cells directly.</li>
+<li>Absolute reference example uses the <code>Range</code> object.</li>
+<li>Relative reference example uses <code>ActiveCell</code> and <code>Offset</code>.</li>
+<li><code>ActiveCell</code> is the currently selected cell in the active worksheet.</li>
+<li><code>Offset</code> is used to refer to a cell that is a specific number of rows and columns away from another cell.</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb5-1"><a></a><span class="kw">Sub </span>SetA1()</span>
 <span id="cb5-2"><a></a>    Range(<span class="st">"A1"</span>).Value = <span class="st">"Hi"</span></span>
 <span id="cb5-3"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li>Range, Cells, Selection</li>
 <li>Qualify with Worksheets(“Sheet1”).Range(“A1”) to be precise</li>
 <li>Qualify fully when multiple workbooks: <code>Workbooks("Book1.xlsx").Worksheets("Sheet1").Range("A1")</code></li>
 <li><code>Cells(row, col)</code> uses numbers: <code>Cells(1, 1)</code> is A1; can combine: <code>Range(Cells(1,1), Cells(10,2))</code></li>
+<li>Useful for loops.</li>
 </ul>
 </section>
-<section id="selecting-vs-directly-writing" class="slide level2">
-<h2>Selecting vs directly writing</h2>
+<section class="slide level1">
+
+<h2 id="selecting-vs-directly-writing">Selecting vs directly writing</h2>
 <ul>
 <li>Avoid Select/Activate when possible; write directly</li>
 </ul>
+<p>Do this</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb6-1"><a></a>Worksheets(<span class="st">"Sheet1"</span>).Range(<span class="st">"A1"</span>).Value = <span class="st">"Direct write"</span></span>
 <span id="cb6-2"><a></a>With Worksheets(<span class="st">"Sheet1"</span>)</span>
 <span id="cb6-3"><a></a>    .Range(<span class="st">"B1"</span>).Value = <span class="st">"With block"</span></span>
 <span id="cb6-4"><a></a>    .Cells(2, 1).Value = 123</span>
 <span id="cb6-5"><a></a>End With</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Not this</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb7-1"><a></a>Worksheets(<span class="st">"Sheet1"</span>).Select</span>
+<span id="cb7-2"><a></a>Range(<span class="st">"A1"</span>).Select</span>
+<span id="cb7-3"><a></a>Selection.Value = <span class="st">"Indirect write"</span></span>
+<span id="cb7-4"><a></a>Range(<span class="st">"B1"</span>).Select</span>
+<span id="cb7-5"><a></a>ActiveCell.Value = <span class="st">"Indirect with ActiveCell"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="branching-if-vs-select-case" class="slide level2">
-<h2>Branching: If vs Select Case</h2>
+<section class="slide level1">
+
+<h2 id="conditionals">Conditionals</h2>
 <div class="columns">
 <div class="column">
 <p>If…Then</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb7-1"><a></a><span class="kw">If </span>Range(<span class="st">"A1"</span>).Value &gt; 0 <span class="kw">Then</span></span>
-<span id="cb7-2"><a></a>    MsgBox <span class="st">"Positive"</span></span>
-<span id="cb7-3"><a></a><span class="kw">Else</span></span>
-<span id="cb7-4"><a></a>    MsgBox <span class="st">"Non‑positive"</span></span>
-<span id="cb7-5"><a></a><span class="kw">End If</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb8-1"><a></a><span class="kw">If </span>Range(<span class="st">"A1"</span>).Value &gt; 0 <span class="kw">Then</span></span>
+<span id="cb8-2"><a></a>    MsgBox <span class="st">"Positive"</span></span>
+<span id="cb8-3"><a></a><span class="kw">Else</span></span>
+<span id="cb8-4"><a></a>    MsgBox <span class="st">"Non‑positive"</span></span>
+<span id="cb8-5"><a></a><span class="kw">End If</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Great for simple conditions and ranges</li>
 </ul>
 </div><div class="column">
 <p>Select Case</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb8-1"><a></a><span class="kw">Select Case Range("B1").Value</span></span>
-<span id="cb8-2"><a></a>    Case <span class="st">"A"</span>, <span class="st">"B"</span>: MsgBox <span class="st">"Group 1"</span></span>
-<span id="cb8-3"><a></a>    Case <span class="st">"C"</span>: MsgBox <span class="st">"Group 2"</span></span>
-<span id="cb8-4"><a></a>    Case <span class="kw">Else</span>: MsgBox <span class="st">"Other"</span></span>
-<span id="cb8-5"><a></a><span class="kw">End Select</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb9-1"><a></a><span class="kw">Select Case Range("B1").Value</span></span>
+<span id="cb9-2"><a></a>    Case <span class="st">"A"</span>, <span class="st">"B"</span>: MsgBox <span class="st">"Group 1"</span></span>
+<span id="cb9-3"><a></a>    Case <span class="st">"C"</span>: MsgBox <span class="st">"Group 2"</span></span>
+<span id="cb9-4"><a></a>    Case <span class="kw">Else</span>: MsgBox <span class="st">"Other"</span></span>
+<span id="cb9-5"><a></a><span class="kw">End Select</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Cleaner than nested Ifs for discrete categories</li>
 </ul>
 </div></div>
 </section>
-<section id="loops-do-it-repeatedly" class="slide level2">
-<h2>Loops: Do it repeatedly</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb9-1"><a></a><span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb9-2"><a></a><span class="kw">For </span>i = 1 <span class="kw">To</span> 10</span>
-<span id="cb9-3"><a></a>    Cells(i, 1).Value = i</span>
-<span id="cb9-4"><a></a><span class="kw">Next </span>i</span>
-<span id="cb9-5"><a></a></span>
-<span id="cb9-6"><a></a><span class="kw">Dim</span> c <span class="kw">As</span> Range</span>
-<span id="cb9-7"><a></a><span class="kw">For </span>Each c In Range(<span class="st">"A1:A10"</span>)</span>
-<span id="cb9-8"><a></a>    c.Value = c.Value &amp; <span class="st">"!"</span></span>
-<span id="cb9-9"><a></a><span class="kw">Next </span>c</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="loops-do-it-repeatedly">Loops: Do it repeatedly</h2>
+<ul>
+<li>You need to define the variable that controls the loop.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb10-1"><a></a><span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb10-2"><a></a><span class="kw">For </span>i = 1 <span class="kw">To</span> 10</span>
+<span id="cb10-3"><a></a>    Cells(i, 1).Value = i</span>
+<span id="cb10-4"><a></a><span class="kw">Next </span>i</span>
+<span id="cb10-5"><a></a></span>
+<span id="cb10-6"><a></a><span class="kw">Dim</span> c <span class="kw">As</span> Range</span>
+<span id="cb10-7"><a></a><span class="kw">For </span>Each c In Range(<span class="st">"A1:A10"</span>)</span>
+<span id="cb10-8"><a></a>    c.Value = c.Value &amp; <span class="st">"!"</span> <span class="co">' The &amp; concatenates strings</span></span>
+<span id="cb10-9"><a></a><span class="kw">Next </span>c</span>
+<span id="cb10-10"><a></a></span>
+<span id="cb10-11"><a></a><span class="kw">Dim</span> k <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb10-12"><a></a>k = 1</span>
+<span id="cb10-13"><a></a><span class="kw">Do While </span>k &lt;= 10</span>
+<span id="cb10-14"><a></a>    Cells(k, 2).Value = k * 2</span>
+<span id="cb10-15"><a></a>    k = k + 1</span>
+<span id="cb10-16"><a></a><span class="kw">Loop</span></span>
+<span id="cb10-17"><a></a></span>
+<span id="cb10-18"><a></a><span class="kw">Dim</span> tries <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb10-19"><a></a>tries = 0</span>
+<span id="cb10-20"><a></a><span class="kw">Do</span></span>
+<span id="cb10-21"><a></a>    tries = tries + 1</span>
+<span id="cb10-22"><a></a><span class="kw">Loop </span>Until tries &gt;= 10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>For ... Next</code>: use a counter variable for numeric ranges</li>
 <li><code>For Each ... Next</code>: iterate items in a collection (<code>Worksheets</code>, <code>Shapes</code>, or cells in a <code>Range</code>)</li>
 <li><code>Do While</code>/<code>Do Until</code>: loop while/until a condition is satisfied (see next slide)</li>
 </ul>
 </section>
-<section id="debugging-essentials" class="slide level2">
-<h2>Debugging essentials</h2>
+<section class="slide level1">
+
+<h2 id="debugging-essentials">Debugging essentials</h2>
 <ul>
-<li>Breakpoints (click left margin), Step Into <code>F8</code>, Step Over <code>Shift+F8</code>, Step Out <code>Ctrl+Shift+F8</code></li>
+<li>Breakpoints (click left margin), the code execution will pause there.</li>
+<li>Step Into <code>F8</code>, Step Over <code>Shift+F8</code>, Step Out <code>Ctrl+Shift+F8</code></li>
 <li>Immediate window <code>Ctrl+G</code>: evaluate (<code>? Range("A1").Value</code>) or call procedures</li>
-<li>Watches/Locals windows: inspect variables live</li>
 <li><code>Debug.Print</code> for tracing; <code>Stop</code> statement to break programmatically</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb10-1"><a></a><span class="kw">Sub </span>Trace()</span>
-<span id="cb10-2"><a></a>    Debug.Print Now, <span class="st">"Start"</span></span>
-<span id="cb10-3"><a></a>    <span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb10-4"><a></a>    <span class="kw">For </span>i = 1 <span class="kw">To</span> 3</span>
-<span id="cb10-5"><a></a>        Debug.Print <span class="st">"i="</span>, i</span>
-<span id="cb10-6"><a></a>    <span class="kw">Next</span></span>
-<span id="cb10-7"><a></a>    Debug.Print Now, <span class="st">"End"</span></span>
-<span id="cb10-8"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h2 id="how-to-inspect-variables-live">How to inspect variables live</h2>
+<ul>
+<li>Use the Locals window (View → Locals Window) to see all local variables and their current values when paused at a breakpoint.</li>
+<li>Not all variables may have their values shown in the Locals window, especially if they are complex objects or if the code is not currently within the scope where the variable is defined.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb11-1"><a></a><span class="kw">Sub </span>Trace()</span>
+<span id="cb11-2"><a></a>   <span class="kw">Dim</span> c <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb11-3"><a></a>    <span class="kw">For </span>c = 1 <span class="kw">To</span> 10</span>
+<span id="cb11-4"><a></a>        c = c + 1</span>
+<span id="cb11-5"><a></a>    <span class="kw">Next </span>c</span>
+<span id="cb11-6"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Tip: Reproduce fast; isolate into small test Subs; comment out non-essential code while debugging</li>
 </ul>
 </section>
-<section id="do-while-do-until" class="slide level2">
-<h2>Do While / Do Until</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb11-1"><a></a><span class="kw">Dim</span> r <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb11-2"><a></a>r = 1</span>
-<span id="cb11-3"><a></a><span class="kw">Do While </span>Cells(r, 1).Value &lt;&gt; <span class="st">""</span></span>
-<span id="cb11-4"><a></a>    Cells(r, 2).Value = Len(Cells(r, 1).Value)</span>
-<span id="cb11-5"><a></a>    r = r + 1</span>
-<span id="cb11-6"><a></a><span class="kw">Loop</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="do-while-do-until">Do While / Do Until</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb12-1"><a></a><span class="kw">Dim</span> r <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb12-2"><a></a>r = 1</span>
+<span id="cb12-3"><a></a><span class="kw">Do While </span>Cells(r, 1).Value &lt;&gt; <span class="st">""</span></span>
+<span id="cb12-4"><a></a>    Cells(r, 2).Value = Len(Cells(r, 1).Value)</span>
+<span id="cb12-5"><a></a>    r = r + 1</span>
+<span id="cb12-6"><a></a><span class="kw">Loop</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>Do While condition ... Loop</code>: runs while condition is True</li>
 <li><code>Do Until condition ... Loop</code>: runs until condition becomes True</li>
 <li>Prefer guard rails: increment counters, add max-iteration safety to avoid infinite loops</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb12-1"><a></a><span class="kw">Dim</span> tries <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb12-2"><a></a>tries = 0</span>
-<span id="cb12-3"><a></a><span class="kw">Do</span></span>
-<span id="cb12-4"><a></a>    tries = tries + 1</span>
-<span id="cb12-5"><a></a>    <span class="kw">If </span>tries &gt; 1000 <span class="kw">Then</span> Exit <span class="kw">Do </span><span class="co">' safety</span></span>
-<span id="cb12-6"><a></a>    <span class="co">' ... work ...</span></span>
-<span id="cb12-7"><a></a><span class="kw">Loop </span>Until Application.CountA(Range(<span class="st">"A1:A10"</span>)) = 10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb13-1"><a></a><span class="kw">Dim</span> tries <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb13-2"><a></a>tries = 0</span>
+<span id="cb13-3"><a></a><span class="kw">Do</span></span>
+<span id="cb13-4"><a></a>    tries = tries + 1</span>
+<span id="cb13-5"><a></a>    <span class="kw">If </span>tries &gt; 1000 <span class="kw">Then</span> Exit <span class="kw">Do </span><span class="co">' safety</span></span>
+<span id="cb13-6"><a></a>    <span class="co">' ... work ...</span></span>
+<span id="cb13-7"><a></a><span class="kw">Loop </span>Until Application.CountA(Range(<span class="st">"A1:A10"</span>)) = 10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Tip: Choose <code>For</code> when you know counts, <code>For Each</code> for collections, <code>Do While/Until</code> for condition-driven loops</li>
 </ul>
 </section>
-<section id="inputbox-and-msgbox" class="slide level2">
-<h2>InputBox and MsgBox</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb13-1"><a></a><span class="kw">Dim</span> name <span class="kw">As</span> <span class="dt">String</span></span>
-<span id="cb13-2"><a></a>name = InputBox(<span class="st">"Your name?"</span>)</span>
-<span id="cb13-3"><a></a>MsgBox <span class="st">"Hi "</span> &amp; name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="inputbox-and-msgbox">InputBox and MsgBox</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb14-1"><a></a><span class="kw">Dim</span> name <span class="kw">As</span> <span class="dt">String</span></span>
+<span id="cb14-2"><a></a>name = InputBox(<span class="st">"Your name?"</span>)</span>
+<span id="cb14-3"><a></a>MsgBox <span class="st">"Hi "</span> &amp; name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Simple UI for quick interactions</li>
 </ul>
 <p>Advanced: prompt for a Range safely</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb14-1"><a></a><span class="kw">Sub </span>PickRange()</span>
-<span id="cb14-2"><a></a>    <span class="kw">Dim</span> rng <span class="kw">As</span> Range</span>
-<span id="cb14-3"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">Resume</span> <span class="kw">Next</span></span>
-<span id="cb14-4"><a></a>    <span class="kw">Set </span>rng = Application.InputBox(<span class="st">"Select a range"</span>, Type:=8)</span>
-<span id="cb14-5"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> 0</span>
-<span id="cb14-6"><a></a>    <span class="kw">If </span>rng Is <span class="kw">Nothing</span> <span class="kw">Then</span></span>
-<span id="cb14-7"><a></a>        MsgBox <span class="st">"No selection"</span></span>
-<span id="cb14-8"><a></a>    <span class="kw">Else</span></span>
-<span id="cb14-9"><a></a>        MsgBox <span class="st">"You picked "</span> &amp; rng.Address</span>
-<span id="cb14-10"><a></a>    <span class="kw">End If</span></span>
-<span id="cb14-11"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb15-1"><a></a><span class="kw">Sub </span>PickRange()</span>
+<span id="cb15-2"><a></a>    <span class="kw">Dim</span> rng <span class="kw">As</span> Range</span>
+<span id="cb15-3"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">Resume</span> <span class="kw">Next</span></span>
+<span id="cb15-4"><a></a>    <span class="kw">Set </span>rng = Application.InputBox(<span class="st">"Select a range"</span>, Type:=8)</span>
+<span id="cb15-5"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> 0</span>
+<span id="cb15-6"><a></a>    <span class="kw">If </span>rng Is <span class="kw">Nothing</span> <span class="kw">Then</span></span>
+<span id="cb15-7"><a></a>        MsgBox <span class="st">"No selection"</span></span>
+<span id="cb15-8"><a></a>    <span class="kw">Else</span></span>
+<span id="cb15-9"><a></a>        MsgBox <span class="st">"You picked "</span> &amp; rng.Address</span>
+<span id="cb15-10"><a></a>    <span class="kw">End If</span></span>
+<span id="cb15-11"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="recording-vs-writing-by-hand" class="slide level2">
-<h2>Recording vs writing by hand</h2>
+<section class="slide level1">
+
+<h2 id="arrays-static-vs-dynamic">Arrays (static vs dynamic)</h2>
 <ul>
-<li>Recorder shows object model usage</li>
-<li>Hand‑writing gives cleaner, faster code</li>
-<li>Use both: record → refactor</li>
+<li>An array is a collection of values indexed by number.</li>
+<li><code>Static</code> arrays have fixed size; <code>Dynamic</code> arrays can be resized with <code>ReDim</code>.</li>
 </ul>
-</section>
-<section id="arrays-static-vs-dynamic" class="slide level2">
-<h2>Arrays (static vs dynamic)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb15-1"><a></a><span class="co">' Static array (fixed size)</span></span>
-<span id="cb15-2"><a></a><span class="kw">Dim</span> a(1 <span class="kw">To</span> 5) <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb15-3"><a></a>a(1) = 10</span>
-<span id="cb15-4"><a></a></span>
-<span id="cb15-5"><a></a><span class="co">' Dynamic array (resize later)</span></span>
-<span id="cb15-6"><a></a><span class="kw">Dim</span> b() <span class="kw">As</span> <span class="dt">Double</span></span>
-<span id="cb15-7"><a></a><span class="kw">ReDim</span> b(1 <span class="kw">To</span> 3)</span>
-<span id="cb15-8"><a></a>b(3) = 1.23</span>
-<span id="cb15-9"><a></a><span class="kw">ReDim</span> Preserve b(1 <span class="kw">To</span> 5) <span class="co">' keep existing values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb16-1"><a></a><span class="co">' Static array (fixed size)</span></span>
+<span id="cb16-2"><a></a><span class="kw">Dim</span> a(1 <span class="kw">To</span> 5) <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb16-3"><a></a>a(1) = 10</span>
+<span id="cb16-4"><a></a></span>
+<span id="cb16-5"><a></a><span class="co">' Dynamic array (resize later)</span></span>
+<span id="cb16-6"><a></a><span class="kw">Dim</span> b() <span class="kw">As</span> <span class="dt">Double</span></span>
+<span id="cb16-7"><a></a><span class="kw">ReDim</span> b(1 <span class="kw">To</span> 3)</span>
+<span id="cb16-8"><a></a>b(3) = 1.23</span>
+<span id="cb16-9"><a></a><span class="kw">ReDim</span> Preserve b(1 <span class="kw">To</span> 5) <span class="co">' keep existing values</span></span>
+<span id="cb16-10"><a></a><span class="kw">ReDim</span> b(1 <span class="kw">To</span> 2) <span class="co">' loses existing values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Static arrays: fastest, but fixed bounds</li>
-<li>Dynamic arrays: <code>ReDim</code> to set size; <code>ReDim Preserve</code> to keep values (only last dimension can be preserved)</li>
-<li>Bounds defaults: if unspecified, VBA uses zero-based; prefer explicit <code>1 To N</code> for clarity</li>
+<li>Dynamic arrays: <code>ReDim</code> to set size; <code>ReDim Preserve</code> to keep values.</li>
+<li>Bounds defaults: if unspecified, VBA uses zero-based indexing; prefer explicit <code>1 To N</code> for clarity</li>
+<li>Many programming languages use zero-based indexing; VBA defaults to zero-based if no bounds are specified, but using <code>1 To N</code> is clearer for Excel users.</li>
 </ul>
 </section>
-<section id="collections-and-dictionary" class="slide level2">
-<h2>Collections and Dictionary</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb16-1"><a></a><span class="co">' Collection (built-in)</span></span>
-<span id="cb16-2"><a></a><span class="kw">Dim</span> coll <span class="kw">As</span> <span class="kw">New</span> Collection</span>
-<span id="cb16-3"><a></a>coll.Add <span class="st">"Alice"</span></span>
-<span id="cb16-4"><a></a>coll.Add <span class="st">"Bob"</span></span>
-<span id="cb16-5"><a></a><span class="kw">Dim</span> item <span class="kw">As</span> Variant</span>
-<span id="cb16-6"><a></a><span class="kw">For </span>Each item In coll</span>
-<span id="cb16-7"><a></a>    Debug.Print item</span>
-<span id="cb16-8"><a></a><span class="kw">Next</span></span>
-<span id="cb16-9"><a></a></span>
-<span id="cb16-10"><a></a><span class="co">' Scripting.Dictionary (Windows; add reference or late-bind)</span></span>
-<span id="cb16-11"><a></a><span class="kw">Dim</span> dict <span class="kw">As</span> <span class="dt">Object</span></span>
-<span id="cb16-12"><a></a><span class="kw">Set </span>dict = CreateObject(<span class="st">"Scripting.Dictionary"</span>)</span>
-<span id="cb16-13"><a></a>dict(<span class="st">"FR"</span>) = <span class="st">"France"</span></span>
-<span id="cb16-14"><a></a>dict(<span class="st">"ES"</span>) = <span class="st">"Spain"</span></span>
-<span id="cb16-15"><a></a><span class="kw">If </span>dict.Exists(<span class="st">"FR"</span>) <span class="kw">Then</span> Debug.Print dict(<span class="st">"FR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="collections-and-dictionary">Collections and Dictionary</h2>
+<ul>
+<li>Two main collection types: <code>Collection</code> (built-in) and <code>Scripting.Dictionary</code> (Windows).</li>
+<li>Collections have no fixed size; Dictionaries map keys to values.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb17-1"><a></a><span class="co">' Collection (built-in)</span></span>
+<span id="cb17-2"><a></a><span class="kw">Dim</span> coll <span class="kw">As</span> <span class="kw">New</span> Collection</span>
+<span id="cb17-3"><a></a>coll.Add <span class="st">"Alice"</span></span>
+<span id="cb17-4"><a></a>coll.Add <span class="st">"Bob"</span></span>
+<span id="cb17-5"><a></a><span class="kw">Dim</span> item <span class="kw">As</span> Variant</span>
+<span id="cb17-6"><a></a><span class="kw">For </span>Each item In coll</span>
+<span id="cb17-7"><a></a>    Debug.Print item</span>
+<span id="cb17-8"><a></a><span class="kw">Next</span></span>
+<span id="cb17-9"><a></a></span>
+<span id="cb17-10"><a></a><span class="co">' Scripting.Dictionary (Windows)</span></span>
+<span id="cb17-11"><a></a><span class="kw">Dim</span> dict <span class="kw">As</span> <span class="dt">Object</span></span>
+<span id="cb17-12"><a></a><span class="kw">Set </span>dict = CreateObject(<span class="st">"Scripting.Dictionary"</span>)</span>
+<span id="cb17-13"><a></a>dict(<span class="st">"FR"</span>) = <span class="st">"France"</span></span>
+<span id="cb17-14"><a></a>dict(<span class="st">"ES"</span>) = <span class="st">"Spain"</span></span>
+<span id="cb17-15"><a></a><span class="kw">If </span>dict.Exists(<span class="st">"FR"</span>) <span class="kw">Then</span> Debug.Print dict(<span class="st">"FR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Collection: ordered, allows duplicates, 1-based indexing via <code>Item</code></li>
 <li>Dictionary: key→value map, fast lookup; on Mac, available via AppleScript support but often easiest to simulate with <code>Collection</code> or use array lookups</li>
 <li>Tip: For portability, prefer <code>Collection</code> or arrays unless you really need keyed lookup</li>
+<li><code>Dim</code> vs <code>Set', Dim declares a variable;</code>Set` assigns an object reference.</li>
+<li>An object reference points to an instance of an object (like a <code>Collection</code> or <code>Dictionary</code>).</li>
 </ul>
 </section>
-<section id="subs-vs-functions-udfs" class="slide level2">
-<h2>Subs vs Functions (UDFs)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb17-1"><a></a><span class="co">' Sub performs actions</span></span>
-<span id="cb17-2"><a></a><span class="kw">Sub </span>ClearData()</span>
-<span id="cb17-3"><a></a>    Worksheets(<span class="st">"Sheet1"</span>).Range(<span class="st">"A2:D1000"</span>).ClearContents</span>
-<span id="cb17-4"><a></a><span class="kw">End Sub</span></span>
-<span id="cb17-5"><a></a></span>
-<span id="cb17-6"><a></a><span class="co">' Function returns a value (UDF)</span></span>
-<span id="cb17-7"><a></a><span class="kw">Public</span> <span class="kw">Function </span>AddTax(amount <span class="kw">As</span> <span class="dt">Double</span>, rate <span class="kw">As</span> <span class="dt">Double</span>) <span class="kw">As</span> <span class="dt">Double</span></span>
-<span id="cb17-8"><a></a>    AddTax = amount * (1 + rate)</span>
-<span id="cb17-9"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="object-references">Object references</h2>
+<ul>
+<li>If you modify an object through one reference, the changes are reflected when accessing it through another reference.</li>
+</ul>
+<p>Example</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb18-1"><a></a><span class="kw">Dim</span> coll1 <span class="kw">As</span> <span class="kw">New</span> Collection</span>
+<span id="cb18-2"><a></a><span class="kw">Dim</span> coll2 <span class="kw">As</span> Collection</span>
+<span id="cb18-3"><a></a><span class="kw">Set </span>coll2 = coll1 <span class="co">' coll2 now references the same Collection as coll1</span></span>
+<span id="cb18-4"><a></a>coll1.Add <span class="st">"Item1"</span></span>
+<span id="cb18-5"><a></a>Debug.Print coll2.Count <span class="co">' Outputs 1, as coll2 references the same Collection</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level1">
+
+<h2 id="subs-vs-functions-user-defined-functions---udfs">Subs vs Functions (User Defined Functions - UDFs)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb19-1"><a></a><span class="co">' Sub performs actions</span></span>
+<span id="cb19-2"><a></a><span class="kw">Sub </span>ClearData()</span>
+<span id="cb19-3"><a></a>    Worksheets(<span class="st">"Sheet1"</span>).Range(<span class="st">"A2:D1000"</span>).ClearContents</span>
+<span id="cb19-4"><a></a><span class="kw">End Sub</span></span>
+<span id="cb19-5"><a></a></span>
+<span id="cb19-6"><a></a><span class="co">' Function returns a value (UDF) name the variable that captures the return value as the function name</span></span>
+<span id="cb19-7"><a></a><span class="kw">Public</span> <span class="kw">Function </span>AddTax(amount <span class="kw">As</span> <span class="dt">Double</span>, rate <span class="kw">As</span> <span class="dt">Double</span>) <span class="kw">As</span> <span class="dt">Double</span></span>
+<span id="cb19-8"><a></a>    AddTax = amount * (1 + rate)</span>
+<span id="cb19-9"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>Sub</code>: run from VBE, buttons, or macros dialog; can modify workbook state</li>
 <li><code>Function</code>: returns a value; can be used in worksheet cells as a UDF</li>
-<li>UDF caveats: should be pure (no side effects UI/file I/O) for worksheet recalculation; otherwise Excel may return <code>#VALUE!</code></li>
+<li>UDF caveats: should be pure (function of inputs only); avoid side effects (changing sheets)</li>
+<li>For security UDFs are not allowed to modify the Excel environment (e.g., changing cell values, formatting, or interacting with other applications). They should only compute and return values based on their input parameters.</li>
 </ul>
 </section>
-<section id="worksheetfunction-and-application-helpers" class="slide level2">
-<h2>WorksheetFunction and Application helpers</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb18-1"><a></a><span class="co">' WorksheetFunction raises errors on failure</span></span>
-<span id="cb18-2"><a></a><span class="kw">Dim</span> pos <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb18-3"><a></a>pos = Application.WorksheetFunction.Match(<span class="st">"Key"</span>, Range(<span class="st">"A1:A100"</span>), 0)</span>
-<span id="cb18-4"><a></a></span>
-<span id="cb18-5"><a></a><span class="co">' Safer pattern: Application.Match returns Variant (Error when not found)</span></span>
-<span id="cb18-6"><a></a><span class="kw">Dim</span> v <span class="kw">As</span> Variant</span>
-<span id="cb18-7"><a></a>v = Application.Match(<span class="st">"Key"</span>, Range(<span class="st">"A1:A100"</span>), 0)</span>
-<span id="cb18-8"><a></a><span class="kw">If </span>IsError(v) <span class="kw">Then</span></span>
-<span id="cb18-9"><a></a>    MsgBox <span class="st">"Not found"</span></span>
-<span id="cb18-10"><a></a><span class="kw">Else</span></span>
-<span id="cb18-11"><a></a>    pos = CLng(v)</span>
-<span id="cb18-12"><a></a><span class="kw">End If</span></span>
-<span id="cb18-13"><a></a></span>
-<span id="cb18-14"><a></a><span class="co">' Other useful helpers</span></span>
-<span id="cb18-15"><a></a><span class="kw">Dim</span> sumA <span class="kw">As</span> <span class="dt">Double</span></span>
-<span id="cb18-16"><a></a>sumA = Application.WorksheetFunction.Sum(Range(<span class="st">"A1:A10"</span>))</span>
-<span id="cb18-17"><a></a><span class="kw">Dim</span> nonEmpty <span class="kw">As</span> <span class="dt">Long</span></span>
-<span id="cb18-18"><a></a>nonEmpty = Application.WorksheetFunction.CountA(Range(<span class="st">"A:A"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="the-workbook-worksheet-and-worksheetfunction-objects">The <code>Workbook</code>, <code>Worksheet</code> and <code>WorksheetFunction</code> objects</h2>
 <ul>
-<li>Prefer <code>Application.Match</code> for lookup to avoid runtime errors; check with <code>IsError</code></li>
-<li>Many Excel functions are available via <code>WorksheetFunction</code></li>
-</ul>
-</section>
-<section id="win-vs-mac-differences-overview" class="slide level2">
-<h2>Win vs Mac differences (overview)</h2>
+<li>Each workbook and worksheet has its own code module (ThisWorkbook, Sheet1, etc.)</li>
+<li>They allow access to events (open, close, change, etc.)</li>
+<li>They also allow access to standard excel formulas.</li>
+<li>Use <code>ThisWorkbook</code> to refer to the workbook containing the code.</li>
+<li>Some common events:
 <ul>
-<li>Shortcuts (Alt vs Option), some dialogs differ</li>
-<li>File system paths differ</li>
-<li>Many object model calls are the same</li>
+<li><code>Workbook_Open</code>: runs when the workbook opens</li>
+<li><code>Workbook_BeforeClose</code>: runs before the workbook closes</li>
+<li><code>Worksheet_Change</code>: runs when a cell value changes in that sheet</li>
+</ul></li>
+<li>This is the main reason why Office applications ask to enable macros when opening files with VBA code.</li>
 </ul>
-<p>Details that matter: - Paths: Windows uses <code>C:\Users\...\file.xlsx</code>; Mac uses <code>/Users/you/file.xlsx</code>; combine with <code>Application.PathSeparator</code> - File dialogs: <code>Application.FileDialog(msoFileDialogFilePicker)</code> works on both, but filters and default folders behave slightly differently - API calls: Windows allows <code>Declare PtrSafe Function</code> to call Win32 APIs; Mac lacks Win32 — avoid OS API calls for portability - Add‑ins: <code>.xlam</code> works both; COM add‑ins are Windows‑only</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb20-1"><a></a><span class="kw">Private</span> <span class="kw">Sub </span>Workbook_Open()</span>
+<span id="cb20-2"><a></a>    MsgBox <span class="st">"Welcome!"</span></span>
+<span id="cb20-3"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="personal-macro-workbook" class="slide level2">
-<h2>Personal Macro Workbook</h2>
-<ul>
-<li>Store macros globally</li>
-<li>Lives as PERSONAL.XLSB</li>
-<li>Great for universal utilities</li>
-</ul>
-<p>Create it: Record a macro and choose “Personal Macro Workbook” → Excel creates PERSONAL.XLSB automatically Locations - Windows: <code>%APPDATA%\Microsoft\Excel\XLStart\PERSONAL.XLSB</code> - Mac: <code>~/Library/Group Containers/UBF8T346G9.Office/User Content/Startup/Excel/PERSONAL.XLSB</code> Tips - Make a backup before migrating; copy the file to the same XLStart location on another machine - Show/Hide: View → Unhide/Hide (PERSONAL.XLSB)</p>
-</section>
-<section id="error-handling-basics" class="slide level2">
-<h2>Error handling basics</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb19-1"><a></a><span class="kw">Sub </span>DoWork()</span>
-<span id="cb19-2"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> CleanUp</span>
-<span id="cb19-3"><a></a>    <span class="kw">Dim</span> prevCalc <span class="kw">As</span> XlCalculation</span>
-<span id="cb19-4"><a></a>    prevCalc = Application.Calculation</span>
-<span id="cb19-5"><a></a>    Application.ScreenUpdating = <span class="kw">False</span></span>
-<span id="cb19-6"><a></a>    Application.EnableEvents = <span class="kw">False</span></span>
-<span id="cb19-7"><a></a>    Application.Calculation = xlCalculationManual</span>
-<span id="cb19-8"><a></a></span>
-<span id="cb19-9"><a></a>    <span class="co">' ... risky code here ...</span></span>
-<span id="cb19-10"><a></a></span>
-<span id="cb19-11"><a></a>Done:</span>
-<span id="cb19-12"><a></a>    Application.Calculation = prevCalc</span>
-<span id="cb19-13"><a></a>    Application.EnableEvents = <span class="kw">True</span></span>
-<span id="cb19-14"><a></a>    Application.ScreenUpdating = <span class="kw">True</span></span>
-<span id="cb19-15"><a></a>    <span class="kw">Exit Sub</span></span>
-<span id="cb19-16"><a></a></span>
-<span id="cb19-17"><a></a>CleanUp:</span>
-<span id="cb19-18"><a></a>    MsgBox <span class="st">"Error "</span> &amp; Err.Number &amp; <span class="st">": "</span> &amp; Err.Description, vbExclamation, <span class="st">"DoWork"</span></span>
-<span id="cb19-19"><a></a>    <span class="kw">Resume</span> Done</span>
-<span id="cb19-20"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="access-to-standard-excel-formulas">Access to standard Excel formulas</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb21-1"><a></a><span class="kw">Sub </span>UseExcelFunction()</span>
+<span id="cb21-2"><a></a>    <span class="kw">Dim</span> result <span class="kw">As</span> <span class="dt">Double</span></span>
+<span id="cb21-3"><a></a>    result = Application.WorksheetFunction.Sum(Range(<span class="st">"A1:A10"</span>))</span>
+<span id="cb21-4"><a></a>    MsgBox <span class="st">"Sum is "</span> &amp; result</span>
+<span id="cb21-5"><a></a><span class="kw">End Sub</span></span>
+<span id="cb21-6"><a></a>---</span>
+<span id="cb21-7"><a></a></span>
+<span id="cb21-8"><a></a>## Win vs Mac differences (overview)</span>
+<span id="cb21-9"><a></a></span>
+<span id="cb21-10"><a></a>- Shortcuts (Alt vs <span class="kw">Option</span>), some dialogs differ</span>
+<span id="cb21-11"><a></a>- File system paths differ</span>
+<span id="cb21-12"><a></a>- Many <span class="dt">object</span> model calls are the same</span>
+<span id="cb21-13"><a></a></span>
+<span id="cb21-14"><a></a>Details that matter:</span>
+<span id="cb21-15"><a></a>- Paths: Windows uses `C:\Users\...\file.xlsx`; Mac uses `/Users/you/file.xlsx`; combine with `Application.PathSeparator`</span>
+<span id="cb21-16"><a></a>- File dialogs: `Application.FileDialog(msoFileDialogFilePicker)` works <span class="kw">on</span> both, but filters <span class="kw">and</span> <span class="kw">default</span> folders behave slightly differently</span>
+<span id="cb21-17"><a></a>- API calls: Windows allows `Declare PtrSafe Function` <span class="kw">to</span> <span class="kw">call</span> Win32 APIs; Mac lacks Win32 — avoid OS API calls <span class="kw">for </span>portability</span>
+<span id="cb21-18"><a></a>- Add‑ins: `.xlam` works both; COM add‑ins are Windows‑only</span>
+<span id="cb21-19"><a></a></span>
+<span id="cb21-20"><a></a>---</span>
+<span id="cb21-21"><a></a></span>
+<span id="cb21-22"><a></a>## <span class="kw">Error</span> handling basics</span>
+<span id="cb21-23"><a></a></span>
+<span id="cb21-24"><a></a>```vb</span>
+<span id="cb21-25"><a></a><span class="kw">Sub </span>DoWork()</span>
+<span id="cb21-26"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> CleanUp <span class="co">' jump to CleanUp on error</span></span>
+<span id="cb21-27"><a></a>    <span class="co">' ... risky code here ...</span></span>
+<span id="cb21-28"><a></a></span>
+<span id="cb21-29"><a></a>Done:</span>
+<span id="cb21-30"><a></a>    <span class="co">' What to do when done</span></span>
+<span id="cb21-31"><a></a>    <span class="kw">Exit Sub</span></span>
+<span id="cb21-32"><a></a></span>
+<span id="cb21-33"><a></a>CleanUp:</span>
+<span id="cb21-34"><a></a>    MsgBox <span class="st">"Error "</span> &amp; Err.Number &amp; <span class="st">": "</span> &amp; Err.Description, vbExclamation, <span class="st">"DoWork"</span></span>
+<span id="cb21-35"><a></a>    <span class="kw">Resume</span> Done</span>
+<span id="cb21-36"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Start simple; add structure as you grow</li>
 </ul>
 </section>
-<section id="events-basics-workbook-worksheet" class="slide level2">
-<h2>Events basics (Workbook, Worksheet)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb20-1"><a></a><span class="co">' In ThisWorkbook code-behind</span></span>
-<span id="cb20-2"><a></a><span class="kw">Private</span> <span class="kw">Sub </span>Workbook_Open()</span>
-<span id="cb20-3"><a></a>    MsgBox <span class="st">"Welcome!"</span></span>
-<span id="cb20-4"><a></a><span class="kw">End Sub</span></span>
-<span id="cb20-5"><a></a></span>
-<span id="cb20-6"><a></a><span class="co">' In a Sheet module (e.g., Sheet1)</span></span>
-<span id="cb20-7"><a></a><span class="kw">Private</span> <span class="kw">Sub </span>Worksheet_Change(<span class="kw">ByVal</span> Target <span class="kw">As</span> Range)</span>
-<span id="cb20-8"><a></a>    <span class="kw">On</span> <span class="kw">Error</span> <span class="kw">GoTo</span> Done</span>
-<span id="cb20-9"><a></a>    <span class="kw">If </span>Intersect(Target, <span class="kw">Me</span>.Range(<span class="st">"A:A"</span>)) Is <span class="kw">Nothing</span> <span class="kw">Then</span> <span class="kw">Exit Sub</span></span>
-<span id="cb20-10"><a></a>    Application.EnableEvents = <span class="kw">False</span></span>
-<span id="cb20-11"><a></a>    Target.Offset(0, 1).Value = UCase$(Target.Value)</span>
-<span id="cb20-12"><a></a>Done:</span>
-<span id="cb20-13"><a></a>    Application.EnableEvents = <span class="kw">True</span></span>
-<span id="cb20-14"><a></a><span class="kw">End Sub</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section class="slide level1">
+
+<h2 id="variable-types">Variable Types</h2>
 <ul>
-<li>Place event code in the correct object module (<code>ThisWorkbook</code>, specific <code>Sheet</code>)</li>
-<li>Always guard with <code>Application.EnableEvents = False/True</code> inside change events</li>
-<li>Add quick exit guards with <code>Intersect</code> to limit scope</li>
+<li><code>Integer</code>: -32,768 to 32,767 (2 bytes)</li>
+<li><code>Long</code>: -2,147,483,648 to 2,147,483,647 (4 bytes)</li>
+<li><code>Single</code>: Single-precision floating point (4 bytes)</li>
+<li><code>Double</code>: Double-precision floating point (8 bytes)</li>
+<li><code>String</code>: Text (up to ~2 billion characters)</li>
+<li><code>Boolean</code>: True/False (2 bytes)</li>
+<li><code>Date</code>: Dates and times (8 bytes)</li>
+<li><code>Variant</code>: Can hold any type; default if no type specified (16 bytes + data)</li>
+<li>Prefer explicit types for clarity and performance; <code>Variant</code> is flexible but slower and uses more memory</li>
+<li>Not all types are available on Mac.</li>
 </ul>
 </section>
-<section id="best-practices-cheatsheet" class="slide level2">
-<h2>Best practices cheat‑sheet</h2>
+<section class="slide level1">
+
+<h2 id="your-first-serious-program-exercise-in-class">Your first serious program (exercise in class)</h2>
 <ul>
-<li>Option Explicit</li>
-<li>Avoid Select/Activate</li>
-<li>Name ranges; avoid magic coordinates</li>
-<li>Comment intent, not the obvious</li>
+<li>For your first exercise you are going to estimate the value of <span class="math inline">\(\pi\)</span> using a Monte Carlo method.</li>
+<li>Imagin e a square of side 2 (from -1 to 1 in both x and y) that contains a circle of radius 1.</li>
+<li>The area of the square is 4, and the area of the circle is <span class="math inline">\(\pi\)</span>.</li>
+<li>You are going to randomly generate points in the square, and count how many fall inside the circle as a fraction of the total points.</li>
+<li>This fraction multiplied by 4 will give you an estimate of <span class="math inline">\(\pi\)</span>.</li>
 </ul>
-</section>
-<section id="miniexercise-1" class="slide level2">
-<h2>Mini‑exercise 1</h2>
-<ul>
-<li>Record a macro that formats a header row</li>
-<li>Then rewrite it to avoid Select/Activate</li>
-<li>Compare line count and clarity</li>
-</ul>
-</section>
-<section id="miniexercise-2" class="slide level2">
-<h2>Mini‑exercise 2</h2>
-<ul>
-<li>Write a Sub that fills A1:A20 with squares of 1..20</li>
-<li>Show a MsgBox when done</li>
-</ul>
-</section>
-<section id="where-to-find-help" class="slide level2">
-<h2>Where to find help</h2>
-<ul>
-<li>Object Browser (F2), MSDN docs, community forums</li>
-<li>Read recorded macros and simplify</li>
-</ul>
-</section>
-<section id="common-pitfalls-vba-newcomers" class="slide level2">
-<h2>Common pitfalls (VBA newcomers)</h2>
-<ul>
-<li>Relying on Select/Activate everywhere → fragile</li>
-<li>Not using Option Explicit → typos hide bugs</li>
-<li>Hard‑coding sheet names/paths → parameterize</li>
-</ul>
-</section>
-<section id="keyboard-shortcuts-winmac" class="slide level2">
-<h2>Keyboard shortcuts (Win/Mac)</h2>
-<ul>
-<li>Open VBE: Alt+F11 (Win), Option+F11 (Mac)</li>
-<li>Run macro: Alt+F8 (Win/Mac)</li>
-<li>Step through: F8 (Win/Mac)</li>
-</ul>
-</section>
-<section id="object-model-mental-model" class="slide level2">
-<h2>Object model mental model</h2>
-<ul>
-<li>Application → Workbooks → Worksheets → Range</li>
-<li>Think nested boxes; qualify references from outer to inner</li>
-</ul>
-</section>
-<section id="little-refactor-challenge" class="slide level2">
-<h2>Little refactor challenge</h2>
-<ul>
-<li>Record a macro; then: remove Select, add Option Explicit</li>
-<li>Use With blocks and qualified references</li>
-</ul>
-</section>
-<section id="quick-cheatsheet" class="slide level2">
-<h2>Quick cheat‑sheet</h2>
-<ul>
-<li>Range(“A1”).Value, Cells(r, c).Value</li>
-<li>.CurrentRegion, .UsedRange</li>
-<li>MsgBox, InputBox</li>
-</ul>
-</section>
-<section id="mini-case-study" class="slide level2">
-<h2>Mini case study</h2>
-<ul>
-<li>Monthly report cleanup: record → refactor → parameterize sheet</li>
-<li>Add error handling and performance toggles</li>
-</ul>
-</section>
-<section id="image-credits" class="slide level2">
-<h2>Image credits</h2>
-<ul>
-<li>Excel (Windows) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/a8/Excel_2010.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.</li>
-<li>Excel (Mac) UI screenshot: https://upload.wikimedia.org/wikipedia/en/a/ab/Excel_for_Mac_screenshot.png — Microsoft product screenshot via Wikipedia. Used with permission from Microsoft. No modifications beyond resizing.</li>
-<li>Visual Basic Editor screenshot: https://learn.microsoft.com/en-us/office/vba/images/5d9acd78-5168-4a0c-83b6-3f1e440bf649.png — Microsoft Learn. Used with permission from Microsoft. No modifications beyond resizing.</li>
-</ul>
+<p>Your task - Create a UDF <code>EstimatePi(n As Long) As Double</code> that takes the number of random points to generate as input, and returns the estimate of <span class="math inline">\(\pi\)</span>. - Use <code>x = Rnd</code> to generate random numbers between 0 and 1; scale it to -1 to 1. - Return the estimate. - Your function should be available in the worksheet as e.g.&nbsp;<code>=EstimatePi(10000)</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb22-1"><a></a><span class="kw">Function </span>EstimatePi(n <span class="kw">As</span> <span class="dt">Long</span>) <span class="kw">As</span> <span class="dt">Double</span></span>
+<span id="cb22-2"><a></a>    <span class="co">' your code here</span></span>
+<span id="cb22-3"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p>Intro to VBA and Python</p>
+
 </div>
 </div></div>
 
@@ -818,7 +848,6 @@ Similar options: enable with notification; manage access to Visual Basic project
   <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -840,8 +869,7 @@ Similar options: enable with notification; manage access to Visual Basic project
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1012,7 +1040,7 @@ Similar options: enable with notification; manage access to Visual Basic project
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
