@@ -1,0 +1,5 @@
+cd C:\Users\jfimb\Dropbox\VBAPython
+git add _site\slides\vba\01-intro-vba.html
+git add _site\slides\vba\02-vba-platforms-macros.html
+git commit -m "Add lecture index.html"
+git push
