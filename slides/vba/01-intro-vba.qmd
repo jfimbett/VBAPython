@@ -677,7 +677,19 @@ Your task
 
 ```vb
 Function EstimatePi(n As Long) As Double
-    ' your code here
+    Dim inside As Long
+    Dim i As Long
+    Dim x As Double, y As Double
+    inside = 0
+    'Randomize 'Optional Initialize random number generator
+    For i = 1 To n
+        x = Rnd * 2 - 1 ' Random x in [-1, 1]
+        y = Rnd * 2 - 1 ' Random y in [-1, 1]
+        If x * x + y * y <= 1 Then
+            inside = inside + 1
+        End If
+    Next i
+    EstimatePi = (inside / n) * 4 ' Estimate of pi
 End Function
 ```
 

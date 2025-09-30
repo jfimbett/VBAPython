@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.23">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
   <meta name="author" content="Juan F. Imbet">
   <title>Introduction to VBA and Python – VBA Session 1 — Introduction to VBA</title>
@@ -829,8 +829,20 @@ Similar options: enable with notification; manage access to Visual Basic project
 </ul>
 <p>Your task - Create a UDF <code>EstimatePi(n As Long) As Double</code> that takes the number of random points to generate as input, and returns the estimate of <span class="math inline">\(\pi\)</span>. - Use <code>x = Rnd</code> to generate random numbers between 0 and 1; scale it to -1 to 1. - Return the estimate. - Your function should be available in the worksheet as e.g.&nbsp;<code>=EstimatePi(10000)</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource vb number-lines code-with-copy"><code class="sourceCode monobasic"><span id="cb22-1"><a></a><span class="kw">Function </span>EstimatePi(n <span class="kw">As</span> <span class="dt">Long</span>) <span class="kw">As</span> <span class="dt">Double</span></span>
-<span id="cb22-2"><a></a>    <span class="co">' your code here</span></span>
-<span id="cb22-3"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-2"><a></a>    <span class="kw">Dim</span> inside <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb22-3"><a></a>    <span class="kw">Dim</span> i <span class="kw">As</span> <span class="dt">Long</span></span>
+<span id="cb22-4"><a></a>    <span class="kw">Dim</span> x <span class="kw">As</span> <span class="dt">Double</span>, y <span class="kw">As</span> <span class="dt">Double</span></span>
+<span id="cb22-5"><a></a>    inside = 0</span>
+<span id="cb22-6"><a></a>    <span class="co">'Randomize 'Optional Initialize random number generator</span></span>
+<span id="cb22-7"><a></a>    <span class="kw">For </span>i = 1 <span class="kw">To</span> n</span>
+<span id="cb22-8"><a></a>        x = Rnd * 2 - 1 <span class="co">' Random x in [-1, 1]</span></span>
+<span id="cb22-9"><a></a>        y = Rnd * 2 - 1 <span class="co">' Random y in [-1, 1]</span></span>
+<span id="cb22-10"><a></a>        <span class="kw">If </span>x * x + y * y &lt;= 1 <span class="kw">Then</span></span>
+<span id="cb22-11"><a></a>            inside = inside + 1</span>
+<span id="cb22-12"><a></a>        <span class="kw">End If</span></span>
+<span id="cb22-13"><a></a>    <span class="kw">Next </span>i</span>
+<span id="cb22-14"><a></a>    EstimatePi = (inside / n) * 4 <span class="co">' Estimate of pi</span></span>
+<span id="cb22-15"><a></a><span class="kw">End Function</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
