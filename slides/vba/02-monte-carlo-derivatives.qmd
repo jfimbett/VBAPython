@@ -1,6 +1,6 @@
 ---
- title: "VBA Session — Monte Carlo & Path‑Dependent Derivatives"
- subtitle: "From Binomial Trees to Monte Carlo for Exotic Options & Portfolio Risk"
+ title: "VBA Session — Monte Carlo & Path‑Dependent Claims"
+ subtitle: "Monte Carlo simulation for pricing"
  author: "Juan F. Imbet"
  institute: "Paris Dauphine University-PSL"
  format:
