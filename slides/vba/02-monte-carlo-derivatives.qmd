@@ -1,0 +1,415 @@
+---
+ title: "VBA Session — Monte Carlo & Path‑Dependent Derivatives"
+ subtitle: "From Binomial Trees to Monte Carlo for Exotic Options & Portfolio Risk"
+ author: "Juan F. Imbet"
+ institute: "Paris Dauphine University-PSL"
+ format:
+   revealjs:
+     slide-level: 1
+ include-in-header:
+   - ../../tikzjax.html
+---
+
+## Roadmap
+
+- Recap: Binomial tree & risk‑neutral measure
+- Why Monte Carlo (MC) when we already have trees?
+- Generating paths: recombining tree vs full simulation
+- Greeks ($\Delta$, $\Gamma$) with finite differences
+- Variance Reduction (Antithetic, Control Variate)
+- Portfolio risk (P/L distribution, VaR, ES) via MC
+- Implementation patterns in VBA (modular, arrays, memory)
+- Exercises / Extensions
+
+---
+
+## Motivation: When Trees Struggle
+
+- Recombining binomial tree great for early exercise & vanilla path‑independent payoffs.
+- Path‑dependent derivatives (Asian, Lookback, Barrier knock‑in/out) need the whole path S(0),...,S(T).
+- Tree state would need extra dimension (e.g., running average) → State explosion.
+- Monte Carlo simulates M independent sample paths under risk‑neutral dynamics.
+- Convergence rate: $O(1/\sqrt{M})$. Slow but dimension‑agnostic and easy to generalize.
+
+---
+
+## Risk‑Neutral Dynamics (Continuous Time)
+
+Under risk‑neutral measure $\mathbb{Q}$ for a dividend yield $q$ and risk‑free rate $r$:
+
+$$\frac{dS_t}{S_t} = (r - q)\,dt + \sigma \, dW_t$$
+
+Discretization (Euler / exact for GBM) over $\Delta t$:
+
+$$S_{t+\Delta t} = S_t \exp\Big( (r - q - \tfrac{1}{2}\sigma^2)\,\Delta t + \sigma \sqrt{\Delta t} Z \Big), \quad Z \sim \mathcal{N}(0,1)$$
+
+In VBA we approximate Normal via WorksheetFunction.Norm_S_Inv(Rnd) or a Box–Muller.
+
+---
+
+## From Binomial to MC — Consistency Check
+
+- Your tree used $u = e^{\sigma \sqrt{\Delta t}}$, $d = 1/u$ and $p^* = \dfrac{e^{(r-q)\Delta t} - d}{u-d}$.
+- For small $\Delta t$, one MC path step using GBM should give similar distribution of outcomes as many tree branches.
+- Calibration sanity: simulate many one‑step paths; sample mean $\approx S_0 e^{(r-q)\Delta t}$; sample var $\approx S_0^2 e^{2(r-q)\Delta t}\big(e^{\sigma^2 \Delta t}-1\big)$.
+
+---
+
+## Core MC Pricing Formula
+
+Let payoff be function of whole path: $f(S_0, S_1, \dots, S_N)$. Risk‑neutral price:
+
+$$V_0 = e^{-rT} \, \mathbb{E}^Q \big[ f(\text{path}) \big] \approx e^{-rT} \, \frac{1}{M} \sum_{m=1}^M f^{(m)}$$
+
+Monte Carlo Error (Std Err):
+
+$$\text{SE} = e^{-rT} \; \frac{\hat{\sigma}_f}{\sqrt{M}}$$
+
+where $\hat{\sigma}_f$ is sample std of discounted payoffs.
+
+Confidence Interval (95%): $\hat{V} \pm 1.96\, \text{SE}$.
+
+---
+
+## Path Generation in VBA
+
+We pre‑allocate a 2D array $\text{Paths}(0..N, 1..M)$ or simulate on the fly (memory ↔ flexibility trade‑off).
+
+Pseudo:
+
+```vb
+For m = 1 To M
+    S = S0
+    For j = 1 To N
+        Z = StdNormal()
+        S = S * Exp((r - q - 0.5 * sigma ^ 2) * dt + sigma * Sqr(dt) * Z)
+        ' store or update path aggregates
+    Next j
+Next m
+```
+
+Avoid using Cells in inner loops (slow). Use arrays + write out final results.
+
+---
+
+## Standard Normal Generator (Box–Muller)
+
+```vb
+Private Function StdNormal() As Double
+    ' Box-Muller transform using two uniforms
+    Dim u1 As Double, u2 As Double
+    u1 = Rnd: If u1 = 0# Then u1 = 0.000001
+    u2 = Rnd
+    StdNormal = Sqr(-2# * Log(u1)) * Cos(2# * Application.WorksheetFunction.Pi() * u2)
+End Function
+```
+
+- Call Randomize once at session start for different seeds.
+- Alternative: WorksheetFunction.Norm_S_Inv(Rnd) (slower, leverages Excel’s implementation).
+
+---
+
+## Example: European Call via MC (Benchmark)
+
+```vb
+Public Function MCEuroCall(S0 As Double, K As Double, r As Double, q As Double, _
+                           sigma As Double, T As Double, N As Long, M As Long) As Double
+    Dim dt As Double: dt = T / N
+    Dim disc As Double: disc = Exp(-r * T)
+    Dim drift As Double: drift = (r - q - 0.5 * sigma ^ 2) * dt
+    Dim volStep As Double: volStep = sigma * Sqr(dt)
+
+    Dim i As Long, j As Long
+    Dim S As Double, Z As Double
+    Dim payoffSum As Double, payoffSq As Double, payoff As Double
+
+    For i = 1 To M
+        S = S0
+        For j = 1 To N
+            Z = StdNormal()
+            S = S * Exp(drift + volStep * Z)
+        Next j
+        payoff = Application.Max(S - K, 0#)
+        payoffSum = payoffSum + payoff
+        payoffSq = payoffSq + payoff * payoff
+    Next i
+
+    Dim meanPayoff As Double
+    meanPayoff = payoffSum / M
+    MCEuroCall = disc * meanPayoff
+End Function
+```
+
+Use to validate vs closed‑form Black–Scholes for quality control.
+
+---
+
+## Black–Scholes Formula for European Call in VBA
+
+```vb
+Option Explicit
+
+'========================
+' Black–Scholes (Call)
+'========================
+Public Function BlackScholesCall( _
+    ByVal S0 As Double, _
+    ByVal K As Double, _
+    ByVal r As Double, _
+    ByVal q As Double, _
+    ByVal sigma As Double, _
+    ByVal T As Double) As Double
+    
+    Dim discR As Double, discQ As Double
+    Dim d1 As Double, d2 As Double
+    
+    ' Edge cases
+    If T <= 0# Then
+        BlackScholesCall = Application.Max(S0 - K, 0#)
+        Exit Function
+    End If
+    
+    If sigma <= 0# Then
+        ' Deterministic forward with zero vol
+        discR = Exp(-r * T)
+        discQ = Exp(-q * T)
+        BlackScholesCall = Application.Max(S0 * discQ - K * discR, 0#)
+        Exit Function
+    End If
+    
+    discR = Exp(-r * T)
+    discQ = Exp(-q * T)
+    
+    d1 = (Log(S0 / K) + (r - q + 0.5# * sigma * sigma) * T) / (sigma * Sqr(T))
+    d2 = d1 - sigma * Sqr(T)
+    
+    BlackScholesCall = S0 * discQ * CND(d1) - K * discR * CND(d2)
+End Function
+
+'========================
+' Standard normal CDF
+' (Abramowitz–Stegun 7.1.26 approximation)
+' Max abs error ~ 7.5e-8
+'========================
+Private Function CND(ByVal x As Double) As Double
+    Const p As Double = 0.2316419
+    Const b1 As Double = 0.319381530
+    Const b2 As Double = -0.356563782
+    Const b3 As Double = 1.781477937
+    Const b4 As Double = -1.821255978
+    Const b5 As Double = 1.330274429
+    
+    Dim t As Double, pdf As Double, k As Double, c As Double
+    Dim ax As Double
+    ax = Abs(x)
+    
+    t = 1# / (1# + p * ax)
+    pdf = Exp(-0.5# * ax * ax) / Sqr(2# * 3.1415926535897931#)
+    k = (((((b5 * t + b4) * t) + b3) * t + b2) * t + b1) * t
+    
+    c = 1# - pdf * k
+    If x >= 0# Then
+        CND = c
+    Else
+        CND = 1# - c
+    End If
+End Function
+```
+
+---
+
+## Path‑Dependent: Arithmetic Asian Call
+
+Payoff: $\max(A-K,0)$ with arithmetic average $A = \tfrac{1}{N} \sum_{j=1}^N S_j$.
+
+Efficient: accumulate running sum instead of storing full path.
+
+```vb
+Public Function MCAsianCall(S0 As Double, K As Double, r As Double, q As Double, _
+                             sigma As Double, T As Double, N As Long, M As Long) As Double
+    Dim dt As Double: dt = T / N
+    Dim disc As Double: disc = Exp(-r * T)
+    Dim drift As Double: drift = (r - q - 0.5 * sigma ^ 2) * dt
+    Dim volStep As Double: volStep = sigma * Sqr(dt)
+    Dim i As Long, j As Long
+    Dim S As Double, Z As Double
+    Dim sumS As Double, payoff As Double
+    Dim acc As Double
+
+    For i = 1 To M
+        S = S0: sumS = 0#
+        For j = 1 To N
+            Z = StdNormal()
+            S = S * Exp(drift + volStep * Z)
+            sumS = sumS + S
+        Next j
+        payoff = Application.Max(sumS / N - K, 0#)
+        acc = acc + payoff
+    Next i
+    MCAsianCall = disc * (acc / M)
+End Function
+```
+
+---
+
+## Barrier Option: Up‑and‑Out Call
+
+Payoff: $\max(S_T - K,0)$ if path never crosses barrier $B$ ($S_j < B\; \forall j$). Else $0$.
+
+```vb
+Public Function MCUpAndOutCall(S0 As Double, K As Double, B As Double, r As Double, q As Double, _
+                               sigma As Double, T As Double, N As Long, M As Long) As Double
+    Dim dt As Double
+    dt = T / N
+    Dim disc As Double
+    disc = Exp(-r * T)
+    Dim drift As Double
+    drift = (r - q - 0.5 * sigma ^ 2) * dt
+    Dim volStep As Double
+    volStep = sigma * Sqr(dt)
+    Dim i As Long, j As Long, knocked As Boolean
+    Dim S As Double, Z As Double, payoff As Double, acc As Double
+
+    For i = 1 To M
+        S = S0: knocked = False
+        For j = 1 To N
+            Z = StdNormal()
+            S = S * Exp(drift + volStep * Z)
+            If S >= B Then knocked = True: Exit For
+        Next j
+        If Not knocked Then
+            payoff = Application.Max(S - K, 0#)
+            acc = acc + payoff
+        End If
+    Next i
+    MCUpAndOutCall = disc * acc / M
+End Function
+```
+
+Note: Discrete monitoring; true continuous monitoring requires correction.
+
+---
+
+## Lookback (Fixed‑Strike) Call
+
+Payoff: $\max( M_T - K, 0 )$ with $M_T = \max_j S_j$.
+
+```vb
+Public Function MCLookbackCall(S0 As Double, K As Double, r As Double, q As Double, _
+                               sigma As Double, T As Double, N As Long, M As Long) As Double
+    Dim dt As Double
+    dt = T / N
+    Dim disc As Double
+    disc = Exp(-r * T)
+    Dim drift As Double
+    drift = (r - q - 0.5 * sigma ^ 2) * dt
+    Dim volStep As Double: volStep = sigma * Sqr(dt)
+    Dim i As Long, j As Long
+    Dim S As Double, Z As Double, maxS As Double, acc As Double
+
+    For i = 1 To M
+        S = S0: maxS = S0
+        For j = 1 To N
+            Z = StdNormal()
+            S = S * Exp(drift + volStep * Z)
+            If S > maxS Then maxS = S
+        Next j
+        acc = acc + Application.Max(maxS - K, 0#)
+    Next i
+    MCLookbackCall = disc * acc / M
+End Function
+```
+
+---
+
+## Greeks by Bump & Revalue
+
+For $\Delta$ (Delta):
+
+$$\Delta \approx \frac{V(S_0 + h) - V(S_0 - h)}{2h}$$
+
+VBA pattern (reuse pricing function):
+
+```vb
+Public Function MCDeltaEuroCall(S0 As Double, K As Double, r As Double, q As Double, _
+                                sigma As Double, T As Double, N As Long, M As Long, h As Double) As Double
+    Dim up As Double, dn As Double
+    up = MCEuroCall(S0 + h, K, r, q, sigma, T, N, M)
+    dn = MCEuroCall(S0 - h, K, r, q, sigma, T, N, M)
+    MCDeltaEuroCall = (up - dn) / (2# * h)
+End Function
+```
+
+- Reuse same Random seeds? (Common random numbers → lower variance). Need manual Rnd reseeding.
+
+---
+
+## Variance Reduction: Antithetic Variates
+
+Idea: For each $Z$, also use $-Z$; average payoffs → reduce variance (symmetry).
+
+```vb
+Public Function MCEuroCallAntithetic(S0 As Double, K As Double, r As Double, q As Double, _
+                                     sigma As Double, T As Double, N As Long, M As Long) As Double
+    Dim dt As Double: dt = T / N, disc As Double: disc = Exp(-r * T)
+    Dim drift As Double: drift = (r - q - 0.5 * sigma ^ 2) * dt
+    Dim volStep As Double: volStep = sigma * Sqr(dt)
+    Dim i As Long, j As Long
+    Dim S1 As Double, S2 As Double, Z As Double
+    Dim payoff As Double, acc As Double
+
+    For i = 1 To M \ 2 ' assume M even
+        S1 = S0: S2 = S0
+        For j = 1 To N
+            Z = StdNormal()
+            S1 = S1 * Exp(drift + volStep * Z)
+            S2 = S2 * Exp(drift - volStep * Z)
+        Next j
+        payoff = 0.5 * (Application.Max(S1 - K, 0#) + Application.Max(S2 - K, 0#))
+        acc = acc + payoff
+    Next i
+    MCEuroCallAntithetic = disc * (2# * acc / M)
+End Function
+```
+
+---
+
+
+## Performance Considerations in VBA
+
+- Avoid worksheet reads/writes in inner loops → use arrays & batch output.
+- Turn off screen updating & events if writing many cells.
+- Prefer primitive types (Double, Long). Avoid Variant in hot loops.
+- Precompute drift, volStep, discount, $1/\sqrt{M}$, etc.
+- Consider splitting long simulations into chunks to keep UI responsive.
+
+---
+
+## Integrating with Existing Binomial Code
+
+- Reuse parameter reading pattern (struct AppParams) if extending UI.
+- Add a Model = "MC" branch to compute using MC pricing subs.
+- Provide toggle for variance reduction.
+- Allow user to choose Path‑Dependent payoff type from dropdown.
+- Output: price, StdErr, 95% CI, Greeks, path stats (avg max, barrier hit %).
+
+---
+
+## Exercise
+
+1. Implement a Put European Option via MC and compare to the B.S. formula using put call parity
+$$
+C - P = S_0 e^{-qT} - K e^{-rT}
+$$
+```vba 
+Public Function MCEuroPut(S0 As Double, K As Double, r As Double, q As Double, _
+                          sigma As Double, T As Double, N As Long, M As Long) As Double
+    ' Your implementation here
+End Function
+```
+- Fix $N=100$ and plot the pricing error vs $M$ (e.g., $M=100,200,400,800,1600$).
+- Use any excel chart to visualize convergence.
+- Repeat using Antithetic Variates and compare convergence speed.
+
+
+
