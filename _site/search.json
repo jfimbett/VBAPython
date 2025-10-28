@@ -2406,5 +2406,166 @@
     "title": "VBA Session 1 — Introduction to VBA",
     "section": "Your first serious program (exercise in class)",
     "text": "Your first serious program (exercise in class)\n\nFor your first exercise you are going to estimate the value of \\(\\pi\\) using a Monte Carlo method.\nImagin e a square of side 2 (from -1 to 1 in both x and y) that contains a circle of radius 1.\nThe area of the square is 4, and the area of the circle is \\(\\pi\\).\nYou are going to randomly generate points in the square, and count how many fall inside the circle as a fraction of the total points.\nThis fraction multiplied by 4 will give you an estimate of \\(\\pi\\).\n\nYour task - Create a UDF EstimatePi(n As Long) As Double that takes the number of random points to generate as input, and returns the estimate of \\(\\pi\\). - Use x = Rnd to generate random numbers between 0 and 1; scale it to -1 to 1. - Return the estimate. - Your function should be available in the worksheet as e.g. =EstimatePi(10000).\nFunction EstimatePi(n As Long) As Double\n    ' your code here\nEnd Function"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#numpy-history-and-motivation",
+    "href": "slides/python/04-numpy-pandas.html#numpy-history-and-motivation",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "NumPy: History and Motivation",
+    "text": "NumPy: History and Motivation\n\nCreated in 2005 by Travis Oliphant, building on Numeric and Numarray\nProblem: Python lists are flexible but slow for numerical computations\nSolution: NumPy provides efficient array operations in C\nUsed by: Pandas, SciPy, scikit-learn, and most scientific Python libraries\nKey advantage: Vectorized operations eliminate slow Python loops"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#why-numpy-arrays-are-faster-than-lists",
+    "href": "slides/python/04-numpy-pandas.html#why-numpy-arrays-are-faster-than-lists",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Why NumPy Arrays are Faster than Lists",
+    "text": "Why NumPy Arrays are Faster than Lists\n\nHomogeneous types: All elements have the same type (no type checking overhead)\nContiguous memory: Data stored in adjacent memory locations\nC implementation: Core operations written in optimized C code\nVectorization: Operations applied to entire arrays at once\nNo Python object overhead: Direct access to raw data\n\nimport numpy as np\nimport time\n\n# Python list\npython_list = list(range(1000000))\nstart = time.time()\nresult = [x * 2 for x in python_list]\nprint(f\"Python list: {time.time() - start:.4f}s\")\n\n# NumPy array\nnumpy_array = np.arange(1000000)\nstart = time.time()\nresult = numpy_array * 2\nprint(f\"NumPy array: {time.time() - start:.4f}s\")"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#numpy-data-types",
+    "href": "slides/python/04-numpy-pandas.html#numpy-data-types",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "NumPy Data Types",
+    "text": "NumPy Data Types\n\nIntegers: int8, int16, int32, int64 (signed), uint8, uint16, etc. (unsigned)\nFloats: float16, float32, float64 (default)\nComplex: complex64, complex128\nBoolean: bool_\nMemory efficiency: Choose appropriate type for your data\n\nimport numpy as np\n\n# Explicitly specify data type\narr_int = np.array([1, 2, 3], dtype=np.int32)\narr_float = np.array([1.0, 2.0, 3.0], dtype=np.float64)\n\nprint(f\"Integer array uses: {arr_int.itemsize} bytes per element\")\nprint(f\"Float array uses: {arr_float.itemsize} bytes per element\")"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#arrays-of-different-dimensions",
+    "href": "slides/python/04-numpy-pandas.html#arrays-of-different-dimensions",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Arrays of Different Dimensions",
+    "text": "Arrays of Different Dimensions\n\n0D (scalar): Single value\n1D (vector): List of values [1, 2, 3]\n2D (matrix): Rows and columns [[1, 2], [3, 4]]\n3D and beyond: Tensors for complex data structures\nShape attribute: Returns dimensions as tuple\n\nimport numpy as np\n\nscalar = np.array(42)\nvector = np.array([1, 2, 3, 4])\nmatrix = np.array([[1, 2, 3], [4, 5, 6]])\ntensor = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])\n\nprint(f\"Scalar shape: {scalar.shape}\")  # ()\nprint(f\"Vector shape: {vector.shape}\")  # (4,)\nprint(f\"Matrix shape: {matrix.shape}\")  # (2, 3)\nprint(f\"Tensor shape: {tensor.shape}\")  # (2, 2, 2)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#creating-numpy-arrays",
+    "href": "slides/python/04-numpy-pandas.html#creating-numpy-arrays",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Creating NumPy Arrays",
+    "text": "Creating NumPy Arrays\nimport numpy as np\n\n# From Python list\narr1 = np.array([1, 2, 3, 4, 5])\n\n# Range of values\narr2 = np.arange(0, 10, 2)  # [0, 2, 4, 6, 8]\n\n# Evenly spaced values\narr3 = np.linspace(0, 1, 5)  # [0.0, 0.25, 0.5, 0.75, 1.0]\n\n# Zeros and ones\nzeros = np.zeros((3, 4))\nones = np.ones((2, 3))\n\n# Random values\nrandom_arr = np.random.rand(3, 3)  # Uniform [0, 1)\nnormal_arr = np.random.randn(3, 3)  # Standard normal"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#operations-between-arrays-element-wise",
+    "href": "slides/python/04-numpy-pandas.html#operations-between-arrays-element-wise",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Operations Between Arrays: Element-wise",
+    "text": "Operations Between Arrays: Element-wise\n\nArithmetic: +, -, *, /, ** applied element-by-element\nBroadcasting: Operations between arrays of different shapes\nNo loops needed: All operations vectorized\nMuch faster: Than iterating through Python lists\nIntuitive syntax: Mathematical operations look natural\n\nimport numpy as np\n\na = np.array([1, 2, 3, 4])\nb = np.array([10, 20, 30, 40])\n\n# Element-wise operations\nprint(a + b)    # [11, 22, 33, 44]\nprint(a * b)    # [10, 40, 90, 160]\nprint(a ** 2)   # [1, 4, 9, 16]\nprint(b / a)    # [10.0, 10.0, 10.0, 10.0]"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#broadcasting-rules",
+    "href": "slides/python/04-numpy-pandas.html#broadcasting-rules",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Broadcasting Rules",
+    "text": "Broadcasting Rules\nimport numpy as np\n\n# Broadcasting: scalar with array\narr = np.array([1, 2, 3, 4])\nresult = arr + 10  # [11, 12, 13, 14]\n\n# Broadcasting: different shapes\nmatrix = np.array([[1, 2, 3], [4, 5, 6]])\nvector = np.array([10, 20, 30])\nresult = matrix + vector  \n# [[11, 22, 33],\n#  [14, 25, 36]]\n\n# Broadcasting: column vector\ncol_vector = np.array([[1], [2]])\nresult = matrix + col_vector\n# [[2, 3, 4],\n#  [6, 7, 8]]"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#matrix-operations",
+    "href": "slides/python/04-numpy-pandas.html#matrix-operations",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Matrix Operations",
+    "text": "Matrix Operations\nimport numpy as np\n\nA = np.array([[1, 2], [3, 4]])\nB = np.array([[5, 6], [7, 8]])\n\n# Element-wise multiplication\nelementwise = A * B  # [[5, 12], [21, 32]]\n\n# Matrix multiplication (dot product)\nmatmul1 = A @ B      # [[19, 22], [43, 50]]\nmatmul2 = np.dot(A, B)  # Same result\n\n# Transpose\nA_T = A.T  # [[1, 3], [2, 4]]\n\n# Inverse (for square matrices)\nA_inv = np.linalg.inv(A)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#useful-numpy-functions",
+    "href": "slides/python/04-numpy-pandas.html#useful-numpy-functions",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Useful NumPy Functions",
+    "text": "Useful NumPy Functions\nimport numpy as np\n\narr = np.array([[1, 2, 3], [4, 5, 6]])\n\n# Statistical functions\nprint(np.mean(arr))        # 3.5\nprint(np.std(arr))         # 1.707...\nprint(np.sum(arr))         # 21\nprint(np.sum(arr, axis=0)) # [5, 7, 9] (sum columns)\nprint(np.sum(arr, axis=1)) # [6, 15] (sum rows)\n\n# Other useful functions\nprint(np.max(arr))         # 6\nprint(np.argmax(arr))      # 5 (index of max)\nprint(np.sqrt(arr))        # Element-wise square root"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#what-is-pandas",
+    "href": "slides/python/04-numpy-pandas.html#what-is-pandas",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "What is Pandas?",
+    "text": "What is Pandas?\n\nCreated in 2008 by Wes McKinney\nName from: “Panel Data” - econometric term for multidimensional data\nPurpose: Data manipulation and analysis tool\nBuilt on NumPy: Uses NumPy arrays under the hood\nKey structures: Series (1D) and DataFrame (2D)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#pandas-is-built-on-numpy",
+    "href": "slides/python/04-numpy-pandas.html#pandas-is-built-on-numpy",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Pandas is Built on NumPy",
+    "text": "Pandas is Built on NumPy\n\nSeries: 1D labeled array backed by NumPy array\nDataFrame: 2D labeled data structure with NumPy arrays for each column\nInherits speed: Vectorized operations from NumPy\nAdds flexibility: Labels, missing data handling, heterogeneous types\nBest of both worlds: NumPy speed + high-level data manipulation\n\nimport pandas as pd\nimport numpy as np\n\n# Creating a Series from NumPy array\narr = np.array([10, 20, 30, 40])\nseries = pd.Series(arr, index=['a', 'b', 'c', 'd'])\n\n# Accessing underlying NumPy array\nprint(series.values)  # NumPy array: [10 20 30 40]\nprint(type(series.values))  # &lt;class 'numpy.ndarray'&gt;"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#creating-dataframes",
+    "href": "slides/python/04-numpy-pandas.html#creating-dataframes",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Creating DataFrames",
+    "text": "Creating DataFrames\nimport pandas as pd\nimport numpy as np\n\n# From dictionary\ndf1 = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Charlie'],\n    'age': [25, 30, 35],\n    'salary': [50000, 60000, 70000]\n})\n\n# From NumPy array\ndata = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\ndf2 = pd.DataFrame(data, columns=['A', 'B', 'C'])\n\n# From CSV file\ndf3 = pd.read_csv('data.csv')\n\n# Basic info\nprint(df1.head())      # First 5 rows\nprint(df1.info())      # Data types and memory\nprint(df1.describe())  # Statistical summary"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#operations-between-columns",
+    "href": "slides/python/04-numpy-pandas.html#operations-between-columns",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Operations Between Columns",
+    "text": "Operations Between Columns\n\nArithmetic operations: Just like NumPy arrays\nApply functions: Use .apply() for custom operations\nVectorized: All operations are fast and efficient\nCreate new columns: Assign results to new column names\nCombine columns: Mathematical or logical operations\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'price': [100, 200, 150],\n    'quantity': [10, 5, 8],\n    'discount': [0.1, 0.2, 0.15]\n})\n\n# Create new columns from operations\ndf['total'] = df['price'] * df['quantity']\ndf['discounted_price'] = df['price'] * (1 - df['discount'])\ndf['revenue'] = df['discounted_price'] * df['quantity']\n\n# Apply function to column\ndf['price_category'] = df['price'].apply(\n    lambda x: 'High' if x &gt; 150 else 'Low'\n)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#selecting-rows-index-based",
+    "href": "slides/python/04-numpy-pandas.html#selecting-rows-index-based",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Selecting Rows: Index-Based",
+    "text": "Selecting Rows: Index-Based\n\n.loc[]: Label-based indexing\n.iloc[]: Integer position-based indexing\nSingle row: Returns a Series\nMultiple rows: Returns a DataFrame\nSlicing: Select ranges of rows\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Charlie', 'David'],\n    'age': [25, 30, 35, 40],\n    'city': ['Paris', 'London', 'Berlin', 'Madrid']\n}, index=['A', 'B', 'C', 'D'])\n\n# Label-based selection\nprint(df.loc['A'])           # Single row (Series)\nprint(df.loc[['A', 'C']])    # Multiple rows (DataFrame)\nprint(df.loc['A':'C'])       # Slice (inclusive)\n\n# Position-based selection\nprint(df.iloc[0])            # First row\nprint(df.iloc[[0, 2]])       # First and third rows\nprint(df.iloc[1:3])          # Rows 1 and 2 (exclusive end)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#selecting-rows-logical-conditions",
+    "href": "slides/python/04-numpy-pandas.html#selecting-rows-logical-conditions",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Selecting Rows: Logical Conditions",
+    "text": "Selecting Rows: Logical Conditions\n\nBoolean indexing: Use logical conditions to filter rows\nMultiple conditions: Combine with & (and), | (or), ~ (not)\n.isin(): Check if values are in a list\n.between(): Check if values are in a range\nQuery method: String-based filtering for cleaner syntax\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'name': ['Alice', 'Bob', 'Charlie', 'David'],\n    'age': [25, 30, 35, 40],\n    'salary': [50000, 60000, 55000, 75000]\n})\n\n# Single condition\nyoung = df[df['age'] &lt; 35]\n\n# Multiple conditions (use parentheses!)\nfiltered = df[(df['age'] &gt; 25) & (df['salary'] &gt; 55000)]\n\n# isin method\nselected = df[df['name'].isin(['Alice', 'Charlie'])]\n\n# Query method\nresult = df.query('age &gt; 30 and salary &lt; 70000')"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#groupby-operations-the-split-apply-combine-pattern",
+    "href": "slides/python/04-numpy-pandas.html#groupby-operations-the-split-apply-combine-pattern",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "GroupBy Operations: The Split-Apply-Combine Pattern",
+    "text": "GroupBy Operations: The Split-Apply-Combine Pattern\n\nSplit: Divide data into groups based on criteria\nApply: Perform operations on each group independently\nCombine: Aggregate results back into a data structure\nCommon aggregations: sum(), mean(), count(), min(), max()\nPowerful tool: Essential for data analysis\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'department': ['Sales', 'IT', 'Sales', 'IT', 'HR'],\n    'employee': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],\n    'salary': [50000, 60000, 55000, 65000, 52000]\n})\n\n# Group by department and calculate mean salary\navg_salary = df.groupby('department')['salary'].mean()\n\n# Multiple aggregations\nstats = df.groupby('department').agg({\n    'salary': ['mean', 'min', 'max', 'count']\n})\n\n# Apply custom function\ndf.groupby('department')['salary'].apply(lambda x: x.max() - x.min())"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#advanced-groupby-examples",
+    "href": "slides/python/04-numpy-pandas.html#advanced-groupby-examples",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Advanced GroupBy Examples",
+    "text": "Advanced GroupBy Examples\nimport pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'date': pd.date_range('2025-01-01', periods=100),\n    'product': np.random.choice(['A', 'B', 'C'], 100),\n    'region': np.random.choice(['North', 'South'], 100),\n    'sales': np.random.randint(100, 1000, 100)\n})\n\n# Group by multiple columns\nmulti_group = df.groupby(['product', 'region'])['sales'].sum()\n\n# Transform: keep original shape\ndf['pct_of_product_total'] = df.groupby('product')['sales'].transform(\n    lambda x: x / x.sum()\n)\n\n# Filter groups\nhigh_sales = df.groupby('product').filter(\n    lambda x: x['sales'].sum() &gt; 10000\n)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#exercise-titanic-dataset-analysis",
+    "href": "slides/python/04-numpy-pandas.html#exercise-titanic-dataset-analysis",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Exercise: Titanic Dataset Analysis",
+    "text": "Exercise: Titanic Dataset Analysis\nDataset: Titanic passenger data from Kaggle\nDataset: Titanic passenger data from Kaggle\nTasks: 1. Load the data and explore its structure 2. Calculate survival rates by passenger class 3. Find average age by gender and survival status 4. Identify which deck had the highest survival rate 5. Create a new feature combining age groups and class\nYou will practice: - Loading data with Pandas - Selecting rows and columns - GroupBy operations - Creating new features"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#loading-and-exploring-the-data",
+    "href": "slides/python/04-numpy-pandas.html#loading-and-exploring-the-data",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Loading and Exploring the Data",
+    "text": "Loading and Exploring the Data\nimport pandas as pd\nimport numpy as np\n\n# Load the Titanic dataset\ndf = pd.read_csv('titanic.csv')\n\n# Explore the structure\nprint(df.head())\nprint(df.info())\nprint(df.describe())\n\n# Check for missing values\nprint(df.isnull().sum())\n\n# Basic statistics\nprint(f\"Total passengers: {len(df)}\")\nprint(f\"Survival rate: {df['Survived'].mean():.2%}\")\nprint(f\"\\nPassengers per class:\")\nprint(df['Pclass'].value_counts().sort_index())"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#solution-part-1-survival-by-class",
+    "href": "slides/python/04-numpy-pandas.html#solution-part-1-survival-by-class",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Solution Part 1: Survival by Class",
+    "text": "Solution Part 1: Survival by Class\n# Task 1: Calculate survival rates by passenger class\nsurvival_by_class = df.groupby('Pclass')['Survived'].agg([\n    ('count', 'count'),\n    ('survived', 'sum'),\n    ('survival_rate', 'mean')\n])\n\nprint(\"Survival rates by class:\")\nprint(survival_by_class)\n\n# Visualization insight:\n# 1st class: ~63% survival\n# 2nd class: ~47% survival  \n# 3rd class: ~24% survival\n# Clear pattern: higher class = higher survival rate"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#solution-part-2-average-age-analysis",
+    "href": "slides/python/04-numpy-pandas.html#solution-part-2-average-age-analysis",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Solution Part 2: Average Age Analysis",
+    "text": "Solution Part 2: Average Age Analysis\n# Task 2: Average age by gender and survival status\nage_analysis = df.groupby(['Sex', 'Survived'])['Age'].mean()\nprint(\"\\nAverage age by gender and survival:\")\nprint(age_analysis)\n\n# More detailed view\nage_detail = df.groupby(['Sex', 'Survived']).agg({\n    'Age': ['mean', 'median', 'std', 'count']\n})\nprint(\"\\nDetailed age statistics:\")\nprint(age_detail)\n\n# Insight: Women and children first policy visible in data\n# Younger passengers more likely to survive"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#solution-part-3-survival-by-deck",
+    "href": "slides/python/04-numpy-pandas.html#solution-part-3-survival-by-deck",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Solution Part 3: Survival by Deck",
+    "text": "Solution Part 3: Survival by Deck\n# Task 3: Survival rate by deck (extracted from Cabin)\n# First, extract deck letter from Cabin\ndf['Deck'] = df['Cabin'].str[0]\n\n# Calculate survival rates by deck\ndeck_survival = df.groupby('Deck')['Survived'].agg([\n    'count', 'mean'\n]).sort_values('mean', ascending=False)\n\nprint(\"\\nSurvival rates by deck:\")\nprint(deck_survival)\n\n# Filter out decks with few passengers for more reliable statistics\nreliable_decks = deck_survival[deck_survival['count'] &gt;= 10]\nprint(\"\\nDecks with 10+ passengers:\")\nprint(reliable_decks)"
+  },
+  {
+    "objectID": "slides/python/04-numpy-pandas.html#solution-part-4-feature-engineering",
+    "href": "slides/python/04-numpy-pandas.html#solution-part-4-feature-engineering",
+    "title": "Introduction to Numpy and Pandas",
+    "section": "Solution Part 4: Feature Engineering",
+    "text": "Solution Part 4: Feature Engineering\n# Task 4: Create age groups and combine with class\n# Define age groups\ndef categorize_age(age):\n    if pd.isna(age):\n        return 'Unknown'\n    elif age &lt; 18:\n        return 'Child'\n    elif age &lt; 35:\n        return 'Young Adult'\n    elif age &lt; 60:\n        return 'Adult'\n    else:\n        return 'Senior'\n\ndf['Age_Group'] = df['Age'].apply(categorize_age)\n\n# Combine with passenger class\ndf['Class_Age_Group'] = (df['Pclass'].astype(str) + '_' + \n                          df['Age_Group'])\n\n# Analyze survival by this new feature\nsurvival_by_combo = df.groupby('Class_Age_Group')['Survived'].agg([\n    'count', 'mean'\n]).sort_values('mean', ascending=False)\n\nprint(\"\\nSurvival rates by class and age group:\")\nprint(survival_by_combo.head(10))"
   }
 ]

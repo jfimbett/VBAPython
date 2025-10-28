@@ -6,11 +6,12 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.23">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
   <meta name="author" content="Juan F. Imbet">
-  <title>Introduction to VBA and Python – Python Session 4 — NumPy and pandas</title>
+  <meta name="dcterms.date" content="2025-10-28">
+  <title>Introduction to VBA and Python – Introduction to Numpy and Pandas</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -97,7 +98,7 @@
   </style>
   <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="../../styles.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/styles.css">
   <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -191,22 +192,14 @@
       margin-right: 0; 
     }
   </style>
-  <!-- Minimal TikZJax + MathJax loader for Quarto/Reveal.js -->
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tikzjax@0.1.6/tikzjax.css">
-
-  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/tikzjax@0.1.6/tikzjax.js"></script>
-
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Python Session 4 — NumPy and pandas</h1>
-  <p class="subtitle">Array programming and tabular data</p>
+  <h1 class="title">Introduction to Numpy and Pandas</h1>
+  <p class="subtitle">Master 1 (203) in Financial Markets</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -214,190 +207,510 @@
 Juan F. Imbet 
 </div>
         <p class="quarto-title-affiliation">
-            Paris Dauphine University-PSL
+            Paris Dauphine - PSL University
           </p>
     </div>
 </div>
 
+  <p class="date">2025-10-28</p>
 </section>
-<section id="why-numpy" class="slide level2">
-<h2>Why NumPy?</h2>
+<section>
+<section id="part-1-numpy-foundations" class="title-slide slide level1 center" data-background-color="#2C5F2D">
+<h1>Part 1: NumPy Foundations</h1>
+
+</section>
+<section id="numpy-history-and-motivation" class="slide level2">
+<h2>NumPy: History and Motivation</h2>
 <ul>
-<li>Fast vectorized operations on arrays</li>
+<li><strong>Created in 2005</strong> by Travis Oliphant, building on Numeric and Numarray</li>
+<li><strong>Problem</strong>: Python lists are flexible but slow for numerical computations</li>
+<li><strong>Solution</strong>: NumPy provides efficient array operations in C</li>
+<li><strong>Used by</strong>: Pandas, SciPy, scikit-learn, and most scientific Python libraries</li>
+<li><strong>Key advantage</strong>: Vectorized operations eliminate slow Python loops</li>
 </ul>
 </section>
-<section id="create-arrays" class="slide level2">
-<h2>Create arrays</h2>
+<section id="why-numpy-arrays-are-faster-than-lists" class="slide level2">
+<h2>Why NumPy Arrays are Faster than Lists</h2>
+<ul>
+<li><strong>Homogeneous types</strong>: All elements have the same type (no type checking overhead)</li>
+<li><strong>Contiguous memory</strong>: Data stored in adjacent memory locations</li>
+<li><strong>C implementation</strong>: Core operations written in optimized C code</li>
+<li><strong>Vectorization</strong>: Operations applied to entire arrays at once</li>
+<li><strong>No Python object overhead</strong>: Direct access to raw data</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a>np.zeros((<span class="dv">3</span>, <span class="dv">3</span>))</span>
-<span id="cb1-4"><a></a>np.arange(<span class="dv">10</span>)</span>
-<span id="cb1-5"><a></a>np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a></a><span class="im">import</span> time</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a><span class="co"># Python list</span></span>
+<span id="cb1-5"><a></a>python_list <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1000000</span>))</span>
+<span id="cb1-6"><a></a>start <span class="op">=</span> time.time()</span>
+<span id="cb1-7"><a></a>result <span class="op">=</span> [x <span class="op">*</span> <span class="dv">2</span> <span class="cf">for</span> x <span class="kw">in</span> python_list]</span>
+<span id="cb1-8"><a></a><span class="bu">print</span>(<span class="ss">f"Python list: </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> start<span class="sc">:.4f}</span><span class="ss">s"</span>)</span>
+<span id="cb1-9"><a></a></span>
+<span id="cb1-10"><a></a><span class="co"># NumPy array</span></span>
+<span id="cb1-11"><a></a>numpy_array <span class="op">=</span> np.arange(<span class="dv">1000000</span>)</span>
+<span id="cb1-12"><a></a>start <span class="op">=</span> time.time()</span>
+<span id="cb1-13"><a></a>result <span class="op">=</span> numpy_array <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb1-14"><a></a><span class="bu">print</span>(<span class="ss">f"NumPy array: </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> start<span class="sc">:.4f}</span><span class="ss">s"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="dtypes" class="slide level2">
-<h2>Dtypes</h2>
+<section id="numpy-data-types" class="slide level2">
+<h2>NumPy Data Types</h2>
 <ul>
-<li>int32, float64, bool, datetime64, etc.</li>
-<li>Memory layout matters for speed</li>
+<li><strong>Integers</strong>: <code>int8</code>, <code>int16</code>, <code>int32</code>, <code>int64</code> (signed), <code>uint8</code>, <code>uint16</code>, etc. (unsigned)</li>
+<li><strong>Floats</strong>: <code>float16</code>, <code>float32</code>, <code>float64</code> (default)</li>
+<li><strong>Complex</strong>: <code>complex64</code>, <code>complex128</code></li>
+<li><strong>Boolean</strong>: <code>bool_</code></li>
+<li><strong>Memory efficiency</strong>: Choose appropriate type for your data</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a></a></span>
+<span id="cb2-3"><a></a><span class="co"># Explicitly specify data type</span></span>
+<span id="cb2-4"><a></a>arr_int <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], dtype<span class="op">=</span>np.int32)</span>
+<span id="cb2-5"><a></a>arr_float <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>], dtype<span class="op">=</span>np.float64)</span>
+<span id="cb2-6"><a></a></span>
+<span id="cb2-7"><a></a><span class="bu">print</span>(<span class="ss">f"Integer array uses: </span><span class="sc">{</span>arr_int<span class="sc">.</span>itemsize<span class="sc">}</span><span class="ss"> bytes per element"</span>)</span>
+<span id="cb2-8"><a></a><span class="bu">print</span>(<span class="ss">f"Float array uses: </span><span class="sc">{</span>arr_float<span class="sc">.</span>itemsize<span class="sc">}</span><span class="ss"> bytes per element"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="indexing-and-slicing" class="slide level2">
-<h2>Indexing and slicing</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>x <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>, <span class="dv">3</span>)</span>
-<span id="cb2-2"><a></a>x[<span class="dv">0</span>, <span class="dv">0</span>], x[:, <span class="dv">1</span>], x[<span class="dv">1</span>:, :]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="broadcasting" class="slide level2">
-<h2>Broadcasting</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>x <span class="op">=</span> np.arange(<span class="dv">3</span>)</span>
-<span id="cb3-2"><a></a>(x <span class="op">+</span> <span class="dv">10</span>) <span class="op">*</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="arrays-of-different-dimensions" class="slide level2">
+<h2>Arrays of Different Dimensions</h2>
 <ul>
-<li>Rules allow operations on different shapes</li>
+<li><strong>0D (scalar)</strong>: Single value</li>
+<li><strong>1D (vector)</strong>: List of values <code>[1, 2, 3]</code></li>
+<li><strong>2D (matrix)</strong>: Rows and columns <code>[[1, 2], [3, 4]]</code></li>
+<li><strong>3D and beyond</strong>: Tensors for complex data structures</li>
+<li><strong>Shape attribute</strong>: Returns dimensions as tuple</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a></a></span>
+<span id="cb3-3"><a></a>scalar <span class="op">=</span> np.array(<span class="dv">42</span>)</span>
+<span id="cb3-4"><a></a>vector <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb3-5"><a></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb3-6"><a></a>tensor <span class="op">=</span> np.array([[[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]], [[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]]])</span>
+<span id="cb3-7"><a></a></span>
+<span id="cb3-8"><a></a><span class="bu">print</span>(<span class="ss">f"Scalar shape: </span><span class="sc">{</span>scalar<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># ()</span></span>
+<span id="cb3-9"><a></a><span class="bu">print</span>(<span class="ss">f"Vector shape: </span><span class="sc">{</span>vector<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># (4,)</span></span>
+<span id="cb3-10"><a></a><span class="bu">print</span>(<span class="ss">f"Matrix shape: </span><span class="sc">{</span>matrix<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># (2, 3)</span></span>
+<span id="cb3-11"><a></a><span class="bu">print</span>(<span class="ss">f"Tensor shape: </span><span class="sc">{</span>tensor<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># (2, 2, 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="boolean-indexing" class="slide level2">
-<h2>Boolean indexing</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>mask <span class="op">=</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span></span>
-<span id="cb4-2"><a></a>x[mask]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="creating-numpy-arrays" class="slide level2">
+<h2>Creating NumPy Arrays</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a></a></span>
+<span id="cb4-3"><a></a><span class="co"># From Python list</span></span>
+<span id="cb4-4"><a></a>arr1 <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb4-5"><a></a></span>
+<span id="cb4-6"><a></a><span class="co"># Range of values</span></span>
+<span id="cb4-7"><a></a>arr2 <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">2</span>)  <span class="co"># [0, 2, 4, 6, 8]</span></span>
+<span id="cb4-8"><a></a></span>
+<span id="cb4-9"><a></a><span class="co"># Evenly spaced values</span></span>
+<span id="cb4-10"><a></a>arr3 <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>)  <span class="co"># [0.0, 0.25, 0.5, 0.75, 1.0]</span></span>
+<span id="cb4-11"><a></a></span>
+<span id="cb4-12"><a></a><span class="co"># Zeros and ones</span></span>
+<span id="cb4-13"><a></a>zeros <span class="op">=</span> np.zeros((<span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb4-14"><a></a>ones <span class="op">=</span> np.ones((<span class="dv">2</span>, <span class="dv">3</span>))</span>
+<span id="cb4-15"><a></a></span>
+<span id="cb4-16"><a></a><span class="co"># Random values</span></span>
+<span id="cb4-17"><a></a>random_arr <span class="op">=</span> np.random.rand(<span class="dv">3</span>, <span class="dv">3</span>)  <span class="co"># Uniform [0, 1)</span></span>
+<span id="cb4-18"><a></a>normal_arr <span class="op">=</span> np.random.randn(<span class="dv">3</span>, <span class="dv">3</span>)  <span class="co"># Standard normal</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="axis-semantics" class="slide level2">
-<h2>Axis semantics</h2>
+<section id="operations-between-arrays-element-wise" class="slide level2">
+<h2>Operations Between Arrays: Element-wise</h2>
 <ul>
-<li>axis=0 → down rows (per column)</li>
-<li>axis=1 → across columns (per row)</li>
+<li><strong>Arithmetic</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>**</code> applied element-by-element</li>
+<li><strong>Broadcasting</strong>: Operations between arrays of different shapes</li>
+<li><strong>No loops needed</strong>: All operations vectorized</li>
+<li><strong>Much faster</strong>: Than iterating through Python lists</li>
+<li><strong>Intuitive syntax</strong>: Mathematical operations look natural</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a></a></span>
+<span id="cb5-3"><a></a>a <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb5-4"><a></a>b <span class="op">=</span> np.array([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
+<span id="cb5-5"><a></a></span>
+<span id="cb5-6"><a></a><span class="co"># Element-wise operations</span></span>
+<span id="cb5-7"><a></a><span class="bu">print</span>(a <span class="op">+</span> b)    <span class="co"># [11, 22, 33, 44]</span></span>
+<span id="cb5-8"><a></a><span class="bu">print</span>(a <span class="op">*</span> b)    <span class="co"># [10, 40, 90, 160]</span></span>
+<span id="cb5-9"><a></a><span class="bu">print</span>(a <span class="op">**</span> <span class="dv">2</span>)   <span class="co"># [1, 4, 9, 16]</span></span>
+<span id="cb5-10"><a></a><span class="bu">print</span>(b <span class="op">/</span> a)    <span class="co"># [10.0, 10.0, 10.0, 10.0]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="vectorization-vs-loops" class="slide level2">
-<h2>Vectorization vs loops</h2>
-<ul>
-<li>Prefer vectorized expressions → C-level speed</li>
-<li>Only loop in Python when necessary</li>
-</ul>
+<section id="broadcasting-rules" class="slide level2">
+<h2>Broadcasting Rules</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a></a></span>
+<span id="cb6-3"><a></a><span class="co"># Broadcasting: scalar with array</span></span>
+<span id="cb6-4"><a></a>arr <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb6-5"><a></a>result <span class="op">=</span> arr <span class="op">+</span> <span class="dv">10</span>  <span class="co"># [11, 12, 13, 14]</span></span>
+<span id="cb6-6"><a></a></span>
+<span id="cb6-7"><a></a><span class="co"># Broadcasting: different shapes</span></span>
+<span id="cb6-8"><a></a>matrix <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb6-9"><a></a>vector <span class="op">=</span> np.array([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>])</span>
+<span id="cb6-10"><a></a>result <span class="op">=</span> matrix <span class="op">+</span> vector  </span>
+<span id="cb6-11"><a></a><span class="co"># [[11, 22, 33],</span></span>
+<span id="cb6-12"><a></a><span class="co">#  [14, 25, 36]]</span></span>
+<span id="cb6-13"><a></a></span>
+<span id="cb6-14"><a></a><span class="co"># Broadcasting: column vector</span></span>
+<span id="cb6-15"><a></a>col_vector <span class="op">=</span> np.array([[<span class="dv">1</span>], [<span class="dv">2</span>]])</span>
+<span id="cb6-16"><a></a>result <span class="op">=</span> matrix <span class="op">+</span> col_vector</span>
+<span id="cb6-17"><a></a><span class="co"># [[2, 3, 4],</span></span>
+<span id="cb6-18"><a></a><span class="co">#  [6, 7, 8]]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="aggregations" class="slide level2">
-<h2>Aggregations</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>x.<span class="bu">sum</span>(), x.mean(axis<span class="op">=</span><span class="dv">0</span>), x.<span class="bu">max</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="random" class="slide level2">
-<h2>Random</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
-<span id="cb6-2"><a></a>rng.normal(size<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="pandas-intro" class="slide level2">
-<h2>pandas intro</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<section id="matrix-operations" class="slide level2">
+<h2>Matrix Operations</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-2"><a></a></span>
-<span id="cb7-3"><a></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"a"</span>: [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>], <span class="st">"b"</span>: [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-3"><a></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]])</span>
+<span id="cb7-4"><a></a>B <span class="op">=</span> np.array([[<span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>]])</span>
+<span id="cb7-5"><a></a></span>
+<span id="cb7-6"><a></a><span class="co"># Element-wise multiplication</span></span>
+<span id="cb7-7"><a></a>elementwise <span class="op">=</span> A <span class="op">*</span> B  <span class="co"># [[5, 12], [21, 32]]</span></span>
+<span id="cb7-8"><a></a></span>
+<span id="cb7-9"><a></a><span class="co"># Matrix multiplication (dot product)</span></span>
+<span id="cb7-10"><a></a>matmul1 <span class="op">=</span> A <span class="op">@</span> B      <span class="co"># [[19, 22], [43, 50]]</span></span>
+<span id="cb7-11"><a></a>matmul2 <span class="op">=</span> np.dot(A, B)  <span class="co"># Same result</span></span>
+<span id="cb7-12"><a></a></span>
+<span id="cb7-13"><a></a><span class="co"># Transpose</span></span>
+<span id="cb7-14"><a></a>A_T <span class="op">=</span> A.T  <span class="co"># [[1, 3], [2, 4]]</span></span>
+<span id="cb7-15"><a></a></span>
+<span id="cb7-16"><a></a><span class="co"># Inverse (for square matrices)</span></span>
+<span id="cb7-17"><a></a>A_inv <span class="op">=</span> np.linalg.inv(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="series-and-dataframe" class="slide level2">
-<h2>Series and DataFrame</h2>
-<ul>
-<li>Series = 1D labeled array</li>
-<li>DataFrame = 2D table with columns</li>
-</ul>
-</section>
-<section id="missing-values" class="slide level2">
-<h2>Missing values</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>df.isna().<span class="bu">sum</span>()</span>
-<span id="cb8-2"><a></a>df.fillna(<span class="dv">0</span>)</span>
-<span id="cb8-3"><a></a>df.dropna(subset<span class="op">=</span>[<span class="st">"close"</span>]).shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="readwrite-files-finance-dataset" class="slide level2">
-<h2>Read/write files (finance dataset)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="co"># prices for top-20 US tickers (date, symbol, close)</span></span>
-<span id="cb9-2"><a></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/prices-top20.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])  <span class="co"># provided by fetch_prices.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="returns-pivot" class="slide level2">
-<h2>Returns pivot</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="co"># compute daily returns pivot with symbols as columns</span></span>
-<span id="cb10-2"><a></a>px <span class="op">=</span> df.sort_values([<span class="st">"symbol"</span>,<span class="st">"date"</span>]).assign(</span>
-<span id="cb10-3"><a></a>    ret <span class="op">=</span> df.groupby(<span class="st">"symbol"</span>)[<span class="st">"close"</span>].pct_change()</span>
-<span id="cb10-4"><a></a>)</span>
-<span id="cb10-5"><a></a>ret_pivot <span class="op">=</span> px.pivot(index<span class="op">=</span><span class="st">"date"</span>, columns<span class="op">=</span><span class="st">"symbol"</span>, values<span class="op">=</span><span class="st">"ret"</span>)</span>
-<span id="cb10-6"><a></a>ret_pivot.describe().T.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="simple-visualization" class="slide level2">
-<h2>Simple visualization</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="co"># plot a couple of tickers (requires a plotting backend available)</span></span>
-<span id="cb11-2"><a></a>ret_pivot[[<span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>]].cumsum().plot(title<span class="op">=</span><span class="st">"Cumulative Returns: AAPL vs MSFT"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="groupby-and-aggregations" class="slide level2">
-<h2>Groupby and aggregations</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>px.groupby(<span class="st">"symbol"</span>).agg(vol<span class="op">=</span>(<span class="st">"ret"</span>,<span class="st">"std"</span>), mean<span class="op">=</span>(<span class="st">"ret"</span>,<span class="st">"mean"</span>)).sort_values(<span class="st">"vol"</span>, ascending<span class="op">=</span><span class="va">False</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="mergejoin" class="slide level2">
-<h2>Merge/join</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>left.merge(right, on<span class="op">=</span><span class="st">"id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="pivot-and-melt" class="slide level2">
-<h2>Pivot and melt</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>pd.pivot_table(df, index<span class="op">=</span><span class="st">"date"</span>, values<span class="op">=</span><span class="st">"close"</span>, aggfunc<span class="op">=</span><span class="st">"mean"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="time-series-quick-tour" class="slide level2">
-<h2>Time series quick tour</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>s <span class="op">=</span> pd.date_range(<span class="st">"2024-01-01"</span>, periods<span class="op">=</span><span class="dv">5</span>, freq<span class="op">=</span><span class="st">"D"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="method-chaining-style" class="slide level2">
-<h2>Method chaining style</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>summary <span class="op">=</span> (</span>
-<span id="cb16-2"><a></a>  px.dropna(subset<span class="op">=</span>[<span class="st">"ret"</span>])  </span>
-<span id="cb16-3"><a></a>    .groupby(<span class="st">"symbol"</span>)</span>
-<span id="cb16-4"><a></a>    .agg(vol<span class="op">=</span>(<span class="st">"ret"</span>,<span class="st">"std"</span>), mean<span class="op">=</span>(<span class="st">"ret"</span>,<span class="st">"mean"</span>))</span>
-<span id="cb16-5"><a></a>    .reset_index()</span>
-<span id="cb16-6"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="categorical-dtype" class="slide level2">
-<h2>Categorical dtype</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>px[<span class="st">'symbol'</span>] <span class="op">=</span> px[<span class="st">'symbol'</span>].astype(<span class="st">'category'</span>)</span>
-<span id="cb17-2"><a></a>px[<span class="st">'symbol'</span>].cat.codes.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="datetime-ops" class="slide level2">
-<h2>Datetime ops</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>px[<span class="st">'month'</span>] <span class="op">=</span> px[<span class="st">'date'</span>].dt.to_period(<span class="st">'M'</span>)</span>
-<span id="cb18-2"><a></a>px.groupby([<span class="st">'month'</span>,<span class="st">'symbol'</span>])[<span class="st">'close'</span>].last()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="groupby-custom-functions" class="slide level2">
-<h2>Groupby: custom functions</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">def</span> sharpe(x):</span>
-<span id="cb19-2"><a></a>    <span class="cf">return</span> x.mean()<span class="op">/</span>x.std()</span>
-<span id="cb19-3"><a></a>px.groupby(<span class="st">'symbol'</span>)[<span class="st">'ret'</span>].<span class="bu">apply</span>(sharpe).sort_values(ascending<span class="op">=</span><span class="va">False</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="join-types-overview" class="slide level2">
-<h2>Join types overview</h2>
-<ul>
-<li>inner, left, right, outer; be explicit and check sizes before/after</li>
-</ul>
-</section>
-<section id="performance-tips" class="slide level2">
-<h2>Performance tips</h2>
-<ul>
-<li>Use categories, vectorized ops, avoid apply in hot paths</li>
-</ul>
-</section>
-<section id="exercise-1" class="slide level2">
-<h2>Exercise 1</h2>
-<ul>
-<li>Load <code>data/prices-top20.csv</code>, compute summary stats per symbol</li>
-</ul>
-</section>
-<section id="exercise-2" class="slide level2">
-<h2>Exercise 2</h2>
-<ul>
-<li>Build a cumulative return chart for 2–3 tickers</li>
-</ul>
-</section>
-<section id="wrapup" class="slide level2">
-<h2>Wrap‑up</h2>
-<ul>
-<li>You can manipulate arrays with NumPy and tables with pandas</li>
-<li>Next: numerical optimization</li>
-</ul>
-
+<section id="useful-numpy-functions" class="slide level2">
+<h2>Useful NumPy Functions</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a></a></span>
+<span id="cb8-3"><a></a>arr <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb8-4"><a></a></span>
+<span id="cb8-5"><a></a><span class="co"># Statistical functions</span></span>
+<span id="cb8-6"><a></a><span class="bu">print</span>(np.mean(arr))        <span class="co"># 3.5</span></span>
+<span id="cb8-7"><a></a><span class="bu">print</span>(np.std(arr))         <span class="co"># 1.707...</span></span>
+<span id="cb8-8"><a></a><span class="bu">print</span>(np.<span class="bu">sum</span>(arr))         <span class="co"># 21</span></span>
+<span id="cb8-9"><a></a><span class="bu">print</span>(np.<span class="bu">sum</span>(arr, axis<span class="op">=</span><span class="dv">0</span>)) <span class="co"># [5, 7, 9] (sum columns)</span></span>
+<span id="cb8-10"><a></a><span class="bu">print</span>(np.<span class="bu">sum</span>(arr, axis<span class="op">=</span><span class="dv">1</span>)) <span class="co"># [6, 15] (sum rows)</span></span>
+<span id="cb8-11"><a></a></span>
+<span id="cb8-12"><a></a><span class="co"># Other useful functions</span></span>
+<span id="cb8-13"><a></a><span class="bu">print</span>(np.<span class="bu">max</span>(arr))         <span class="co"># 6</span></span>
+<span id="cb8-14"><a></a><span class="bu">print</span>(np.argmax(arr))      <span class="co"># 5 (index of max)</span></span>
+<span id="cb8-15"><a></a><span class="bu">print</span>(np.sqrt(arr))        <span class="co"># Element-wise square root</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section></section>
+<section>
+<section id="part-2-pandas-fundamentals" class="title-slide slide level1 center" data-background-color="#2C5F2D">
+<h1>Part 2: Pandas Fundamentals</h1>
 
 </section>
+<section id="what-is-pandas" class="slide level2">
+<h2>What is Pandas?</h2>
+<ul>
+<li><strong>Created in 2008</strong> by Wes McKinney</li>
+<li><strong>Name from</strong>: “Panel Data” - econometric term for multidimensional data</li>
+<li><strong>Purpose</strong>: Data manipulation and analysis tool</li>
+<li><strong>Built on NumPy</strong>: Uses NumPy arrays under the hood</li>
+<li><strong>Key structures</strong>: Series (1D) and DataFrame (2D)</li>
+</ul>
+</section>
+<section id="pandas-is-built-on-numpy" class="slide level2">
+<h2>Pandas is Built on NumPy</h2>
+<ul>
+<li><strong>Series</strong>: 1D labeled array backed by NumPy array</li>
+<li><strong>DataFrame</strong>: 2D labeled data structure with NumPy arrays for each column</li>
+<li><strong>Inherits speed</strong>: Vectorized operations from NumPy</li>
+<li><strong>Adds flexibility</strong>: Labels, missing data handling, heterogeneous types</li>
+<li><strong>Best of both worlds</strong>: NumPy speed + high-level data manipulation</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-3"><a></a></span>
+<span id="cb9-4"><a></a><span class="co"># Creating a Series from NumPy array</span></span>
+<span id="cb9-5"><a></a>arr <span class="op">=</span> np.array([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
+<span id="cb9-6"><a></a>series <span class="op">=</span> pd.Series(arr, index<span class="op">=</span>[<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>, <span class="st">'d'</span>])</span>
+<span id="cb9-7"><a></a></span>
+<span id="cb9-8"><a></a><span class="co"># Accessing underlying NumPy array</span></span>
+<span id="cb9-9"><a></a><span class="bu">print</span>(series.values)  <span class="co"># NumPy array: [10 20 30 40]</span></span>
+<span id="cb9-10"><a></a><span class="bu">print</span>(<span class="bu">type</span>(series.values))  <span class="co"># &lt;class 'numpy.ndarray'&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="creating-dataframes" class="slide level2">
+<h2>Creating DataFrames</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a><span class="co"># From dictionary</span></span>
+<span id="cb10-5"><a></a>df1 <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb10-6"><a></a>    <span class="st">'name'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>, <span class="st">'Charlie'</span>],</span>
+<span id="cb10-7"><a></a>    <span class="st">'age'</span>: [<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>],</span>
+<span id="cb10-8"><a></a>    <span class="st">'salary'</span>: [<span class="dv">50000</span>, <span class="dv">60000</span>, <span class="dv">70000</span>]</span>
+<span id="cb10-9"><a></a>})</span>
+<span id="cb10-10"><a></a></span>
+<span id="cb10-11"><a></a><span class="co"># From NumPy array</span></span>
+<span id="cb10-12"><a></a>data <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]])</span>
+<span id="cb10-13"><a></a>df2 <span class="op">=</span> pd.DataFrame(data, columns<span class="op">=</span>[<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>])</span>
+<span id="cb10-14"><a></a></span>
+<span id="cb10-15"><a></a><span class="co"># From CSV file</span></span>
+<span id="cb10-16"><a></a>df3 <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb10-17"><a></a></span>
+<span id="cb10-18"><a></a><span class="co"># Basic info</span></span>
+<span id="cb10-19"><a></a><span class="bu">print</span>(df1.head())      <span class="co"># First 5 rows</span></span>
+<span id="cb10-20"><a></a><span class="bu">print</span>(df1.info())      <span class="co"># Data types and memory</span></span>
+<span id="cb10-21"><a></a><span class="bu">print</span>(df1.describe())  <span class="co"># Statistical summary</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="operations-between-columns" class="slide level2">
+<h2>Operations Between Columns</h2>
+<ul>
+<li><strong>Arithmetic operations</strong>: Just like NumPy arrays</li>
+<li><strong>Apply functions</strong>: Use <code>.apply()</code> for custom operations</li>
+<li><strong>Vectorized</strong>: All operations are fast and efficient</li>
+<li><strong>Create new columns</strong>: Assign results to new column names</li>
+<li><strong>Combine columns</strong>: Mathematical or logical operations</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb11-4"><a></a>    <span class="st">'price'</span>: [<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">150</span>],</span>
+<span id="cb11-5"><a></a>    <span class="st">'quantity'</span>: [<span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">8</span>],</span>
+<span id="cb11-6"><a></a>    <span class="st">'discount'</span>: [<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.15</span>]</span>
+<span id="cb11-7"><a></a>})</span>
+<span id="cb11-8"><a></a></span>
+<span id="cb11-9"><a></a><span class="co"># Create new columns from operations</span></span>
+<span id="cb11-10"><a></a>df[<span class="st">'total'</span>] <span class="op">=</span> df[<span class="st">'price'</span>] <span class="op">*</span> df[<span class="st">'quantity'</span>]</span>
+<span id="cb11-11"><a></a>df[<span class="st">'discounted_price'</span>] <span class="op">=</span> df[<span class="st">'price'</span>] <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> df[<span class="st">'discount'</span>])</span>
+<span id="cb11-12"><a></a>df[<span class="st">'revenue'</span>] <span class="op">=</span> df[<span class="st">'discounted_price'</span>] <span class="op">*</span> df[<span class="st">'quantity'</span>]</span>
+<span id="cb11-13"><a></a></span>
+<span id="cb11-14"><a></a><span class="co"># Apply function to column</span></span>
+<span id="cb11-15"><a></a>df[<span class="st">'price_category'</span>] <span class="op">=</span> df[<span class="st">'price'</span>].<span class="bu">apply</span>(</span>
+<span id="cb11-16"><a></a>    <span class="kw">lambda</span> x: <span class="st">'High'</span> <span class="cf">if</span> x <span class="op">&gt;</span> <span class="dv">150</span> <span class="cf">else</span> <span class="st">'Low'</span></span>
+<span id="cb11-17"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="selecting-rows-index-based" class="slide level2">
+<h2>Selecting Rows: Index-Based</h2>
+<ul>
+<li><strong><code>.loc[]</code></strong>: Label-based indexing</li>
+<li><strong><code>.iloc[]</code></strong>: Integer position-based indexing</li>
+<li><strong>Single row</strong>: Returns a Series</li>
+<li><strong>Multiple rows</strong>: Returns a DataFrame</li>
+<li><strong>Slicing</strong>: Select ranges of rows</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb12-4"><a></a>    <span class="st">'name'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>, <span class="st">'Charlie'</span>, <span class="st">'David'</span>],</span>
+<span id="cb12-5"><a></a>    <span class="st">'age'</span>: [<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>],</span>
+<span id="cb12-6"><a></a>    <span class="st">'city'</span>: [<span class="st">'Paris'</span>, <span class="st">'London'</span>, <span class="st">'Berlin'</span>, <span class="st">'Madrid'</span>]</span>
+<span id="cb12-7"><a></a>}, index<span class="op">=</span>[<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>, <span class="st">'D'</span>])</span>
+<span id="cb12-8"><a></a></span>
+<span id="cb12-9"><a></a><span class="co"># Label-based selection</span></span>
+<span id="cb12-10"><a></a><span class="bu">print</span>(df.loc[<span class="st">'A'</span>])           <span class="co"># Single row (Series)</span></span>
+<span id="cb12-11"><a></a><span class="bu">print</span>(df.loc[[<span class="st">'A'</span>, <span class="st">'C'</span>]])    <span class="co"># Multiple rows (DataFrame)</span></span>
+<span id="cb12-12"><a></a><span class="bu">print</span>(df.loc[<span class="st">'A'</span>:<span class="st">'C'</span>])       <span class="co"># Slice (inclusive)</span></span>
+<span id="cb12-13"><a></a></span>
+<span id="cb12-14"><a></a><span class="co"># Position-based selection</span></span>
+<span id="cb12-15"><a></a><span class="bu">print</span>(df.iloc[<span class="dv">0</span>])            <span class="co"># First row</span></span>
+<span id="cb12-16"><a></a><span class="bu">print</span>(df.iloc[[<span class="dv">0</span>, <span class="dv">2</span>]])       <span class="co"># First and third rows</span></span>
+<span id="cb12-17"><a></a><span class="bu">print</span>(df.iloc[<span class="dv">1</span>:<span class="dv">3</span>])          <span class="co"># Rows 1 and 2 (exclusive end)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="selecting-rows-logical-conditions" class="slide level2">
+<h2>Selecting Rows: Logical Conditions</h2>
+<ul>
+<li><strong>Boolean indexing</strong>: Use logical conditions to filter rows</li>
+<li><strong>Multiple conditions</strong>: Combine with <code>&amp;</code> (and), <code>|</code> (or), <code>~</code> (not)</li>
+<li><strong><code>.isin()</code></strong>: Check if values are in a list</li>
+<li><strong><code>.between()</code></strong>: Check if values are in a range</li>
+<li><strong>Query method</strong>: String-based filtering for cleaner syntax</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb13-2"><a></a></span>
+<span id="cb13-3"><a></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb13-4"><a></a>    <span class="st">'name'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>, <span class="st">'Charlie'</span>, <span class="st">'David'</span>],</span>
+<span id="cb13-5"><a></a>    <span class="st">'age'</span>: [<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>],</span>
+<span id="cb13-6"><a></a>    <span class="st">'salary'</span>: [<span class="dv">50000</span>, <span class="dv">60000</span>, <span class="dv">55000</span>, <span class="dv">75000</span>]</span>
+<span id="cb13-7"><a></a>})</span>
+<span id="cb13-8"><a></a></span>
+<span id="cb13-9"><a></a><span class="co"># Single condition</span></span>
+<span id="cb13-10"><a></a>young <span class="op">=</span> df[df[<span class="st">'age'</span>] <span class="op">&lt;</span> <span class="dv">35</span>]</span>
+<span id="cb13-11"><a></a></span>
+<span id="cb13-12"><a></a><span class="co"># Multiple conditions (use parentheses!)</span></span>
+<span id="cb13-13"><a></a>filtered <span class="op">=</span> df[(df[<span class="st">'age'</span>] <span class="op">&gt;</span> <span class="dv">25</span>) <span class="op">&amp;</span> (df[<span class="st">'salary'</span>] <span class="op">&gt;</span> <span class="dv">55000</span>)]</span>
+<span id="cb13-14"><a></a></span>
+<span id="cb13-15"><a></a><span class="co"># isin method</span></span>
+<span id="cb13-16"><a></a>selected <span class="op">=</span> df[df[<span class="st">'name'</span>].isin([<span class="st">'Alice'</span>, <span class="st">'Charlie'</span>])]</span>
+<span id="cb13-17"><a></a></span>
+<span id="cb13-18"><a></a><span class="co"># Query method</span></span>
+<span id="cb13-19"><a></a>result <span class="op">=</span> df.query(<span class="st">'age &gt; 30 and salary &lt; 70000'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="groupby-operations-the-split-apply-combine-pattern" class="slide level2">
+<h2>GroupBy Operations: The Split-Apply-Combine Pattern</h2>
+<ul>
+<li><strong>Split</strong>: Divide data into groups based on criteria</li>
+<li><strong>Apply</strong>: Perform operations on each group independently</li>
+<li><strong>Combine</strong>: Aggregate results back into a data structure</li>
+<li><strong>Common aggregations</strong>: <code>sum()</code>, <code>mean()</code>, <code>count()</code>, <code>min()</code>, <code>max()</code></li>
+<li><strong>Powerful tool</strong>: Essential for data analysis</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-2"><a></a></span>
+<span id="cb14-3"><a></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb14-4"><a></a>    <span class="st">'department'</span>: [<span class="st">'Sales'</span>, <span class="st">'IT'</span>, <span class="st">'Sales'</span>, <span class="st">'IT'</span>, <span class="st">'HR'</span>],</span>
+<span id="cb14-5"><a></a>    <span class="st">'employee'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>, <span class="st">'Charlie'</span>, <span class="st">'David'</span>, <span class="st">'Eve'</span>],</span>
+<span id="cb14-6"><a></a>    <span class="st">'salary'</span>: [<span class="dv">50000</span>, <span class="dv">60000</span>, <span class="dv">55000</span>, <span class="dv">65000</span>, <span class="dv">52000</span>]</span>
+<span id="cb14-7"><a></a>})</span>
+<span id="cb14-8"><a></a></span>
+<span id="cb14-9"><a></a><span class="co"># Group by department and calculate mean salary</span></span>
+<span id="cb14-10"><a></a>avg_salary <span class="op">=</span> df.groupby(<span class="st">'department'</span>)[<span class="st">'salary'</span>].mean()</span>
+<span id="cb14-11"><a></a></span>
+<span id="cb14-12"><a></a><span class="co"># Multiple aggregations</span></span>
+<span id="cb14-13"><a></a>stats <span class="op">=</span> df.groupby(<span class="st">'department'</span>).agg({</span>
+<span id="cb14-14"><a></a>    <span class="st">'salary'</span>: [<span class="st">'mean'</span>, <span class="st">'min'</span>, <span class="st">'max'</span>, <span class="st">'count'</span>]</span>
+<span id="cb14-15"><a></a>})</span>
+<span id="cb14-16"><a></a></span>
+<span id="cb14-17"><a></a><span class="co"># Apply custom function</span></span>
+<span id="cb14-18"><a></a>df.groupby(<span class="st">'department'</span>)[<span class="st">'salary'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.<span class="bu">max</span>() <span class="op">-</span> x.<span class="bu">min</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="advanced-groupby-examples" class="slide level2">
+<h2>Advanced GroupBy Examples</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-3"><a></a></span>
+<span id="cb15-4"><a></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb15-5"><a></a>    <span class="st">'date'</span>: pd.date_range(<span class="st">'2025-01-01'</span>, periods<span class="op">=</span><span class="dv">100</span>),</span>
+<span id="cb15-6"><a></a>    <span class="st">'product'</span>: np.random.choice([<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>], <span class="dv">100</span>),</span>
+<span id="cb15-7"><a></a>    <span class="st">'region'</span>: np.random.choice([<span class="st">'North'</span>, <span class="st">'South'</span>], <span class="dv">100</span>),</span>
+<span id="cb15-8"><a></a>    <span class="st">'sales'</span>: np.random.randint(<span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">100</span>)</span>
+<span id="cb15-9"><a></a>})</span>
+<span id="cb15-10"><a></a></span>
+<span id="cb15-11"><a></a><span class="co"># Group by multiple columns</span></span>
+<span id="cb15-12"><a></a>multi_group <span class="op">=</span> df.groupby([<span class="st">'product'</span>, <span class="st">'region'</span>])[<span class="st">'sales'</span>].<span class="bu">sum</span>()</span>
+<span id="cb15-13"><a></a></span>
+<span id="cb15-14"><a></a><span class="co"># Transform: keep original shape</span></span>
+<span id="cb15-15"><a></a>df[<span class="st">'pct_of_product_total'</span>] <span class="op">=</span> df.groupby(<span class="st">'product'</span>)[<span class="st">'sales'</span>].transform(</span>
+<span id="cb15-16"><a></a>    <span class="kw">lambda</span> x: x <span class="op">/</span> x.<span class="bu">sum</span>()</span>
+<span id="cb15-17"><a></a>)</span>
+<span id="cb15-18"><a></a></span>
+<span id="cb15-19"><a></a><span class="co"># Filter groups</span></span>
+<span id="cb15-20"><a></a>high_sales <span class="op">=</span> df.groupby(<span class="st">'product'</span>).<span class="bu">filter</span>(</span>
+<span id="cb15-21"><a></a>    <span class="kw">lambda</span> x: x[<span class="st">'sales'</span>].<span class="bu">sum</span>() <span class="op">&gt;</span> <span class="dv">10000</span></span>
+<span id="cb15-22"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section></section>
+<section>
+<section id="practical-exercise" class="title-slide slide level1 center" data-background-color="#2C5F2D">
+<h1>Practical Exercise</h1>
+
+</section>
+<section id="exercise-titanic-dataset-analysis" class="slide level2">
+<h2>Exercise: Titanic Dataset Analysis</h2>
+<p><strong>Dataset</strong>: Titanic passenger data from Kaggle</p>
+<p><strong>Dataset</strong>: Titanic passenger data from <a href="https://raw.githubusercontent.com/mwaskom/seaborn-data/master/titanic.csv">Kaggle</a></p>
+<p><strong>Tasks</strong>: 1. Load the data and explore its structure 2. Calculate survival rates by passenger class 3. Find average age by gender and survival status 4. Identify which deck had the highest survival rate 5. Create a new feature combining age groups and class</p>
+<p><strong>You will practice</strong>: - Loading data with Pandas - Selecting rows and columns - GroupBy operations - Creating new features</p>
+</section>
+<section id="loading-and-exploring-the-data" class="slide level2">
+<h2>Loading and Exploring the Data</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb16-3"><a></a></span>
+<span id="cb16-4"><a></a><span class="co"># Load the Titanic dataset</span></span>
+<span id="cb16-5"><a></a>df <span class="op">=</span> pd.read_csv(<span class="st">'titanic.csv'</span>)</span>
+<span id="cb16-6"><a></a></span>
+<span id="cb16-7"><a></a><span class="co"># Explore the structure</span></span>
+<span id="cb16-8"><a></a><span class="bu">print</span>(df.head())</span>
+<span id="cb16-9"><a></a><span class="bu">print</span>(df.info())</span>
+<span id="cb16-10"><a></a><span class="bu">print</span>(df.describe())</span>
+<span id="cb16-11"><a></a></span>
+<span id="cb16-12"><a></a><span class="co"># Check for missing values</span></span>
+<span id="cb16-13"><a></a><span class="bu">print</span>(df.isnull().<span class="bu">sum</span>())</span>
+<span id="cb16-14"><a></a></span>
+<span id="cb16-15"><a></a><span class="co"># Basic statistics</span></span>
+<span id="cb16-16"><a></a><span class="bu">print</span>(<span class="ss">f"Total passengers: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-17"><a></a><span class="bu">print</span>(<span class="ss">f"Survival rate: </span><span class="sc">{</span>df[<span class="st">'Survived'</span>]<span class="sc">.</span>mean()<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
+<span id="cb16-18"><a></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Passengers per class:"</span>)</span>
+<span id="cb16-19"><a></a><span class="bu">print</span>(df[<span class="st">'Pclass'</span>].value_counts().sort_index())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="solution-part-1-survival-by-class" class="slide level2">
+<h2>Solution Part 1: Survival by Class</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="co"># Task 1: Calculate survival rates by passenger class</span></span>
+<span id="cb17-2"><a></a>survival_by_class <span class="op">=</span> df.groupby(<span class="st">'Pclass'</span>)[<span class="st">'Survived'</span>].agg([</span>
+<span id="cb17-3"><a></a>    (<span class="st">'count'</span>, <span class="st">'count'</span>),</span>
+<span id="cb17-4"><a></a>    (<span class="st">'survived'</span>, <span class="st">'sum'</span>),</span>
+<span id="cb17-5"><a></a>    (<span class="st">'survival_rate'</span>, <span class="st">'mean'</span>)</span>
+<span id="cb17-6"><a></a>])</span>
+<span id="cb17-7"><a></a></span>
+<span id="cb17-8"><a></a><span class="bu">print</span>(<span class="st">"Survival rates by class:"</span>)</span>
+<span id="cb17-9"><a></a><span class="bu">print</span>(survival_by_class)</span>
+<span id="cb17-10"><a></a></span>
+<span id="cb17-11"><a></a><span class="co"># Visualization insight:</span></span>
+<span id="cb17-12"><a></a><span class="co"># 1st class: ~63% survival</span></span>
+<span id="cb17-13"><a></a><span class="co"># 2nd class: ~47% survival  </span></span>
+<span id="cb17-14"><a></a><span class="co"># 3rd class: ~24% survival</span></span>
+<span id="cb17-15"><a></a><span class="co"># Clear pattern: higher class = higher survival rate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="solution-part-2-average-age-analysis" class="slide level2">
+<h2>Solution Part 2: Average Age Analysis</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="co"># Task 2: Average age by gender and survival status</span></span>
+<span id="cb18-2"><a></a>age_analysis <span class="op">=</span> df.groupby([<span class="st">'Sex'</span>, <span class="st">'Survived'</span>])[<span class="st">'Age'</span>].mean()</span>
+<span id="cb18-3"><a></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Average age by gender and survival:"</span>)</span>
+<span id="cb18-4"><a></a><span class="bu">print</span>(age_analysis)</span>
+<span id="cb18-5"><a></a></span>
+<span id="cb18-6"><a></a><span class="co"># More detailed view</span></span>
+<span id="cb18-7"><a></a>age_detail <span class="op">=</span> df.groupby([<span class="st">'Sex'</span>, <span class="st">'Survived'</span>]).agg({</span>
+<span id="cb18-8"><a></a>    <span class="st">'Age'</span>: [<span class="st">'mean'</span>, <span class="st">'median'</span>, <span class="st">'std'</span>, <span class="st">'count'</span>]</span>
+<span id="cb18-9"><a></a>})</span>
+<span id="cb18-10"><a></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Detailed age statistics:"</span>)</span>
+<span id="cb18-11"><a></a><span class="bu">print</span>(age_detail)</span>
+<span id="cb18-12"><a></a></span>
+<span id="cb18-13"><a></a><span class="co"># Insight: Women and children first policy visible in data</span></span>
+<span id="cb18-14"><a></a><span class="co"># Younger passengers more likely to survive</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="solution-part-3-survival-by-deck" class="slide level2">
+<h2>Solution Part 3: Survival by Deck</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="co"># Task 3: Survival rate by deck (extracted from Cabin)</span></span>
+<span id="cb19-2"><a></a><span class="co"># First, extract deck letter from Cabin</span></span>
+<span id="cb19-3"><a></a>df[<span class="st">'Deck'</span>] <span class="op">=</span> df[<span class="st">'Cabin'</span>].<span class="bu">str</span>[<span class="dv">0</span>]</span>
+<span id="cb19-4"><a></a></span>
+<span id="cb19-5"><a></a><span class="co"># Calculate survival rates by deck</span></span>
+<span id="cb19-6"><a></a>deck_survival <span class="op">=</span> df.groupby(<span class="st">'Deck'</span>)[<span class="st">'Survived'</span>].agg([</span>
+<span id="cb19-7"><a></a>    <span class="st">'count'</span>, <span class="st">'mean'</span></span>
+<span id="cb19-8"><a></a>]).sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-9"><a></a></span>
+<span id="cb19-10"><a></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Survival rates by deck:"</span>)</span>
+<span id="cb19-11"><a></a><span class="bu">print</span>(deck_survival)</span>
+<span id="cb19-12"><a></a></span>
+<span id="cb19-13"><a></a><span class="co"># Filter out decks with few passengers for more reliable statistics</span></span>
+<span id="cb19-14"><a></a>reliable_decks <span class="op">=</span> deck_survival[deck_survival[<span class="st">'count'</span>] <span class="op">&gt;=</span> <span class="dv">10</span>]</span>
+<span id="cb19-15"><a></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Decks with 10+ passengers:"</span>)</span>
+<span id="cb19-16"><a></a><span class="bu">print</span>(reliable_decks)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="solution-part-4-feature-engineering" class="slide level2">
+<h2>Solution Part 4: Feature Engineering</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="co"># Task 4: Create age groups and combine with class</span></span>
+<span id="cb20-2"><a></a><span class="co"># Define age groups</span></span>
+<span id="cb20-3"><a></a><span class="kw">def</span> categorize_age(age):</span>
+<span id="cb20-4"><a></a>    <span class="cf">if</span> pd.isna(age):</span>
+<span id="cb20-5"><a></a>        <span class="cf">return</span> <span class="st">'Unknown'</span></span>
+<span id="cb20-6"><a></a>    <span class="cf">elif</span> age <span class="op">&lt;</span> <span class="dv">18</span>:</span>
+<span id="cb20-7"><a></a>        <span class="cf">return</span> <span class="st">'Child'</span></span>
+<span id="cb20-8"><a></a>    <span class="cf">elif</span> age <span class="op">&lt;</span> <span class="dv">35</span>:</span>
+<span id="cb20-9"><a></a>        <span class="cf">return</span> <span class="st">'Young Adult'</span></span>
+<span id="cb20-10"><a></a>    <span class="cf">elif</span> age <span class="op">&lt;</span> <span class="dv">60</span>:</span>
+<span id="cb20-11"><a></a>        <span class="cf">return</span> <span class="st">'Adult'</span></span>
+<span id="cb20-12"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb20-13"><a></a>        <span class="cf">return</span> <span class="st">'Senior'</span></span>
+<span id="cb20-14"><a></a></span>
+<span id="cb20-15"><a></a>df[<span class="st">'Age_Group'</span>] <span class="op">=</span> df[<span class="st">'Age'</span>].<span class="bu">apply</span>(categorize_age)</span>
+<span id="cb20-16"><a></a></span>
+<span id="cb20-17"><a></a><span class="co"># Combine with passenger class</span></span>
+<span id="cb20-18"><a></a>df[<span class="st">'Class_Age_Group'</span>] <span class="op">=</span> (df[<span class="st">'Pclass'</span>].astype(<span class="bu">str</span>) <span class="op">+</span> <span class="st">'_'</span> <span class="op">+</span> </span>
+<span id="cb20-19"><a></a>                          df[<span class="st">'Age_Group'</span>])</span>
+<span id="cb20-20"><a></a></span>
+<span id="cb20-21"><a></a><span class="co"># Analyze survival by this new feature</span></span>
+<span id="cb20-22"><a></a>survival_by_combo <span class="op">=</span> df.groupby(<span class="st">'Class_Age_Group'</span>)[<span class="st">'Survived'</span>].agg([</span>
+<span id="cb20-23"><a></a>    <span class="st">'count'</span>, <span class="st">'mean'</span></span>
+<span id="cb20-24"><a></a>]).sort_values(<span class="st">'mean'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-25"><a></a></span>
+<span id="cb20-26"><a></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Survival rates by class and age group:"</span>)</span>
+<span id="cb20-27"><a></a><span class="bu">print</span>(survival_by_combo.head(<span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p>Intro to VBA and Python</p>
+
 </div>
 </div></div>
 
@@ -557,7 +870,7 @@ Juan F. Imbet
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'slide',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

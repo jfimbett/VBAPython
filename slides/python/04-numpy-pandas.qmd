@@ -1,263 +1,572 @@
 ---
-title: "Python Session 4 — NumPy and pandas"
-subtitle: "Array programming and tabular data"
+title: "Introduction to Numpy and Pandas"
+subtitle: "Master 1 (203) in Financial Markets"
 author: "Juan F. Imbet"
-institute: "Paris Dauphine University-PSL"
+institute: "Paris Dauphine - PSL University"
+date: "28 October 2025"
 format:
   revealjs:
     theme: white
-    css: styles.css
+    css: assets/styles.css
     slide-number: true
     chalkboard: true
     preview-links: auto
-    footer: "Intro to VBA and Python"
-    include-in-header: ../../tikzjax.html
-execute:
-  enabled: false
+    transition: none
+    background-transition: none
 ---
 
-## Why NumPy?
+# Part 1: NumPy Foundations {background-color="#2C5F2D"}
 
-- Fast vectorized operations on arrays
+------------------------------------------------------------------------
 
+## NumPy: History and Motivation
 
----
+-   **Created in 2005** by Travis Oliphant, building on Numeric and Numarray
+-   **Problem**: Python lists are flexible but slow for numerical computations
+-   **Solution**: NumPy provides efficient array operations in C
+-   **Used by**: Pandas, SciPy, scikit-learn, and most scientific Python libraries
+-   **Key advantage**: Vectorized operations eliminate slow Python loops
 
-## Create arrays
+------------------------------------------------------------------------
 
-```python
+## Why NumPy Arrays are Faster than Lists
+
+-   **Homogeneous types**: All elements have the same type (no type checking overhead)
+-   **Contiguous memory**: Data stored in adjacent memory locations
+-   **C implementation**: Core operations written in optimized C code
+-   **Vectorization**: Operations applied to entire arrays at once
+-   **No Python object overhead**: Direct access to raw data
+
+``` python
+import numpy as np
+import time
+
+# Python list
+python_list = list(range(1000000))
+start = time.time()
+result = [x * 2 for x in python_list]
+print(f"Python list: {time.time() - start:.4f}s")
+
+# NumPy array
+numpy_array = np.arange(1000000)
+start = time.time()
+result = numpy_array * 2
+print(f"NumPy array: {time.time() - start:.4f}s")
+```
+
+------------------------------------------------------------------------
+
+## NumPy Data Types
+
+-   **Integers**: `int8`, `int16`, `int32`, `int64` (signed), `uint8`, `uint16`, etc. (unsigned)
+-   **Floats**: `float16`, `float32`, `float64` (default)
+-   **Complex**: `complex64`, `complex128`
+-   **Boolean**: `bool_`
+-   **Memory efficiency**: Choose appropriate type for your data
+
+``` python
 import numpy as np
 
-np.zeros((3, 3))
-np.arange(10)
-np.linspace(0, 1, 5)
+# Explicitly specify data type
+arr_int = np.array([1, 2, 3], dtype=np.int32)
+arr_float = np.array([1.0, 2.0, 3.0], dtype=np.float64)
+
+print(f"Integer array uses: {arr_int.itemsize} bytes per element")
+print(f"Float array uses: {arr_float.itemsize} bytes per element")
 ```
 
----
+------------------------------------------------------------------------
 
-## Dtypes
+## Arrays of Different Dimensions
 
-- int32, float64, bool, datetime64, etc.
-- Memory layout matters for speed
+-   **0D (scalar)**: Single value
+-   **1D (vector)**: List of values `[1, 2, 3]`
+-   **2D (matrix)**: Rows and columns `[[1, 2], [3, 4]]`
+-   **3D and beyond**: Tensors for complex data structures
+-   **Shape attribute**: Returns dimensions as tuple
 
----
+``` python
+import numpy as np
 
-## Indexing and slicing
+scalar = np.array(42)
+vector = np.array([1, 2, 3, 4])
+matrix = np.array([[1, 2, 3], [4, 5, 6]])
+tensor = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
 
-```python
-x = np.arange(9).reshape(3, 3)
-x[0, 0], x[:, 1], x[1:, :]
+print(f"Scalar shape: {scalar.shape}")  # ()
+print(f"Vector shape: {vector.shape}")  # (4,)
+print(f"Matrix shape: {matrix.shape}")  # (2, 3)
+print(f"Tensor shape: {tensor.shape}")  # (2, 2, 2)
 ```
 
----
+------------------------------------------------------------------------
 
-## Broadcasting
+## Creating NumPy Arrays
 
-```python
-x = np.arange(3)
-(x + 10) * 2
+``` python
+import numpy as np
+
+# From Python list
+arr1 = np.array([1, 2, 3, 4, 5])
+
+# Range of values
+arr2 = np.arange(0, 10, 2)  # [0, 2, 4, 6, 8]
+
+# Evenly spaced values
+arr3 = np.linspace(0, 1, 5)  # [0.0, 0.25, 0.5, 0.75, 1.0]
+
+# Zeros and ones
+zeros = np.zeros((3, 4))
+ones = np.ones((2, 3))
+
+# Random values
+random_arr = np.random.rand(3, 3)  # Uniform [0, 1)
+normal_arr = np.random.randn(3, 3)  # Standard normal
 ```
 
-- Rules allow operations on different shapes
+------------------------------------------------------------------------
 
----
+## Operations Between Arrays: Element-wise
 
-## Boolean indexing
+-   **Arithmetic**: `+`, `-`, `*`, `/`, `**` applied element-by-element
+-   **Broadcasting**: Operations between arrays of different shapes
+-   **No loops needed**: All operations vectorized
+-   **Much faster**: Than iterating through Python lists
+-   **Intuitive syntax**: Mathematical operations look natural
 
-```python
-mask = x % 2 == 0
-x[mask]
+``` python
+import numpy as np
+
+a = np.array([1, 2, 3, 4])
+b = np.array([10, 20, 30, 40])
+
+# Element-wise operations
+print(a + b)    # [11, 22, 33, 44]
+print(a * b)    # [10, 40, 90, 160]
+print(a ** 2)   # [1, 4, 9, 16]
+print(b / a)    # [10.0, 10.0, 10.0, 10.0]
 ```
 
----
+------------------------------------------------------------------------
 
-## Axis semantics
+## Broadcasting Rules
 
-- axis=0 → down rows (per column)
-- axis=1 → across columns (per row)
+``` python
+import numpy as np
 
----
+# Broadcasting: scalar with array
+arr = np.array([1, 2, 3, 4])
+result = arr + 10  # [11, 12, 13, 14]
 
-## Vectorization vs loops
+# Broadcasting: different shapes
+matrix = np.array([[1, 2, 3], [4, 5, 6]])
+vector = np.array([10, 20, 30])
+result = matrix + vector  
+# [[11, 22, 33],
+#  [14, 25, 36]]
 
-- Prefer vectorized expressions → C-level speed
-- Only loop in Python when necessary
-
----
-
-## Aggregations
-
-```python
-x.sum(), x.mean(axis=0), x.max()
+# Broadcasting: column vector
+col_vector = np.array([[1], [2]])
+result = matrix + col_vector
+# [[2, 3, 4],
+#  [6, 7, 8]]
 ```
 
----
+------------------------------------------------------------------------
 
-## Random
+## Matrix Operations
 
-```python
-rng = np.random.default_rng(0)
-rng.normal(size=5)
+``` python
+import numpy as np
+
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+# Element-wise multiplication
+elementwise = A * B  # [[5, 12], [21, 32]]
+
+# Matrix multiplication (dot product)
+matmul1 = A @ B      # [[19, 22], [43, 50]]
+matmul2 = np.dot(A, B)  # Same result
+
+# Transpose
+A_T = A.T  # [[1, 3], [2, 4]]
+
+# Inverse (for square matrices)
+A_inv = np.linalg.inv(A)
 ```
 
----
+------------------------------------------------------------------------
 
-## pandas intro
+## Useful NumPy Functions
 
-```python
+``` python
+import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+# Statistical functions
+print(np.mean(arr))        # 3.5
+print(np.std(arr))         # 1.707...
+print(np.sum(arr))         # 21
+print(np.sum(arr, axis=0)) # [5, 7, 9] (sum columns)
+print(np.sum(arr, axis=1)) # [6, 15] (sum rows)
+
+# Other useful functions
+print(np.max(arr))         # 6
+print(np.argmax(arr))      # 5 (index of max)
+print(np.sqrt(arr))        # Element-wise square root
+```
+
+# Part 2: Pandas Fundamentals {background-color="#2C5F2D"}
+
+------------------------------------------------------------------------
+
+## What is Pandas?
+
+-   **Created in 2008** by Wes McKinney
+-   **Name from**: "Panel Data" - econometric term for multidimensional data
+-   **Purpose**: Data manipulation and analysis tool
+-   **Built on NumPy**: Uses NumPy arrays under the hood
+-   **Key structures**: Series (1D) and DataFrame (2D)
+
+## Pandas is Built on NumPy
+
+-   **Series**: 1D labeled array backed by NumPy array
+-   **DataFrame**: 2D labeled data structure with NumPy arrays for each column
+-   **Inherits speed**: Vectorized operations from NumPy
+-   **Adds flexibility**: Labels, missing data handling, heterogeneous types
+-   **Best of both worlds**: NumPy speed + high-level data manipulation
+
+``` python
+import pandas as pd
+import numpy as np
+
+# Creating a Series from NumPy array
+arr = np.array([10, 20, 30, 40])
+series = pd.Series(arr, index=['a', 'b', 'c', 'd'])
+
+# Accessing underlying NumPy array
+print(series.values)  # NumPy array: [10 20 30 40]
+print(type(series.values))  # <class 'numpy.ndarray'>
+```
+
+------------------------------------------------------------------------
+
+## Creating DataFrames
+
+``` python
+import pandas as pd
+import numpy as np
+
+# From dictionary
+df1 = pd.DataFrame({
+    'name': ['Alice', 'Bob', 'Charlie'],
+    'age': [25, 30, 35],
+    'salary': [50000, 60000, 70000]
+})
+
+# From NumPy array
+data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+df2 = pd.DataFrame(data, columns=['A', 'B', 'C'])
+
+# From CSV file
+df3 = pd.read_csv('data.csv')
+
+# Basic info
+print(df1.head())      # First 5 rows
+print(df1.info())      # Data types and memory
+print(df1.describe())  # Statistical summary
+```
+
+------------------------------------------------------------------------
+
+## Operations Between Columns
+
+-   **Arithmetic operations**: Just like NumPy arrays
+-   **Apply functions**: Use `.apply()` for custom operations
+-   **Vectorized**: All operations are fast and efficient
+-   **Create new columns**: Assign results to new column names
+-   **Combine columns**: Mathematical or logical operations
+
+``` python
 import pandas as pd
 
-df = pd.DataFrame({"a": [1,2,3], "b": [4,5,6]})
-```
+df = pd.DataFrame({
+    'price': [100, 200, 150],
+    'quantity': [10, 5, 8],
+    'discount': [0.1, 0.2, 0.15]
+})
 
----
+# Create new columns from operations
+df['total'] = df['price'] * df['quantity']
+df['discounted_price'] = df['price'] * (1 - df['discount'])
+df['revenue'] = df['discounted_price'] * df['quantity']
 
-## Series and DataFrame
-
-- Series = 1D labeled array
-- DataFrame = 2D table with columns
-
----
-
-## Missing values
-
-```python
-df.isna().sum()
-df.fillna(0)
-df.dropna(subset=["close"]).shape
-```
-
----
-
-## Read/write files (finance dataset)
-
-```python
-# prices for top-20 US tickers (date, symbol, close)
-df = pd.read_csv("data/prices-top20.csv", parse_dates=["date"])  # provided by fetch_prices.py
-```
-
----
-
-## Returns pivot
-
-```python
-# compute daily returns pivot with symbols as columns
-px = df.sort_values(["symbol","date"]).assign(
-    ret = df.groupby("symbol")["close"].pct_change()
-)
-ret_pivot = px.pivot(index="date", columns="symbol", values="ret")
-ret_pivot.describe().T.head()
-```
-
----
-
-## Simple visualization
-
-```python
-# plot a couple of tickers (requires a plotting backend available)
-ret_pivot[["AAPL", "MSFT"]].cumsum().plot(title="Cumulative Returns: AAPL vs MSFT")
-```
-
----
-
-## Groupby and aggregations
-
-```python
-px.groupby("symbol").agg(vol=("ret","std"), mean=("ret","mean")).sort_values("vol", ascending=False).head()
-```
-
----
-
-## Merge/join
-
-```python
-left.merge(right, on="id", how="left")
-```
-
----
-
-## Pivot and melt
-
-```python
-pd.pivot_table(df, index="date", values="close", aggfunc="mean")
-```
-
----
-
-## Time series quick tour
-
-```python
-s = pd.date_range("2024-01-01", periods=5, freq="D")
-```
-
----
-
-## Method chaining style
-
-```python
-summary = (
-  px.dropna(subset=["ret"])  
-    .groupby("symbol")
-    .agg(vol=("ret","std"), mean=("ret","mean"))
-    .reset_index()
+# Apply function to column
+df['price_category'] = df['price'].apply(
+    lambda x: 'High' if x > 150 else 'Low'
 )
 ```
 
----
+------------------------------------------------------------------------
 
-## Categorical dtype
+## Selecting Rows: Index-Based
 
-```python
-px['symbol'] = px['symbol'].astype('category')
-px['symbol'].cat.codes.head()
+-   **`.loc[]`**: Label-based indexing
+-   **`.iloc[]`**: Integer position-based indexing
+-   **Single row**: Returns a Series
+-   **Multiple rows**: Returns a DataFrame
+-   **Slicing**: Select ranges of rows
+
+``` python
+import pandas as pd
+
+df = pd.DataFrame({
+    'name': ['Alice', 'Bob', 'Charlie', 'David'],
+    'age': [25, 30, 35, 40],
+    'city': ['Paris', 'London', 'Berlin', 'Madrid']
+}, index=['A', 'B', 'C', 'D'])
+
+# Label-based selection
+print(df.loc['A'])           # Single row (Series)
+print(df.loc[['A', 'C']])    # Multiple rows (DataFrame)
+print(df.loc['A':'C'])       # Slice (inclusive)
+
+# Position-based selection
+print(df.iloc[0])            # First row
+print(df.iloc[[0, 2]])       # First and third rows
+print(df.iloc[1:3])          # Rows 1 and 2 (exclusive end)
 ```
 
----
+------------------------------------------------------------------------
 
-## Datetime ops
+## Selecting Rows: Logical Conditions
 
-```python
-px['month'] = px['date'].dt.to_period('M')
-px.groupby(['month','symbol'])['close'].last()
+-   **Boolean indexing**: Use logical conditions to filter rows
+-   **Multiple conditions**: Combine with `&` (and), `|` (or), `~` (not)
+-   **`.isin()`**: Check if values are in a list
+-   **`.between()`**: Check if values are in a range
+-   **Query method**: String-based filtering for cleaner syntax
+
+``` python
+import pandas as pd
+
+df = pd.DataFrame({
+    'name': ['Alice', 'Bob', 'Charlie', 'David'],
+    'age': [25, 30, 35, 40],
+    'salary': [50000, 60000, 55000, 75000]
+})
+
+# Single condition
+young = df[df['age'] < 35]
+
+# Multiple conditions (use parentheses!)
+filtered = df[(df['age'] > 25) & (df['salary'] > 55000)]
+
+# isin method
+selected = df[df['name'].isin(['Alice', 'Charlie'])]
+
+# Query method
+result = df.query('age > 30 and salary < 70000')
 ```
 
----
+------------------------------------------------------------------------
 
-## Groupby: custom functions
+## GroupBy Operations: The Split-Apply-Combine Pattern
 
-```python
-def sharpe(x):
-    return x.mean()/x.std()
-px.groupby('symbol')['ret'].apply(sharpe).sort_values(ascending=False).head()
+-   **Split**: Divide data into groups based on criteria
+-   **Apply**: Perform operations on each group independently
+-   **Combine**: Aggregate results back into a data structure
+-   **Common aggregations**: `sum()`, `mean()`, `count()`, `min()`, `max()`
+-   **Powerful tool**: Essential for data analysis
+
+``` python
+import pandas as pd
+
+df = pd.DataFrame({
+    'department': ['Sales', 'IT', 'Sales', 'IT', 'HR'],
+    'employee': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
+    'salary': [50000, 60000, 55000, 65000, 52000]
+})
+
+# Group by department and calculate mean salary
+avg_salary = df.groupby('department')['salary'].mean()
+
+# Multiple aggregations
+stats = df.groupby('department').agg({
+    'salary': ['mean', 'min', 'max', 'count']
+})
+
+# Apply custom function
+df.groupby('department')['salary'].apply(lambda x: x.max() - x.min())
 ```
 
----
+------------------------------------------------------------------------
 
-## Join types overview
+## Advanced GroupBy Examples
 
-- inner, left, right, outer; be explicit and check sizes before/after
+``` python
+import pandas as pd
+import numpy as np
 
----
+df = pd.DataFrame({
+    'date': pd.date_range('2025-01-01', periods=100),
+    'product': np.random.choice(['A', 'B', 'C'], 100),
+    'region': np.random.choice(['North', 'South'], 100),
+    'sales': np.random.randint(100, 1000, 100)
+})
 
-## Performance tips
+# Group by multiple columns
+multi_group = df.groupby(['product', 'region'])['sales'].sum()
 
-- Use categories, vectorized ops, avoid apply in hot paths
+# Transform: keep original shape
+df['pct_of_product_total'] = df.groupby('product')['sales'].transform(
+    lambda x: x / x.sum()
+)
 
----
+# Filter groups
+high_sales = df.groupby('product').filter(
+    lambda x: x['sales'].sum() > 10000
+)
+```
 
-## Exercise 1
+# Practical Exercise {background-color="#2C5F2D"}
 
-- Load `data/prices-top20.csv`, compute summary stats per symbol
+------------------------------------------------------------------------
 
----
+## Exercise: Titanic Dataset Analysis
 
-## Exercise 2
+**Dataset**: Titanic passenger data from Kaggle
 
-- Build a cumulative return chart for 2–3 tickers
+**Dataset**: Titanic passenger data from [Kaggle](https://raw.githubusercontent.com/mwaskom/seaborn-data/master/titanic.csv)
 
----
+**Tasks**: 1. Load the data and explore its structure 2. Calculate survival rates by passenger class 3. Find average age by gender and survival status 4. Identify which deck had the highest survival rate 5. Create a new feature combining age groups and class
 
-## Wrap‑up
+**You will practice**: - Loading data with Pandas - Selecting rows and columns - GroupBy operations - Creating new features
 
-- You can manipulate arrays with NumPy and tables with pandas
-- Next: numerical optimization
+------------------------------------------------------------------------
+
+## Loading and Exploring the Data
+
+``` python
+import pandas as pd
+import numpy as np
+
+# Load the Titanic dataset
+df = pd.read_csv('titanic.csv')
+
+# Explore the structure
+print(df.head())
+print(df.info())
+print(df.describe())
+
+# Check for missing values
+print(df.isnull().sum())
+
+# Basic statistics
+print(f"Total passengers: {len(df)}")
+print(f"Survival rate: {df['Survived'].mean():.2%}")
+print(f"\nPassengers per class:")
+print(df['Pclass'].value_counts().sort_index())
+```
+
+------------------------------------------------------------------------
+
+## Solution Part 1: Survival by Class
+
+``` python
+# Task 1: Calculate survival rates by passenger class
+survival_by_class = df.groupby('Pclass')['Survived'].agg([
+    ('count', 'count'),
+    ('survived', 'sum'),
+    ('survival_rate', 'mean')
+])
+
+print("Survival rates by class:")
+print(survival_by_class)
+
+# Visualization insight:
+# 1st class: ~63% survival
+# 2nd class: ~47% survival  
+# 3rd class: ~24% survival
+# Clear pattern: higher class = higher survival rate
+```
+
+------------------------------------------------------------------------
+
+## Solution Part 2: Average Age Analysis
+
+``` python
+# Task 2: Average age by gender and survival status
+age_analysis = df.groupby(['Sex', 'Survived'])['Age'].mean()
+print("\nAverage age by gender and survival:")
+print(age_analysis)
+
+# More detailed view
+age_detail = df.groupby(['Sex', 'Survived']).agg({
+    'Age': ['mean', 'median', 'std', 'count']
+})
+print("\nDetailed age statistics:")
+print(age_detail)
+
+# Insight: Women and children first policy visible in data
+# Younger passengers more likely to survive
+```
+
+------------------------------------------------------------------------
+
+## Solution Part 3: Survival by Deck
+
+``` python
+# Task 3: Survival rate by deck (extracted from Cabin)
+# First, extract deck letter from Cabin
+df['Deck'] = df['Cabin'].str[0]
+
+# Calculate survival rates by deck
+deck_survival = df.groupby('Deck')['Survived'].agg([
+    'count', 'mean'
+]).sort_values('mean', ascending=False)
+
+print("\nSurvival rates by deck:")
+print(deck_survival)
+
+# Filter out decks with few passengers for more reliable statistics
+reliable_decks = deck_survival[deck_survival['count'] >= 10]
+print("\nDecks with 10+ passengers:")
+print(reliable_decks)
+```
+
+------------------------------------------------------------------------
+
+## Solution Part 4: Feature Engineering
+
+``` python
+# Task 4: Create age groups and combine with class
+# Define age groups
+def categorize_age(age):
+    if pd.isna(age):
+        return 'Unknown'
+    elif age < 18:
+        return 'Child'
+    elif age < 35:
+        return 'Young Adult'
+    elif age < 60:
+        return 'Adult'
+    else:
+        return 'Senior'
+
+df['Age_Group'] = df['Age'].apply(categorize_age)
+
+# Combine with passenger class
+df['Class_Age_Group'] = (df['Pclass'].astype(str) + '_' + 
+                          df['Age_Group'])
+
+# Analyze survival by this new feature
+survival_by_combo = df.groupby('Class_Age_Group')['Survived'].agg([
+    'count', 'mean'
+]).sort_values('mean', ascending=False)
+
+print("\nSurvival rates by class and age group:")
+print(survival_by_combo.head(10))
+```
