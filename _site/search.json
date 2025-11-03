@@ -1397,56 +1397,56 @@
     "href": "slides/python/05-optimization.html#why-optimize",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Why optimize?",
-    "text": "Why optimize?\n\nFind best parameters or satisfy equations"
+    "text": "Why optimize?\n\nEstimate model parameters (calibration)\nAllocate portfolios under risk/return constraints\nOptimize trading decisions (position sizing, execution)\nSolve engineering/economic equilibrium equations (roots)"
   },
   {
     "objectID": "slides/python/05-optimization.html#scipy-optimize",
     "href": "slides/python/05-optimization.html#scipy-optimize",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "SciPy optimize",
-    "text": "SciPy optimize\nfrom scipy import optimize as opt"
+    "text": "SciPy optimize\nHigh-level toolbox for numerical optimization: root finding, minimization, least squares, linear programming, and more.\nfrom scipy import optimize as opt"
   },
   {
     "objectID": "slides/python/05-optimization.html#root-finding-scalar",
     "href": "slides/python/05-optimization.html#root-finding-scalar",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Root finding: scalar",
-    "text": "Root finding: scalar\nimport math\nfrom scipy import optimize as opt\n\nf = lambda x: x*math.cos(x) - 1\nroot = opt.brentq(f, 0, 2)"
+    "text": "Root finding: scalar\nFind x such that \\(f(x)=0\\) using a robust bracketing method (Brent). Requires an interval \\([a,b]\\) where \\(f(a)\\) and \\(f(b)\\) have opposite signs.\nimport math\nfrom scipy import optimize as opt\n\nf = lambda x: x*math.cos(x) - 1\nroot = opt.brentq(f, 0, 2)"
   },
   {
     "objectID": "slides/python/05-optimization.html#root-finding-systems",
     "href": "slides/python/05-optimization.html#root-finding-systems",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Root finding: systems",
-    "text": "Root finding: systems\nimport numpy as np\n\ndef F(v):\n    x, y = v\n    return [x**2 + y**2 - 1, x - y]\nsol = opt.root(F, [0.5, 0.1])"
+    "text": "Root finding: systems\nSolve vector equations \\(F(v)=0\\) using hybrid methods (Jacobian-free by default; can supply Jacobian for speed/robustness).\nimport numpy as np\nfrom scipy import optimize as opt\n\ndef F(v):\n  x, y = v\n  return [x**2 + y**2 - 1, x - y]\nsol = opt.root(F, [0.5, 0.1])"
   },
   {
     "objectID": "slides/python/05-optimization.html#minimization-unconstrained",
     "href": "slides/python/05-optimization.html#minimization-unconstrained",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Minimization: unconstrained",
-    "text": "Minimization: unconstrained\nquad = lambda x: (x-3)**2\nres = opt.minimize(lambda v: quad(v[0]), x0=[0.0])"
+    "text": "Minimization: unconstrained\nMinimize a scalar objective without constraints. SciPy picks gradient-based or derivative-free methods depending on options.\nfrom scipy import optimize as opt\nquad = lambda x: (x-3)**2\nres = opt.minimize(lambda v: quad(v[0]), x0=[0.0])"
   },
   {
     "objectID": "slides/python/05-optimization.html#markowitz-example-finance",
     "href": "slides/python/05-optimization.html#markowitz-example-finance",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Markowitz example (finance)",
-    "text": "Markowitz example (finance)\n# use returns from prices-top20.csv to estimate mu and Sigma\nimport pandas as pd, numpy as np\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\nmu = R.mean().values\nSigma = np.cov(R.values, rowvar=False)\n\n# min variance portfolio with sum(w)=1 and w&gt;=0\nN = len(mu)\nvar = lambda w: w @ Sigma @ w\ncons = ({'type': 'eq', 'fun': lambda w: np.sum(w)-1}, {'type':'ineq','fun': lambda w: w})\nres = opt.minimize(var, x0=np.ones(N)/N, constraints=cons, bounds=[(0,1)]*N)\nweights = pd.Series(res.x, index=R.columns).sort_values(ascending=False)\nweights.head()"
+    "text": "Markowitz example (finance)\nMin-variance with \\(\\sum_i w_i = 1\\) and \\(w \\ge 0\\) using historical covariance.\nimport pandas as pd, numpy as np\nfrom scipy import optimize as opt\n\n# use returns from prices-top20.csv to estimate mu and Sigma\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\nmu = R.mean().values\nSigma = np.cov(R.values, rowvar=False)\n\n# min variance portfolio with sum(w)=1 and w&gt;=0\nN = len(mu)\nvar = lambda w: w @ Sigma @ w\ncons = ({'type': 'eq', 'fun': lambda w: np.sum(w)-1}, {'type':'ineq','fun': lambda w: w})\nres = opt.minimize(var, x0=np.ones(N)/N, constraints=cons, bounds=[(0,1)]*N)\nweights = pd.Series(res.x, index=R.columns).sort_values(ascending=False)\nweights.head()"
   },
   {
     "objectID": "slides/python/05-optimization.html#minimization-constrained",
     "href": "slides/python/05-optimization.html#minimization-constrained",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Minimization: constrained",
-    "text": "Minimization: constrained\nbounds = [(0, None)]\nres = opt.minimize(lambda v: (v[0]-1)**2, x0=[2.0], bounds=bounds)"
+    "text": "Minimization: constrained\nOptimize with bounds and/or constraints. Use methods that support them (e.g., SLSQP, trust-constr; COBYLA is derivative-free).\nfrom scipy import optimize as opt\nbounds = [(0, None)]\nres = opt.minimize(lambda v: (v[0]-1)**2, x0=[2.0], bounds=bounds)"
   },
   {
     "objectID": "slides/python/05-optimization.html#least-squares",
     "href": "slides/python/05-optimization.html#least-squares",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Least squares",
-    "text": "Least squares\nimport numpy as np\nx = np.linspace(0, 1, 50)\ny = 1 + 2*x + 0.1*np.random.randn(50)\nA = np.c_[np.ones_like(x), x]\ncoef, *_ = np.linalg.lstsq(A, y, rcond=None)"
+    "text": "Least squares\nSolve linear least squares \\(Ax \\approx y\\) (QR/SVD under the hood). Standard tool for linear regression under Gaussian noise.\nimport numpy as np\nx = np.linspace(0, 1, 50)\ny = 1 + 2*x + 0.1*np.random.randn(50)\nA = np.c_[np.ones_like(x), x]\ncoef, *_ = np.linalg.lstsq(A, y, rcond=None)"
   },
   {
     "objectID": "slides/python/05-optimization.html#gradient-information",
@@ -1467,7 +1467,7 @@
     "href": "slides/python/05-optimization.html#diagnostics",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Diagnostics",
-    "text": "Diagnostics\n\nCheck status, fun, grad, nfev\nPlot objective over iterations when possible"
+    "text": "Diagnostics\n\nCheck status, fun, grad, nfev\nPlot objective over iterations when possible\n\n# Inspect common fields from scipy.optimize results\nprint({\n  'status': res.status,           # integer code\n  'message': res.message,         # human-readable\n  'fun': getattr(res, 'fun', None),\n  'nfev': getattr(res, 'nfev', None),\n  'nit': getattr(res, 'nit', None),\n  'success': res.success,\n})"
   },
   {
     "objectID": "slides/python/05-optimization.html#exercise-1",
@@ -1901,35 +1901,35 @@
     "href": "slides/python/05-optimization.html#supplying-jacobianhessian",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Supplying Jacobian/Hessian",
-    "text": "Supplying Jacobian/Hessian\ndef f(x): ...\ndef jac(x): ...\nopt.minimize(f, x0, jac=jac, method='BFGS')"
+    "text": "Supplying Jacobian/Hessian\nProviding analytic gradients (and Hessians where applicable) improves speed and accuracy; quasi-Newton methods like BFGS approximate the Hessian from gradients.\ndef f(x): ...\ndef jac(x): ...\nfrom scipy import optimize as opt\nopt.minimize(f, x0, jac=jac, method='BFGS')"
   },
   {
     "objectID": "slides/python/05-optimization.html#bounds-and-linear-constraints",
     "href": "slides/python/05-optimization.html#bounds-and-linear-constraints",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Bounds and linear constraints",
-    "text": "Bounds and linear constraints\nfrom scipy.optimize import Bounds, LinearConstraint\nbounds = Bounds(0, 1)\nA = [[1, 1]]; lb=[1]; ub=[1]\nlin = LinearConstraint(A, lb, ub)\nopt.minimize(var, x0, bounds=bounds, constraints=[lin])"
+    "text": "Bounds and linear constraints\nUse Bounds for box constraints and LinearConstraint for affine equalities/inequalities; pair with SLSQP or trust-constr.\nfrom scipy.optimize import Bounds, LinearConstraint\nbounds = Bounds(0, 1)\nA = [[1, 1]]; lb=[1]; ub=[1]\nlin = LinearConstraint(A, lb, ub)\nopt.minimize(var, x0, bounds=bounds, constraints=[lin])"
   },
   {
     "objectID": "slides/python/05-optimization.html#callbacks-and-termination",
     "href": "slides/python/05-optimization.html#callbacks-and-termination",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Callbacks and termination",
-    "text": "Callbacks and termination\ndef cb(xk): print(xk)\nopt.minimize(f, x0, callback=cb, options={\"maxiter\": 200})"
+    "text": "Callbacks and termination\nTrack progress and customize termination with callbacks and options like max iterations or tolerances.\ndef cb(xk): print(xk)\nfrom scipy import optimize as opt\nopt.minimize(f, x0, callback=cb, options={\"maxiter\": 200})"
   },
   {
     "objectID": "slides/python/05-optimization.html#linear-programming-highs",
     "href": "slides/python/05-optimization.html#linear-programming-highs",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Linear programming (HiGHS)",
-    "text": "Linear programming (HiGHS)\nfrom scipy.optimize import linprog\nc = [1, 2]; A_ub=[[1,1]]; b_ub=[3]\nlinprog(c, A_ub=A_ub, b_ub=b_ub)"
+    "text": "Linear programming (HiGHS)\nSolve linear objectives with linear constraints to global optimality using the HiGHS solvers (simplex/IPM), deterministic and scalable.\nfrom scipy.optimize import linprog\nc = [1, 2]; A_ub=[[1,1]]; b_ub=[3]\nlinprog(c, A_ub=A_ub, b_ub=b_ub)"
   },
   {
     "objectID": "slides/python/05-optimization.html#global-optimization-basinhopping",
     "href": "slides/python/05-optimization.html#global-optimization-basinhopping",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Global optimization (basinhopping)",
-    "text": "Global optimization (basinhopping)\nfrom scipy.optimize import basinhopping\nres = basinhopping(lambda x: (x[0]-3)**2 + 10*abs(np.sin(x[0])), x0=[0.0])"
+    "text": "Global optimization (basinhopping)\nStochastic global search: random perturbations + local minimization to escape local minima in nonconvex landscapes.\nfrom scipy.optimize import basinhopping\nres = basinhopping(lambda x: (x[0]-3)**2 + 10*abs(np.sin(x[0])), x0=[0.0])"
   },
   {
     "objectID": "slides/python/05-optimization.html#trust-constr-highlights",
@@ -2567,5 +2567,145 @@
     "title": "Introduction to Numpy and Pandas",
     "section": "Solution Part 4: Feature Engineering",
     "text": "Solution Part 4: Feature Engineering\n# Task 4: Create age groups and combine with class\n# Define age groups\ndef categorize_age(age):\n    if pd.isna(age):\n        return 'Unknown'\n    elif age &lt; 18:\n        return 'Child'\n    elif age &lt; 35:\n        return 'Young Adult'\n    elif age &lt; 60:\n        return 'Adult'\n    else:\n        return 'Senior'\n\ndf['Age_Group'] = df['Age'].apply(categorize_age)\n\n# Combine with passenger class\ndf['Class_Age_Group'] = (df['Pclass'].astype(str) + '_' + \n                          df['Age_Group'])\n\n# Analyze survival by this new feature\nsurvival_by_combo = df.groupby('Class_Age_Group')['Survived'].agg([\n    'count', 'mean'\n]).sort_values('mean', ascending=False)\n\nprint(\"\\nSurvival rates by class and age group:\")\nprint(survival_by_combo.head(10))"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#exercise-1-solution-logistic-fit",
+    "href": "slides/python/05-optimization.html#exercise-1-solution-logistic-fit",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Exercise 1 — Solution (logistic fit)",
+    "text": "Exercise 1 — Solution (logistic fit)\nGenerate synthetic data and fit a logistic curve using nonlinear least squares.\nimport numpy as np\nfrom scipy.optimize import curve_fit\n\ndef logistic(x, L, k, x0):\n  return L / (1 + np.exp(-k*(x - x0)))\n\nrng = np.random.default_rng(42)\nx = np.linspace(-6, 6, 120)\ny_true = logistic(x, L=1.8, k=1.1, x0=0.2)\ny_obs = y_true + 0.05*rng.standard_normal(x.size)\n\npopt, pcov = curve_fit(logistic, x, y_obs, p0=[1.0, 1.0, 0.0])\nL_hat, k_hat, x0_hat = popt\nprint({'L': L_hat, 'k': k_hat, 'x0': x0_hat})"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#exercise-1-solution-logistic-fit-1",
+    "href": "slides/python/05-optimization.html#exercise-1-solution-logistic-fit-1",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Exercise 1 — Solution (logistic fit)",
+    "text": "Exercise 1 — Solution (logistic fit)\nGenerate synthetic data and fit a logistic curve using nonlinear least squares.\nimport numpy as np\nfrom scipy.optimize import curve_fit\n\ndef logistic(x, L, k, x0):\n  return L / (1 + np.exp(-k*(x - x0)))\n\nrng = np.random.default_rng(42)\nx = np.linspace(-6, 6, 120)\ny_true = logistic(x, L=1.8, k=1.1, x0=0.2)\ny_obs = y_true + 0.05*rng.standard_normal(x.size)\n\npopt, pcov = curve_fit(logistic, x, y_obs, p0=[1.0, 1.0, 0.0])\nL_hat, k_hat, x0_hat = popt\nprint({'L': L_hat, 'k': k_hat, 'x0': x0_hat})"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#exercise-2-solution-minvariance-weights",
+    "href": "slides/python/05-optimization.html#exercise-2-solution-minvariance-weights",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Exercise 2 — Solution (min‑variance weights)",
+    "text": "Exercise 2 — Solution (min‑variance weights)\nEstimate daily returns from prices-top20.csv, compute covariance, and solve min‑variance portfolio with \\(\\sum_i w_i = 1\\) and \\(w \\ge 0\\).\nimport pandas as pd, numpy as np\nfrom scipy import optimize as opt\n\n# Load prices and compute returns per symbol\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\n\nSigma = np.cov(R.values, rowvar=False)\ntickers = R.columns\nN = len(tickers)\n\nvar = lambda w: w @ Sigma @ w\ncons = (\n  {'type':'eq', 'fun': lambda w: np.sum(w) - 1},  # sum to 1\n  {'type':'ineq','fun': lambda w: w},              # w &gt;= 0 (handled also by bounds)\n)\nbounds = [(0,1)]*N\nres = opt.minimize(var, x0=np.ones(N)/N, bounds=bounds, constraints=cons, method='SLSQP')\n\nweights = pd.Series(res.x, index=tickers).sort_values(ascending=False)\nprint('Variance:', var(res.x))\nweights.head(10)"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#method-zoo-scipy-minimize",
+    "href": "slides/python/05-optimization.html#method-zoo-scipy-minimize",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Method zoo (SciPy minimize)",
+    "text": "Method zoo (SciPy minimize)\n\nUnconstrained: Nelder-Mead (simplex, derivative-free), Powell (direction set), CG (conjugate gradient), BFGS (quasi-Newton), L-BFGS-B (limited-memory with box bounds)\nConstrained: SLSQP (Sequential Quadratic Programming), trust-constr (trust region with constraints), TNC (truncated Newton, bounds), COBYLA (derivative-free, linearized constraints)\nTips: try L-BFGS-B for box bounds, SLSQP for simple eq/ineq, trust-constr for complex nonlinear constraints\n\nExamples of choosing different algorithms and options:\nimport numpy as np\nfrom scipy import optimize as opt\n\nrosen = opt.rosen       # classic Rosenbrock function\nx0 = np.array([-1.2, 1.0])\nopt.minimize(rosen, x0, method='BFGS', options={'gtol':1e-8,'maxiter':500})\nopt.minimize(rosen, x0, method='L-BFGS-B', bounds=[(-2,2),(-1,3)])\nopt.minimize(rosen, x0, method='Nelder-Mead')  # derivative-free"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#nonlinear-constraints-with-jacobians",
+    "href": "slides/python/05-optimization.html#nonlinear-constraints-with-jacobians",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Nonlinear constraints with Jacobians",
+    "text": "Nonlinear constraints with Jacobians\nHandle nonlinear (in)equality constraints via NonlinearConstraint. trust-constr uses a constrained trust-region approach; analytic Jacobians help a lot. Example: minimize \\(\\|x\\|^2\\) s.t. \\(x_0 x_1 = 1\\), \\(x \\ge 0\\).\nimport numpy as np\nfrom scipy.optimize import NonlinearConstraint\n\n# minimize ||x||^2 s.t. x0 * x1 = 1 and x &gt;= 0\nobj = lambda x: x @ x\ngrad = lambda x: 2*x\ncon_fun = lambda x: x[0]*x[1]\ncon_jac = lambda x: np.array([x[1], x[0]])\n\nnlin = NonlinearConstraint(con_fun, lb=1.0, ub=1.0, jac=con_jac)\nres = opt.minimize(obj, x0=[0.5, 3.0], jac=grad,\n           constraints=[nlin], bounds=[(0,None),(0,None)],\n           method='trust-constr')"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#nonlinear-least-squares-least_squares",
+    "href": "slides/python/05-optimization.html#nonlinear-least-squares-least_squares",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Nonlinear least squares (least_squares)",
+    "text": "Nonlinear least squares (least_squares)\nFit parameters by minimizing \\(\\sum_i r_i(\\theta)^2\\) using Gauss-Newton/Levenberg–Marquardt (or TRF). Robust loss reduces outlier influence; e.g., fit \\(y = a e^{b x} + c\\).\nimport numpy as np\nfrom scipy.optimize import least_squares\n\n# Fit y = a * exp(bx) + c with robust loss\nrng = np.random.default_rng(0)\nx = np.linspace(0, 3, 50)\ntrue = np.array([2.0, 0.8, 0.5])\ny = true[0]*np.exp(true[1]*x) + true[2] + 0.2*rng.standard_normal(x.size)\n\ndef residuals(theta):\n  a, b, c = theta\n  return a*np.exp(b*x) + c - y\n\nres = least_squares(residuals, x0=[1, 1, 0], loss='huber', f_scale=0.5)\nres.x  # estimated parameters"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#curve-fitting-curve_fit",
+    "href": "slides/python/05-optimization.html#curve-fitting-curve_fit",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Curve fitting (curve_fit)",
+    "text": "Curve fitting (curve_fit)\nConvenient wrapper around least_squares for parametric models; returns best-fit parameters and covariance.\nimport numpy as np\nfrom scipy.optimize import curve_fit\n\ndef logistic(x, L, k, x0):\n  return L / (1 + np.exp(-k*(x - x0)))\n\nX = np.linspace(-6, 6, 100)\nY = logistic(X, 1.5, 1.2, 0.3) + 0.05*np.random.randn(100)\n\npopt, pcov = curve_fit(logistic, X, Y, p0=[1, 1, 0])\npopt  # best-fit parameters"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#global-optimizers-beyond-basinhopping",
+    "href": "slides/python/05-optimization.html#global-optimizers-beyond-basinhopping",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Global optimizers beyond basinhopping",
+    "text": "Global optimizers beyond basinhopping\nExplore nonconvex landscapes with population/stochastic methods: - Differential Evolution: evolutionary search over bounded boxes - Dual Annealing: simulated annealing variant with local refinements - SHGO: deterministic global optimizer for low dimensions within bounds\nfrom scipy.optimize import differential_evolution, dual_annealing, shgo\n\n# Differential Evolution (evolutionary, box-bounded)\nf = lambda v: (v[0]-3)**2 + 10*np.sin(v[1])**2\nbounds = [(-5,5), (-5,5)]\nde = differential_evolution(f, bounds, tol=1e-6)\n\n# Simulated annealing variant\nda = dual_annealing(f, bounds, maxiter=2000)\n\n# SHGO (global for low-dim, needs bounds)\nsg = shgo(f, bounds)"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#convex-optimization-with-cvxpy",
+    "href": "slides/python/05-optimization.html#convex-optimization-with-cvxpy",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Convex optimization with CVXPY",
+    "text": "Convex optimization with CVXPY\nModel convex problems declaratively and solve to global optimality with convex solvers (OSQP/SCS). Great for QPs, L1/L2 regularization, portfolios.\n# pip install cvxpy (once)\nimport numpy as np, cvxpy as cp\n\nnp.random.seed(0)\nN = 10\nmu = np.random.rand(N)/10\nSigma = np.random.randn(N, N); Sigma = Sigma.T@Sigma + 1e-3*np.eye(N)\nw = cp.Variable(N)\nret_target = 0.05\nprob = cp.Problem(cp.Minimize(cp.quad_form(w, Sigma)),\n          [cp.sum(w) == 1,\n           w &gt;= 0,\n           mu @ w &gt;= ret_target])\nprob.solve(solver=cp.OSQP)\nw.value"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#mixedinteger-programming-ortools",
+    "href": "slides/python/05-optimization.html#mixedinteger-programming-ortools",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Mixed‑integer programming (OR‑Tools)",
+    "text": "Mixed‑integer programming (OR‑Tools)\nSolve discrete/boolean decision problems with CP-SAT (MILP/CP). Global search leverages cutting planes and constraint propagation.\n# pip install ortools (once)\nfrom ortools.sat.python import cp_model\n\nvalues = [6, 10, 12]; weights = [1, 2, 3]; capacity = 5\nmodel = cp_model.CpModel()\nx = [model.NewBoolVar(f\"x{i}\") for i in range(len(values))]\nmodel.Add(sum(w*x_i for w, x_i in zip(weights, x)) &lt;= capacity)\nmodel.Maximize(sum(v*x_i for v, x_i in zip(values, x)))\nsolver = cp_model.CpSolver(); solver.Solve(model)\n[solver.Value(x_i) for x_i in x]"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#automatic-differentiation-with-jax",
+    "href": "slides/python/05-optimization.html#automatic-differentiation-with-jax",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Automatic differentiation with JAX",
+    "text": "Automatic differentiation with JAX\nUse reverse-mode automatic differentiation to compute exact gradients on NumPy-like code for efficient first-order optimization.\n# pip install jax jaxlib (CPU)\nimport jax, jax.numpy as jnp\n\ndef rosenbrock(x):\n  return jnp.sum(100*(x[1:]-x[:-1]**2)**2 + (1-x[:-1])**2)\n\ngrad = jax.grad(rosenbrock)\nx = jnp.array([-1.2, 1.0])\nfor _ in range(200):\n  g = grad(x)\n  x = x - 1e-3*g  # simple GD for illustration\nx"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#optimization-in-pytorch-sgdadam",
+    "href": "slides/python/05-optimization.html#optimization-in-pytorch-sgdadam",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Optimization in PyTorch (SGD/Adam)",
+    "text": "Optimization in PyTorch (SGD/Adam)\nOptimize model parameters with first-order methods (SGD/Adam) using autograd; standard in ML for large-scale problems.\n# pip install torch (CPU)\nimport torch\n\n# Logistic regression on synthetic data\ntorch.manual_seed(0)\nn, d = 200, 3\nX = torch.randn(n, d)\nw_true = torch.tensor([1.0, -2.0, 0.5])\ny = (torch.sigmoid(X@w_true + 0.1*torch.randn(n)) &gt; 0.5).float()\n\nw = torch.zeros(d, requires_grad=True)\nopt_t = torch.optim.Adam([w], lr=0.05)\nfor _ in range(400):\n  opt_t.zero_grad()\n  p = torch.sigmoid(X@w)\n  loss = torch.nn.functional.binary_cross_entropy(p, y)\n  loss.backward(); opt_t.step()\nw.detach()"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#gradient-checks-and-scaling",
+    "href": "slides/python/05-optimization.html#gradient-checks-and-scaling",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Gradient checks and scaling",
+    "text": "Gradient checks and scaling\n\nUse scipy.optimize.check_grad(f, grad, x0) to verify gradients\nScale variables so gradients are comparable; rescale constraints\nProvide jac/hess when possible; set options={'maxiter':..., 'gtol':...}\n\nfrom scipy.optimize import check_grad\nf = lambda x: (x[0]-1)**2 + 3*(x[1]+2)**2\ng = lambda x: np.array([2*(x[0]-1), 6*(x[1]+2)])\ncheck_grad(f, g, np.array([0.9, -2.1]))  # ~ small number if correct"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#capturing-diagnostics-with-callbacks",
+    "href": "slides/python/05-optimization.html#capturing-diagnostics-with-callbacks",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Capturing diagnostics with callbacks",
+    "text": "Capturing diagnostics with callbacks\nCollect iterates during optimization to analyze convergence behavior or visualize paths after the run.\nfrom scipy import optimize as opt\nimport numpy as np\nrosen = opt.rosen\nx0 = np.array([-1.2, 1.0])\nhist = []\n\ndef cb(xk):\n  hist.append((len(hist), xk.copy()))\n\nres = opt.minimize(rosen, x0, callback=cb, options={'maxiter': 200})\n# Now hist contains iterates; plot later if needed"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#meanvariance-with-sector-caps-slsqp",
+    "href": "slides/python/05-optimization.html#meanvariance-with-sector-caps-slsqp",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Mean–variance with sector caps (SLSQP)",
+    "text": "Mean–variance with sector caps (SLSQP)\nAllocate a long-only portfolio with a minimum return, total weight = 1, and sector exposure caps.\nimport numpy as np, pandas as pd\nfrom scipy import optimize as opt\n\n# Inputs: returns R (T x N), expected mu (N,), covariance Sigma (N x N), sector map\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\nmu = R.mean().values\nSigma = np.cov(R.values, rowvar=False)\ntickers = R.columns\nsectors = pd.Series({t: t.split('-')[0] for t in tickers})  # example sector parse\n\nN = len(mu)\nvar = lambda w: w @ Sigma @ w\nret_target = mu.mean()  # target: average expected return\n\ndef sector_matrix(labels):\n  cats = sorted(labels.unique())\n  S = np.zeros((len(cats), len(labels)))\n  for i,c in enumerate(cats):\n    S[i, labels.index[labels==c].tolist()] = 1.0\n  return S, cats\n\nS, cats = sector_matrix(sectors)\ncap = 0.35  # max 35% per sector\n\ncons = [\n  {'type':'eq',  'fun': lambda w: np.sum(w) - 1},\n  {'type':'ineq','fun': lambda w: w @ mu - ret_target},\n]\n# sector caps as inequality constraints S w &lt;= cap\nfor i in range(S.shape[0]):\n  cons.append({'type':'ineq','fun': (lambda i: lambda w: cap - S[i]@w)(i)})\n\nbounds = [(0,1)]*N\nres = opt.minimize(var, x0=np.ones(N)/N, bounds=bounds, constraints=cons, method='SLSQP')\nweights = pd.Series(res.x, index=tickers).sort_values(ascending=False)\nweights.head(10)"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#tracking-error-turnover-penalty-cvxpy",
+    "href": "slides/python/05-optimization.html#tracking-error-turnover-penalty-cvxpy",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Tracking error + turnover penalty (CVXPY)",
+    "text": "Tracking error + turnover penalty (CVXPY)\nMinimize tracking error to a benchmark with L1 turnover penalty to control changes from current weights.\nimport numpy as np, pandas as pd, cvxpy as cp\n\n# R, Sigma from historical returns; w_bench benchmark weights; w_prev current weights\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\nSigma = np.cov(R.values, rowvar=False)\ntickers = R.columns; N = len(tickers)\nw_bench = np.ones(N)/N\nw_prev = np.ones(N)/N\n\nw = cp.Variable(N)\nlam_te = 1.0\nlam_to = 0.01\nobj = cp.quad_form(w - w_bench, Sigma) * lam_te + lam_to * cp.norm1(w - w_prev)\nprob = cp.Problem(cp.Minimize(obj), [cp.sum(w)==1, w&gt;=0])\nprob.solve(solver=cp.OSQP)\npd.Series(w.value, index=tickers).sort_values(ascending=False).head(10)"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#risk-parity-equal-risk-contributions",
+    "href": "slides/python/05-optimization.html#risk-parity-equal-risk-contributions",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Risk parity (equal risk contributions)",
+    "text": "Risk parity (equal risk contributions)\nFind weights so each asset contributes equally to portfolio risk. Solve with nonlinear constraints.\nimport numpy as np\nfrom scipy import optimize as opt\n\ndef risk_contrib(w, Sigma):\n  # RC_i = w_i (Sigma w)_i\n  Sw = Sigma @ w\n  return w * Sw\n\ndef rp_objective(w, Sigma):\n  RC = risk_contrib(w, Sigma)\n  target = np.mean(RC)\n  return np.sum((RC - target)**2)\n\nSigma = np.eye(5) * 0.05\nSigma[0,1]=Sigma[1,0]=0.03  # some correlation\nN = Sigma.shape[0]\nbounds = [(0,1)]*N\ncons = ({'type':'eq','fun': lambda w: np.sum(w)-1},)\nres = opt.minimize(lambda w: rp_objective(w,Sigma), x0=np.ones(N)/N,\n           bounds=bounds, constraints=cons, method='SLSQP')\nres.x"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#robust-meanvariance-socp-with-cvxpy",
+    "href": "slides/python/05-optimization.html#robust-meanvariance-socp-with-cvxpy",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Robust mean–variance (SOCP with CVXPY)",
+    "text": "Robust mean–variance (SOCP with CVXPY)\nHedge estimation error by minimizing worst‑case variance in an ellipsoidal uncertainty set. Use the constraint \\(\\|Uw\\|_2 \\le t\\) and minimize \\(t - \\lambda \\, (\\mu^\\top w)\\) subject to \\(\\mathbf{1}^\\top w = 1\\) and \\(w \\ge 0\\).\nimport numpy as np, cvxpy as cp\nnp.random.seed(0)\nN = 10\nmu = np.random.rand(N)/10\nSigma_hat = np.random.randn(N,N); Sigma_hat = Sigma_hat.T@Sigma_hat + 1e-3*np.eye(N)\nU = np.linalg.cholesky(Sigma_hat)  # uncertainty shaping\nrho = 0.05\nw = cp.Variable(N)\n\n# worst-case variance upper bound: || U w ||_2 &lt;= t, minimize t + lambda * (-mu @ w)\nt = cp.Variable()\nlam = 1.0\nprob = cp.Problem(cp.Minimize(t - lam*(mu@w)), [\n  cp.sum(w) == 1,\n  w &gt;= 0,\n  cp.norm(U@w, 2) &lt;= cp.sqrt(t) + rho  # conservative form\n])\nprob.solve(solver=cp.SCS)\nw.value"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#option-calibration-via-least-squares",
+    "href": "slides/python/05-optimization.html#option-calibration-via-least-squares",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "Option calibration via least squares",
+    "text": "Option calibration via least squares\nFit a simple model parameter (e.g., volatility) to market prices by minimizing squared pricing errors.\nimport numpy as np\nfrom scipy.optimize import least_squares\nfrom math import log, sqrt, exp\nfrom mpmath import quad, erfc  # or implement Black–Scholes directly\n\ndef bs_call(s, k, t, r, sigma):\n  from math import log, sqrt\n  d1 = (log(s/k) + (r+0.5*sigma**2)*t) / (sigma*sqrt(t))\n  d2 = d1 - sigma*sqrt(t)\n  from mpmath import quad, erfc\n  # quick normal CDF via erfc\n  Phi = lambda z: 0.5*erfc(-z/np.sqrt(2))\n  return s*Phi(d1) - k*exp(-r*t)*Phi(d2)\n\nS = 100; r = 0.01\nstrikes = np.array([90, 95, 100, 105, 110])\ntts = np.array([0.25, 0.25, 0.25, 0.25, 0.25])\nmarket = np.array([11.5, 7.9, 5.8, 3.9, 2.5])\n\ndef resid(params):\n  sigma = params[0]\n  model = np.array([bs_call(S, k, t, r, sigma) for k,t in zip(strikes, tts)])\n  return model - market\n\nres = least_squares(resid, x0=[0.2], bounds=(1e-4, 2.0), loss='soft_l1')\nres.x  # calibrated volatility"
+  },
+  {
+    "objectID": "slides/python/05-optimization.html#more-exercises",
+    "href": "slides/python/05-optimization.html#more-exercises",
+    "title": "Python Session 5 — Numerical Optimization",
+    "section": "More exercises",
+    "text": "More exercises\n\nNonlinear LS with least_squares using a robust loss (Cauchy/Huber)\nMarkowitz with a target return in CVXPY; compare to SciPy SLSQP\nSmall knapsack with OR‑Tools: change data and capacity\nUse JAX to minimize Rosenbrock and compare to SciPy BFGS ## Wrap‑up\nYou can solve roots and minimize objectives with SciPy and NumPy\nNext: Flask and Streamlit"
   }
 ]

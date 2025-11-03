@@ -6,8 +6,8 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-04c7ee197ec4d7edf3c29ccb71f7023e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.23">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
 
   <meta name="author" content="Juan F. Imbet">
   <title>Introduction to VBA and Python – Python Session 5 — Numerical Optimization</title>
@@ -223,15 +223,20 @@ Juan F. Imbet
 <section id="why-optimize" class="slide level2">
 <h2>Why optimize?</h2>
 <ul>
-<li>Find best parameters or satisfy equations</li>
+<li>Estimate model parameters (calibration)</li>
+<li>Allocate portfolios under risk/return constraints</li>
+<li>Optimize trading decisions (position sizing, execution)</li>
+<li>Solve engineering/economic equilibrium equations (roots)</li>
 </ul>
 </section>
 <section id="scipy-optimize" class="slide level2">
 <h2>SciPy optimize</h2>
+<p>High-level toolbox for numerical optimization: root finding, minimization, least squares, linear programming, and more.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="root-finding-scalar" class="slide level2">
 <h2>Root finding: scalar</h2>
+<p>Find x such that <span class="math inline">\(f(x)=0\)</span> using a robust bracketing method (Brent). Requires an interval <span class="math inline">\([a,b]\)</span> where <span class="math inline">\(f(a)\)</span> and <span class="math inline">\(f(b)\)</span> have opposite signs.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">import</span> math</span>
 <span id="cb2-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
 <span id="cb2-3"><a></a></span>
@@ -240,12 +245,14 @@ Juan F. Imbet
 </section>
 <section id="root-finding-systems" class="slide level2">
 <h2>Root finding: systems</h2>
+<p>Solve vector equations <span class="math inline">\(F(v)=0\)</span> using hybrid methods (Jacobian-free by default; can supply Jacobian for speed/robustness).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a></a></span>
-<span id="cb3-3"><a></a><span class="kw">def</span> F(v):</span>
-<span id="cb3-4"><a></a>    x, y <span class="op">=</span> v</span>
-<span id="cb3-5"><a></a>    <span class="cf">return</span> [x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>, x <span class="op">-</span> y]</span>
-<span id="cb3-6"><a></a>sol <span class="op">=</span> opt.root(F, [<span class="fl">0.5</span>, <span class="fl">0.1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a><span class="kw">def</span> F(v):</span>
+<span id="cb3-5"><a></a>  x, y <span class="op">=</span> v</span>
+<span id="cb3-6"><a></a>  <span class="cf">return</span> [x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>, x <span class="op">-</span> y]</span>
+<span id="cb3-7"><a></a>sol <span class="op">=</span> opt.root(F, [<span class="fl">0.5</span>, <span class="fl">0.1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="designing-objectives" class="slide level2">
 <h2>Designing objectives</h2>
@@ -256,52 +263,55 @@ Juan F. Imbet
 </section>
 <section id="minimization-unconstrained" class="slide level2">
 <h2>Minimization: unconstrained</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>quad <span class="op">=</span> <span class="kw">lambda</span> x: (x<span class="op">-</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb4-2"><a></a>res <span class="op">=</span> opt.minimize(<span class="kw">lambda</span> v: quad(v[<span class="dv">0</span>]), x0<span class="op">=</span>[<span class="fl">0.0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Minimize a scalar objective without constraints. SciPy picks gradient-based or derivative-free methods depending on options.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb4-2"><a></a>quad <span class="op">=</span> <span class="kw">lambda</span> x: (x<span class="op">-</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb4-3"><a></a>res <span class="op">=</span> opt.minimize(<span class="kw">lambda</span> v: quad(v[<span class="dv">0</span>]), x0<span class="op">=</span>[<span class="fl">0.0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="markowitz-example-finance" class="slide level2">
 <h2>Markowitz example (finance)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="co"># use returns from prices-top20.csv to estimate mu and Sigma</span></span>
-<span id="cb5-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np</span>
-<span id="cb5-3"><a></a>px <span class="op">=</span> pd.read_csv(<span class="st">'data/prices-top20.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'date'</span>]).sort_values([<span class="st">'symbol'</span>,<span class="st">'date'</span>])</span>
-<span id="cb5-4"><a></a>ret <span class="op">=</span> px.groupby(<span class="st">'symbol'</span>)[<span class="st">'close'</span>].pct_change()</span>
-<span id="cb5-5"><a></a>R <span class="op">=</span> px.assign(ret<span class="op">=</span>ret).pivot(index<span class="op">=</span><span class="st">'date'</span>, columns<span class="op">=</span><span class="st">'symbol'</span>, values<span class="op">=</span><span class="st">'ret'</span>).dropna()</span>
-<span id="cb5-6"><a></a>mu <span class="op">=</span> R.mean().values</span>
-<span id="cb5-7"><a></a>Sigma <span class="op">=</span> np.cov(R.values, rowvar<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-8"><a></a></span>
-<span id="cb5-9"><a></a><span class="co"># min variance portfolio with sum(w)=1 and w&gt;=0</span></span>
-<span id="cb5-10"><a></a>N <span class="op">=</span> <span class="bu">len</span>(mu)</span>
-<span id="cb5-11"><a></a>var <span class="op">=</span> <span class="kw">lambda</span> w: w <span class="op">@</span> Sigma <span class="op">@</span> w</span>
-<span id="cb5-12"><a></a>cons <span class="op">=</span> ({<span class="st">'type'</span>: <span class="st">'eq'</span>, <span class="st">'fun'</span>: <span class="kw">lambda</span> w: np.<span class="bu">sum</span>(w)<span class="op">-</span><span class="dv">1</span>}, {<span class="st">'type'</span>:<span class="st">'ineq'</span>,<span class="st">'fun'</span>: <span class="kw">lambda</span> w: w})</span>
-<span id="cb5-13"><a></a>res <span class="op">=</span> opt.minimize(var, x0<span class="op">=</span>np.ones(N)<span class="op">/</span>N, constraints<span class="op">=</span>cons, bounds<span class="op">=</span>[(<span class="dv">0</span>,<span class="dv">1</span>)]<span class="op">*</span>N)</span>
-<span id="cb5-14"><a></a>weights <span class="op">=</span> pd.Series(res.x, index<span class="op">=</span>R.columns).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-15"><a></a>weights.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Min-variance with <span class="math inline">\(\sum_i w_i = 1\)</span> and <span class="math inline">\(w \ge 0\)</span> using historical covariance.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a><span class="co"># use returns from prices-top20.csv to estimate mu and Sigma</span></span>
+<span id="cb5-5"><a></a>px <span class="op">=</span> pd.read_csv(<span class="st">'data/prices-top20.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'date'</span>]).sort_values([<span class="st">'symbol'</span>,<span class="st">'date'</span>])</span>
+<span id="cb5-6"><a></a>ret <span class="op">=</span> px.groupby(<span class="st">'symbol'</span>)[<span class="st">'close'</span>].pct_change()</span>
+<span id="cb5-7"><a></a>R <span class="op">=</span> px.assign(ret<span class="op">=</span>ret).pivot(index<span class="op">=</span><span class="st">'date'</span>, columns<span class="op">=</span><span class="st">'symbol'</span>, values<span class="op">=</span><span class="st">'ret'</span>).dropna()</span>
+<span id="cb5-8"><a></a>mu <span class="op">=</span> R.mean().values</span>
+<span id="cb5-9"><a></a>Sigma <span class="op">=</span> np.cov(R.values, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-10"><a></a></span>
+<span id="cb5-11"><a></a><span class="co"># min variance portfolio with sum(w)=1 and w&gt;=0</span></span>
+<span id="cb5-12"><a></a>N <span class="op">=</span> <span class="bu">len</span>(mu)</span>
+<span id="cb5-13"><a></a>var <span class="op">=</span> <span class="kw">lambda</span> w: w <span class="op">@</span> Sigma <span class="op">@</span> w</span>
+<span id="cb5-14"><a></a>cons <span class="op">=</span> ({<span class="st">'type'</span>: <span class="st">'eq'</span>, <span class="st">'fun'</span>: <span class="kw">lambda</span> w: np.<span class="bu">sum</span>(w)<span class="op">-</span><span class="dv">1</span>}, {<span class="st">'type'</span>:<span class="st">'ineq'</span>,<span class="st">'fun'</span>: <span class="kw">lambda</span> w: w})</span>
+<span id="cb5-15"><a></a>res <span class="op">=</span> opt.minimize(var, x0<span class="op">=</span>np.ones(N)<span class="op">/</span>N, constraints<span class="op">=</span>cons, bounds<span class="op">=</span>[(<span class="dv">0</span>,<span class="dv">1</span>)]<span class="op">*</span>N)</span>
+<span id="cb5-16"><a></a>weights <span class="op">=</span> pd.Series(res.x, index<span class="op">=</span>R.columns).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-17"><a></a>weights.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="minimization-constrained" class="slide level2">
 <h2>Minimization: constrained</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>bounds <span class="op">=</span> [(<span class="dv">0</span>, <span class="va">None</span>)]</span>
-<span id="cb6-2"><a></a>res <span class="op">=</span> opt.minimize(<span class="kw">lambda</span> v: (v[<span class="dv">0</span>]<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span>, x0<span class="op">=</span>[<span class="fl">2.0</span>], bounds<span class="op">=</span>bounds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Optimize with bounds and/or constraints. Use methods that support them (e.g., SLSQP, trust-constr; COBYLA is derivative-free).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb6-2"><a></a>bounds <span class="op">=</span> [(<span class="dv">0</span>, <span class="va">None</span>)]</span>
+<span id="cb6-3"><a></a>res <span class="op">=</span> opt.minimize(<span class="kw">lambda</span> v: (v[<span class="dv">0</span>]<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span>, x0<span class="op">=</span>[<span class="fl">2.0</span>], bounds<span class="op">=</span>bounds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="least-squares" class="slide level2">
 <h2>Least squares</h2>
+<p>Solve linear least squares <span class="math inline">\(Ax \approx y\)</span> (QR/SVD under the hood). Standard tool for linear regression under Gaussian noise.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-2"><a></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">50</span>)</span>
 <span id="cb7-3"><a></a>y <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x <span class="op">+</span> <span class="fl">0.1</span><span class="op">*</span>np.random.randn(<span class="dv">50</span>)</span>
 <span id="cb7-4"><a></a>A <span class="op">=</span> np.c_[np.ones_like(x), x]</span>
 <span id="cb7-5"><a></a>coef, <span class="op">*</span>_ <span class="op">=</span> np.linalg.lstsq(A, y, rcond<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="gradient-information" class="slide level2">
-<h2>Gradient information</h2>
-<ul>
-<li>Provide jac/hess when available</li>
-<li>Speeds convergence and improves accuracy</li>
-</ul>
-</section>
 <section id="supplying-jacobianhessian" class="slide level2">
 <h2>Supplying Jacobian/Hessian</h2>
+<p>Providing analytic gradients (and Hessians where applicable) improves speed and accuracy; quasi-Newton methods like BFGS approximate the Hessian from gradients.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> f(x): ...</span>
 <span id="cb8-2"><a></a><span class="kw">def</span> jac(x): ...</span>
-<span id="cb8-3"><a></a>opt.minimize(f, x0, jac<span class="op">=</span>jac, method<span class="op">=</span><span class="st">'BFGS'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-3"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb8-4"><a></a>opt.minimize(f, x0, jac<span class="op">=</span>jac, method<span class="op">=</span><span class="st">'BFGS'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="scaling-and-constraints" class="slide level2">
 <h2>Scaling and constraints</h2>
@@ -312,6 +322,7 @@ Juan F. Imbet
 </section>
 <section id="bounds-and-linear-constraints" class="slide level2">
 <h2>Bounds and linear constraints</h2>
+<p>Use <code>Bounds</code> for box constraints and <code>LinearConstraint</code> for affine equalities/inequalities; pair with SLSQP or trust-constr.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> Bounds, LinearConstraint</span>
 <span id="cb9-2"><a></a>bounds <span class="op">=</span> Bounds(<span class="dv">0</span>, <span class="dv">1</span>)</span>
 <span id="cb9-3"><a></a>A <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>]]<span class="op">;</span> lb<span class="op">=</span>[<span class="dv">1</span>]<span class="op">;</span> ub<span class="op">=</span>[<span class="dv">1</span>]</span>
@@ -324,22 +335,35 @@ Juan F. Imbet
 <li>Check status, fun, grad, nfev</li>
 <li>Plot objective over iterations when possible</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="co"># Inspect common fields from scipy.optimize results</span></span>
+<span id="cb10-2"><a></a><span class="bu">print</span>({</span>
+<span id="cb10-3"><a></a>  <span class="st">'status'</span>: res.status,           <span class="co"># integer code</span></span>
+<span id="cb10-4"><a></a>  <span class="st">'message'</span>: res.message,         <span class="co"># human-readable</span></span>
+<span id="cb10-5"><a></a>  <span class="st">'fun'</span>: <span class="bu">getattr</span>(res, <span class="st">'fun'</span>, <span class="va">None</span>),</span>
+<span id="cb10-6"><a></a>  <span class="st">'nfev'</span>: <span class="bu">getattr</span>(res, <span class="st">'nfev'</span>, <span class="va">None</span>),</span>
+<span id="cb10-7"><a></a>  <span class="st">'nit'</span>: <span class="bu">getattr</span>(res, <span class="st">'nit'</span>, <span class="va">None</span>),</span>
+<span id="cb10-8"><a></a>  <span class="st">'success'</span>: res.success,</span>
+<span id="cb10-9"><a></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="callbacks-and-termination" class="slide level2">
 <h2>Callbacks and termination</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">def</span> cb(xk): <span class="bu">print</span>(xk)</span>
-<span id="cb10-2"><a></a>opt.minimize(f, x0, callback<span class="op">=</span>cb, options<span class="op">=</span>{<span class="st">"maxiter"</span>: <span class="dv">200</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Track progress and customize termination with callbacks and options like max iterations or tolerances.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">def</span> cb(xk): <span class="bu">print</span>(xk)</span>
+<span id="cb11-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb11-3"><a></a>opt.minimize(f, x0, callback<span class="op">=</span>cb, options<span class="op">=</span>{<span class="st">"maxiter"</span>: <span class="dv">200</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="linear-programming-highs" class="slide level2">
 <h2>Linear programming (HiGHS)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> linprog</span>
-<span id="cb11-2"><a></a>c <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]<span class="op">;</span> A_ub<span class="op">=</span>[[<span class="dv">1</span>,<span class="dv">1</span>]]<span class="op">;</span> b_ub<span class="op">=</span>[<span class="dv">3</span>]</span>
-<span id="cb11-3"><a></a>linprog(c, A_ub<span class="op">=</span>A_ub, b_ub<span class="op">=</span>b_ub)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Solve linear objectives with linear constraints to global optimality using the HiGHS solvers (simplex/IPM), deterministic and scalable.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> linprog</span>
+<span id="cb12-2"><a></a>c <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]<span class="op">;</span> A_ub<span class="op">=</span>[[<span class="dv">1</span>,<span class="dv">1</span>]]<span class="op">;</span> b_ub<span class="op">=</span>[<span class="dv">3</span>]</span>
+<span id="cb12-3"><a></a>linprog(c, A_ub<span class="op">=</span>A_ub, b_ub<span class="op">=</span>b_ub)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="global-optimization-basinhopping" class="slide level2">
 <h2>Global optimization (basinhopping)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> basinhopping</span>
-<span id="cb12-2"><a></a>res <span class="op">=</span> basinhopping(<span class="kw">lambda</span> x: (x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span><span class="op">*</span><span class="bu">abs</span>(np.sin(x[<span class="dv">0</span>])), x0<span class="op">=</span>[<span class="fl">0.0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Stochastic global search: random perturbations + local minimization to escape local minima in nonconvex landscapes.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> basinhopping</span>
+<span id="cb13-2"><a></a>res <span class="op">=</span> basinhopping(<span class="kw">lambda</span> x: (x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span><span class="op">*</span><span class="bu">abs</span>(np.sin(x[<span class="dv">0</span>])), x0<span class="op">=</span>[<span class="fl">0.0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="trust-constr-highlights" class="slide level2">
 <h2>Trust-constr highlights</h2>
@@ -355,27 +379,385 @@ Juan F. Imbet
 <li>Check gradients numerically; rescale variables</li>
 </ul>
 </section>
-<section id="exercise-1" class="slide level2">
-<h2>Exercise 1</h2>
-<ul>
-<li>Fit a logistic curve to data using least squares</li>
-</ul>
+<section id="exercise-1-solution-logistic-fit" class="slide level2">
+<h2>Exercise 1 — Solution (logistic fit)</h2>
+<p>Generate synthetic data and fit a logistic curve using nonlinear least squares.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> curve_fit</span>
+<span id="cb14-3"><a></a></span>
+<span id="cb14-4"><a></a><span class="kw">def</span> logistic(x, L, k, x0):</span>
+<span id="cb14-5"><a></a>  <span class="cf">return</span> L <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>k<span class="op">*</span>(x <span class="op">-</span> x0)))</span>
+<span id="cb14-6"><a></a></span>
+<span id="cb14-7"><a></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb14-8"><a></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">120</span>)</span>
+<span id="cb14-9"><a></a>y_true <span class="op">=</span> logistic(x, L<span class="op">=</span><span class="fl">1.8</span>, k<span class="op">=</span><span class="fl">1.1</span>, x0<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb14-10"><a></a>y_obs <span class="op">=</span> y_true <span class="op">+</span> <span class="fl">0.05</span><span class="op">*</span>rng.standard_normal(x.size)</span>
+<span id="cb14-11"><a></a></span>
+<span id="cb14-12"><a></a>popt, pcov <span class="op">=</span> curve_fit(logistic, x, y_obs, p0<span class="op">=</span>[<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>])</span>
+<span id="cb14-13"><a></a>L_hat, k_hat, x0_hat <span class="op">=</span> popt</span>
+<span id="cb14-14"><a></a><span class="bu">print</span>({<span class="st">'L'</span>: L_hat, <span class="st">'k'</span>: k_hat, <span class="st">'x0'</span>: x0_hat})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercise-2" class="slide level2">
-<h2>Exercise 2</h2>
-<ul>
-<li>Minimize a portfolio variance under weight constraints on <code>prices-top20.csv</code></li>
-</ul>
-</section>
-<section class="slide level2">
-
+<section id="exercise-2-solution-minvariance-weights" class="slide level2">
+<h2>Exercise 2 — Solution (min‑variance weights)</h2>
+<p>Estimate daily returns from <code>prices-top20.csv</code>, compute covariance, and solve min‑variance portfolio with <span class="math inline">\(\sum_i w_i = 1\)</span> and <span class="math inline">\(w \ge 0\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np</span>
+<span id="cb15-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb15-3"><a></a></span>
+<span id="cb15-4"><a></a><span class="co"># Load prices and compute returns per symbol</span></span>
+<span id="cb15-5"><a></a>px <span class="op">=</span> pd.read_csv(<span class="st">'data/prices-top20.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'date'</span>]).sort_values([<span class="st">'symbol'</span>,<span class="st">'date'</span>])</span>
+<span id="cb15-6"><a></a>ret <span class="op">=</span> px.groupby(<span class="st">'symbol'</span>)[<span class="st">'close'</span>].pct_change()</span>
+<span id="cb15-7"><a></a>R <span class="op">=</span> px.assign(ret<span class="op">=</span>ret).pivot(index<span class="op">=</span><span class="st">'date'</span>, columns<span class="op">=</span><span class="st">'symbol'</span>, values<span class="op">=</span><span class="st">'ret'</span>).dropna()</span>
+<span id="cb15-8"><a></a></span>
+<span id="cb15-9"><a></a>Sigma <span class="op">=</span> np.cov(R.values, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-10"><a></a>tickers <span class="op">=</span> R.columns</span>
+<span id="cb15-11"><a></a>N <span class="op">=</span> <span class="bu">len</span>(tickers)</span>
+<span id="cb15-12"><a></a></span>
+<span id="cb15-13"><a></a>var <span class="op">=</span> <span class="kw">lambda</span> w: w <span class="op">@</span> Sigma <span class="op">@</span> w</span>
+<span id="cb15-14"><a></a>cons <span class="op">=</span> (</span>
+<span id="cb15-15"><a></a>  {<span class="st">'type'</span>:<span class="st">'eq'</span>, <span class="st">'fun'</span>: <span class="kw">lambda</span> w: np.<span class="bu">sum</span>(w) <span class="op">-</span> <span class="dv">1</span>},  <span class="co"># sum to 1</span></span>
+<span id="cb15-16"><a></a>  {<span class="st">'type'</span>:<span class="st">'ineq'</span>,<span class="st">'fun'</span>: <span class="kw">lambda</span> w: w},              <span class="co"># w &gt;= 0 (handled also by bounds)</span></span>
+<span id="cb15-17"><a></a>)</span>
+<span id="cb15-18"><a></a>bounds <span class="op">=</span> [(<span class="dv">0</span>,<span class="dv">1</span>)]<span class="op">*</span>N</span>
+<span id="cb15-19"><a></a>res <span class="op">=</span> opt.minimize(var, x0<span class="op">=</span>np.ones(N)<span class="op">/</span>N, bounds<span class="op">=</span>bounds, constraints<span class="op">=</span>cons, method<span class="op">=</span><span class="st">'SLSQP'</span>)</span>
+<span id="cb15-20"><a></a></span>
+<span id="cb15-21"><a></a>weights <span class="op">=</span> pd.Series(res.x, index<span class="op">=</span>tickers).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-22"><a></a><span class="bu">print</span>(<span class="st">'Variance:'</span>, var(res.x))</span>
+<span id="cb15-23"><a></a>weights.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <!-- removed by request: analogy content -->
 </section>
-<section id="wrapup" class="slide level2">
-<h2>Wrap‑up</h2>
+<section id="method-zoo-scipy-minimize" class="slide level2">
+<h2>Method zoo (SciPy minimize)</h2>
 <ul>
-<li>You can solve roots and minimize objectives with SciPy and NumPy</li>
-<li>Next: Flask and Streamlit</li>
+<li>Unconstrained: Nelder-Mead (simplex, derivative-free), Powell (direction set), CG (conjugate gradient), BFGS (quasi-Newton), L-BFGS-B (limited-memory with box bounds)</li>
+<li>Constrained: SLSQP (Sequential Quadratic Programming), trust-constr (trust region with constraints), TNC (truncated Newton, bounds), COBYLA (derivative-free, linearized constraints)</li>
+<li>Tips: try L-BFGS-B for box bounds, SLSQP for simple eq/ineq, trust-constr for complex nonlinear constraints</li>
+</ul>
+<p>Examples of choosing different algorithms and options:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb16-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb16-3"><a></a></span>
+<span id="cb16-4"><a></a>rosen <span class="op">=</span> opt.rosen       <span class="co"># classic Rosenbrock function</span></span>
+<span id="cb16-5"><a></a>x0 <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1.0</span>])</span>
+<span id="cb16-6"><a></a>opt.minimize(rosen, x0, method<span class="op">=</span><span class="st">'BFGS'</span>, options<span class="op">=</span>{<span class="st">'gtol'</span>:<span class="fl">1e-8</span>,<span class="st">'maxiter'</span>:<span class="dv">500</span>})</span>
+<span id="cb16-7"><a></a>opt.minimize(rosen, x0, method<span class="op">=</span><span class="st">'L-BFGS-B'</span>, bounds<span class="op">=</span>[(<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">3</span>)])</span>
+<span id="cb16-8"><a></a>opt.minimize(rosen, x0, method<span class="op">=</span><span class="st">'Nelder-Mead'</span>)  <span class="co"># derivative-free</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="nonlinear-constraints-with-jacobians" class="slide level2">
+<h2>Nonlinear constraints with Jacobians</h2>
+<p>Handle nonlinear (in)equality constraints via <code>NonlinearConstraint</code>. <code>trust-constr</code> uses a constrained trust-region approach; analytic Jacobians help a lot. Example: minimize <span class="math inline">\(\|x\|^2\)</span> s.t. <span class="math inline">\(x_0 x_1 = 1\)</span>, <span class="math inline">\(x \ge 0\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-2"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> NonlinearConstraint</span>
+<span id="cb17-3"><a></a></span>
+<span id="cb17-4"><a></a><span class="co"># minimize ||x||^2 s.t. x0 * x1 = 1 and x &gt;= 0</span></span>
+<span id="cb17-5"><a></a>obj <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">@</span> x</span>
+<span id="cb17-6"><a></a>grad <span class="op">=</span> <span class="kw">lambda</span> x: <span class="dv">2</span><span class="op">*</span>x</span>
+<span id="cb17-7"><a></a>con_fun <span class="op">=</span> <span class="kw">lambda</span> x: x[<span class="dv">0</span>]<span class="op">*</span>x[<span class="dv">1</span>]</span>
+<span id="cb17-8"><a></a>con_jac <span class="op">=</span> <span class="kw">lambda</span> x: np.array([x[<span class="dv">1</span>], x[<span class="dv">0</span>]])</span>
+<span id="cb17-9"><a></a></span>
+<span id="cb17-10"><a></a>nlin <span class="op">=</span> NonlinearConstraint(con_fun, lb<span class="op">=</span><span class="fl">1.0</span>, ub<span class="op">=</span><span class="fl">1.0</span>, jac<span class="op">=</span>con_jac)</span>
+<span id="cb17-11"><a></a>res <span class="op">=</span> opt.minimize(obj, x0<span class="op">=</span>[<span class="fl">0.5</span>, <span class="fl">3.0</span>], jac<span class="op">=</span>grad,</span>
+<span id="cb17-12"><a></a>           constraints<span class="op">=</span>[nlin], bounds<span class="op">=</span>[(<span class="dv">0</span>,<span class="va">None</span>),(<span class="dv">0</span>,<span class="va">None</span>)],</span>
+<span id="cb17-13"><a></a>           method<span class="op">=</span><span class="st">'trust-constr'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="nonlinear-least-squares-least_squares" class="slide level2">
+<h2>Nonlinear least squares (least_squares)</h2>
+<p>Fit parameters by minimizing <span class="math inline">\(\sum_i r_i(\theta)^2\)</span> using Gauss-Newton/Levenberg–Marquardt (or TRF). Robust loss reduces outlier influence; e.g., fit <span class="math inline">\(y = a e^{b x} + c\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb18-2"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> least_squares</span>
+<span id="cb18-3"><a></a></span>
+<span id="cb18-4"><a></a><span class="co"># Fit y = a * exp(bx) + c with robust loss</span></span>
+<span id="cb18-5"><a></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb18-6"><a></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">50</span>)</span>
+<span id="cb18-7"><a></a>true <span class="op">=</span> np.array([<span class="fl">2.0</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span>])</span>
+<span id="cb18-8"><a></a>y <span class="op">=</span> true[<span class="dv">0</span>]<span class="op">*</span>np.exp(true[<span class="dv">1</span>]<span class="op">*</span>x) <span class="op">+</span> true[<span class="dv">2</span>] <span class="op">+</span> <span class="fl">0.2</span><span class="op">*</span>rng.standard_normal(x.size)</span>
+<span id="cb18-9"><a></a></span>
+<span id="cb18-10"><a></a><span class="kw">def</span> residuals(theta):</span>
+<span id="cb18-11"><a></a>  a, b, c <span class="op">=</span> theta</span>
+<span id="cb18-12"><a></a>  <span class="cf">return</span> a<span class="op">*</span>np.exp(b<span class="op">*</span>x) <span class="op">+</span> c <span class="op">-</span> y</span>
+<span id="cb18-13"><a></a></span>
+<span id="cb18-14"><a></a>res <span class="op">=</span> least_squares(residuals, x0<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>], loss<span class="op">=</span><span class="st">'huber'</span>, f_scale<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb18-15"><a></a>res.x  <span class="co"># estimated parameters</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="curve-fitting-curve_fit" class="slide level2">
+<h2>Curve fitting (curve_fit)</h2>
+<p>Convenient wrapper around <code>least_squares</code> for parametric models; returns best-fit parameters and covariance.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> curve_fit</span>
+<span id="cb19-3"><a></a></span>
+<span id="cb19-4"><a></a><span class="kw">def</span> logistic(x, L, k, x0):</span>
+<span id="cb19-5"><a></a>  <span class="cf">return</span> L <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>k<span class="op">*</span>(x <span class="op">-</span> x0)))</span>
+<span id="cb19-6"><a></a></span>
+<span id="cb19-7"><a></a>X <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">100</span>)</span>
+<span id="cb19-8"><a></a>Y <span class="op">=</span> logistic(X, <span class="fl">1.5</span>, <span class="fl">1.2</span>, <span class="fl">0.3</span>) <span class="op">+</span> <span class="fl">0.05</span><span class="op">*</span>np.random.randn(<span class="dv">100</span>)</span>
+<span id="cb19-9"><a></a></span>
+<span id="cb19-10"><a></a>popt, pcov <span class="op">=</span> curve_fit(logistic, X, Y, p0<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb19-11"><a></a>popt  <span class="co"># best-fit parameters</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="global-optimizers-beyond-basinhopping" class="slide level2">
+<h2>Global optimizers beyond basinhopping</h2>
+<p>Explore nonconvex landscapes with population/stochastic methods: - Differential Evolution: evolutionary search over bounded boxes - Dual Annealing: simulated annealing variant with local refinements - SHGO: deterministic global optimizer for low dimensions within bounds</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> differential_evolution, dual_annealing, shgo</span>
+<span id="cb20-2"><a></a></span>
+<span id="cb20-3"><a></a><span class="co"># Differential Evolution (evolutionary, box-bounded)</span></span>
+<span id="cb20-4"><a></a>f <span class="op">=</span> <span class="kw">lambda</span> v: (v[<span class="dv">0</span>]<span class="op">-</span><span class="dv">3</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span><span class="op">*</span>np.sin(v[<span class="dv">1</span>])<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb20-5"><a></a>bounds <span class="op">=</span> [(<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>), (<span class="op">-</span><span class="dv">5</span>,<span class="dv">5</span>)]</span>
+<span id="cb20-6"><a></a>de <span class="op">=</span> differential_evolution(f, bounds, tol<span class="op">=</span><span class="fl">1e-6</span>)</span>
+<span id="cb20-7"><a></a></span>
+<span id="cb20-8"><a></a><span class="co"># Simulated annealing variant</span></span>
+<span id="cb20-9"><a></a>da <span class="op">=</span> dual_annealing(f, bounds, maxiter<span class="op">=</span><span class="dv">2000</span>)</span>
+<span id="cb20-10"><a></a></span>
+<span id="cb20-11"><a></a><span class="co"># SHGO (global for low-dim, needs bounds)</span></span>
+<span id="cb20-12"><a></a>sg <span class="op">=</span> shgo(f, bounds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="convex-optimization-with-cvxpy" class="slide level2">
+<h2>Convex optimization with CVXPY</h2>
+<p>Model convex problems declaratively and solve to global optimality with convex solvers (OSQP/SCS). Great for QPs, L1/L2 regularization, portfolios.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="co"># pip install cvxpy (once)</span></span>
+<span id="cb21-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, cvxpy <span class="im">as</span> cp</span>
+<span id="cb21-3"><a></a></span>
+<span id="cb21-4"><a></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb21-5"><a></a>N <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb21-6"><a></a>mu <span class="op">=</span> np.random.rand(N)<span class="op">/</span><span class="dv">10</span></span>
+<span id="cb21-7"><a></a>Sigma <span class="op">=</span> np.random.randn(N, N)<span class="op">;</span> Sigma <span class="op">=</span> Sigma.T<span class="op">@</span>Sigma <span class="op">+</span> <span class="fl">1e-3</span><span class="op">*</span>np.eye(N)</span>
+<span id="cb21-8"><a></a>w <span class="op">=</span> cp.Variable(N)</span>
+<span id="cb21-9"><a></a>ret_target <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb21-10"><a></a>prob <span class="op">=</span> cp.Problem(cp.Minimize(cp.quad_form(w, Sigma)),</span>
+<span id="cb21-11"><a></a>          [cp.<span class="bu">sum</span>(w) <span class="op">==</span> <span class="dv">1</span>,</span>
+<span id="cb21-12"><a></a>           w <span class="op">&gt;=</span> <span class="dv">0</span>,</span>
+<span id="cb21-13"><a></a>           mu <span class="op">@</span> w <span class="op">&gt;=</span> ret_target])</span>
+<span id="cb21-14"><a></a>prob.solve(solver<span class="op">=</span>cp.OSQP)</span>
+<span id="cb21-15"><a></a>w.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="mixedinteger-programming-ortools" class="slide level2">
+<h2>Mixed‑integer programming (OR‑Tools)</h2>
+<p>Solve discrete/boolean decision problems with CP-SAT (MILP/CP). Global search leverages cutting planes and constraint propagation.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="co"># pip install ortools (once)</span></span>
+<span id="cb22-2"><a></a><span class="im">from</span> ortools.sat.python <span class="im">import</span> cp_model</span>
+<span id="cb22-3"><a></a></span>
+<span id="cb22-4"><a></a>values <span class="op">=</span> [<span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">12</span>]<span class="op">;</span> weights <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]<span class="op">;</span> capacity <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb22-5"><a></a>model <span class="op">=</span> cp_model.CpModel()</span>
+<span id="cb22-6"><a></a>x <span class="op">=</span> [model.NewBoolVar(<span class="ss">f"x</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(values))]</span>
+<span id="cb22-7"><a></a>model.Add(<span class="bu">sum</span>(w<span class="op">*</span>x_i <span class="cf">for</span> w, x_i <span class="kw">in</span> <span class="bu">zip</span>(weights, x)) <span class="op">&lt;=</span> capacity)</span>
+<span id="cb22-8"><a></a>model.Maximize(<span class="bu">sum</span>(v<span class="op">*</span>x_i <span class="cf">for</span> v, x_i <span class="kw">in</span> <span class="bu">zip</span>(values, x)))</span>
+<span id="cb22-9"><a></a>solver <span class="op">=</span> cp_model.CpSolver()<span class="op">;</span> solver.Solve(model)</span>
+<span id="cb22-10"><a></a>[solver.Value(x_i) <span class="cf">for</span> x_i <span class="kw">in</span> x]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="automatic-differentiation-with-jax" class="slide level2">
+<h2>Automatic differentiation with JAX</h2>
+<p>Use reverse-mode automatic differentiation to compute exact gradients on NumPy-like code for efficient first-order optimization.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="co"># pip install jax jaxlib (CPU)</span></span>
+<span id="cb23-2"><a></a><span class="im">import</span> jax, jax.numpy <span class="im">as</span> jnp</span>
+<span id="cb23-3"><a></a></span>
+<span id="cb23-4"><a></a><span class="kw">def</span> rosenbrock(x):</span>
+<span id="cb23-5"><a></a>  <span class="cf">return</span> jnp.<span class="bu">sum</span>(<span class="dv">100</span><span class="op">*</span>(x[<span class="dv">1</span>:]<span class="op">-</span>x[:<span class="op">-</span><span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (<span class="dv">1</span><span class="op">-</span>x[:<span class="op">-</span><span class="dv">1</span>])<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb23-6"><a></a></span>
+<span id="cb23-7"><a></a>grad <span class="op">=</span> jax.grad(rosenbrock)</span>
+<span id="cb23-8"><a></a>x <span class="op">=</span> jnp.array([<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1.0</span>])</span>
+<span id="cb23-9"><a></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>):</span>
+<span id="cb23-10"><a></a>  g <span class="op">=</span> grad(x)</span>
+<span id="cb23-11"><a></a>  x <span class="op">=</span> x <span class="op">-</span> <span class="fl">1e-3</span><span class="op">*</span>g  <span class="co"># simple GD for illustration</span></span>
+<span id="cb23-12"><a></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="optimization-in-pytorch-sgdadam" class="slide level2">
+<h2>Optimization in PyTorch (SGD/Adam)</h2>
+<p>Optimize model parameters with first-order methods (SGD/Adam) using autograd; standard in ML for large-scale problems.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="co"># pip install torch (CPU)</span></span>
+<span id="cb24-2"><a></a><span class="im">import</span> torch</span>
+<span id="cb24-3"><a></a></span>
+<span id="cb24-4"><a></a><span class="co"># Logistic regression on synthetic data</span></span>
+<span id="cb24-5"><a></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb24-6"><a></a>n, d <span class="op">=</span> <span class="dv">200</span>, <span class="dv">3</span></span>
+<span id="cb24-7"><a></a>X <span class="op">=</span> torch.randn(n, d)</span>
+<span id="cb24-8"><a></a>w_true <span class="op">=</span> torch.tensor([<span class="fl">1.0</span>, <span class="op">-</span><span class="fl">2.0</span>, <span class="fl">0.5</span>])</span>
+<span id="cb24-9"><a></a>y <span class="op">=</span> (torch.sigmoid(X<span class="op">@</span>w_true <span class="op">+</span> <span class="fl">0.1</span><span class="op">*</span>torch.randn(n)) <span class="op">&gt;</span> <span class="fl">0.5</span>).<span class="bu">float</span>()</span>
+<span id="cb24-10"><a></a></span>
+<span id="cb24-11"><a></a>w <span class="op">=</span> torch.zeros(d, requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-12"><a></a>opt_t <span class="op">=</span> torch.optim.Adam([w], lr<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb24-13"><a></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">400</span>):</span>
+<span id="cb24-14"><a></a>  opt_t.zero_grad()</span>
+<span id="cb24-15"><a></a>  p <span class="op">=</span> torch.sigmoid(X<span class="op">@</span>w)</span>
+<span id="cb24-16"><a></a>  loss <span class="op">=</span> torch.nn.functional.binary_cross_entropy(p, y)</span>
+<span id="cb24-17"><a></a>  loss.backward()<span class="op">;</span> opt_t.step()</span>
+<span id="cb24-18"><a></a>w.detach()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="gradient-checks-and-scaling" class="slide level2">
+<h2>Gradient checks and scaling</h2>
+<ul>
+<li>Use <code>scipy.optimize.check_grad(f, grad, x0)</code> to verify gradients</li>
+<li>Scale variables so gradients are comparable; rescale constraints</li>
+<li>Provide <code>jac</code>/<code>hess</code> when possible; set <code>options={'maxiter':..., 'gtol':...}</code></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> check_grad</span>
+<span id="cb25-2"><a></a>f <span class="op">=</span> <span class="kw">lambda</span> x: (x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>(x[<span class="dv">1</span>]<span class="op">+</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb25-3"><a></a>g <span class="op">=</span> <span class="kw">lambda</span> x: np.array([<span class="dv">2</span><span class="op">*</span>(x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">1</span>), <span class="dv">6</span><span class="op">*</span>(x[<span class="dv">1</span>]<span class="op">+</span><span class="dv">2</span>)])</span>
+<span id="cb25-4"><a></a>check_grad(f, g, np.array([<span class="fl">0.9</span>, <span class="op">-</span><span class="fl">2.1</span>]))  <span class="co"># ~ small number if correct</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="capturing-diagnostics-with-callbacks" class="slide level2">
+<h2>Capturing diagnostics with callbacks</h2>
+<p>Collect iterates during optimization to analyze convergence behavior or visualize paths after the run.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb26-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb26-3"><a></a>rosen <span class="op">=</span> opt.rosen</span>
+<span id="cb26-4"><a></a>x0 <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1.0</span>])</span>
+<span id="cb26-5"><a></a>hist <span class="op">=</span> []</span>
+<span id="cb26-6"><a></a></span>
+<span id="cb26-7"><a></a><span class="kw">def</span> cb(xk):</span>
+<span id="cb26-8"><a></a>  hist.append((<span class="bu">len</span>(hist), xk.copy()))</span>
+<span id="cb26-9"><a></a></span>
+<span id="cb26-10"><a></a>res <span class="op">=</span> opt.minimize(rosen, x0, callback<span class="op">=</span>cb, options<span class="op">=</span>{<span class="st">'maxiter'</span>: <span class="dv">200</span>})</span>
+<span id="cb26-11"><a></a><span class="co"># Now hist contains iterates; plot later if needed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="meanvariance-with-sector-caps-slsqp" class="slide level2">
+<h2>Mean–variance with sector caps (SLSQP)</h2>
+<p>Allocate a long-only portfolio with a minimum return, total weight = 1, and sector exposure caps.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb27-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb27-3"><a></a></span>
+<span id="cb27-4"><a></a><span class="co"># Inputs: returns R (T x N), expected mu (N,), covariance Sigma (N x N), sector map</span></span>
+<span id="cb27-5"><a></a>px <span class="op">=</span> pd.read_csv(<span class="st">'data/prices-top20.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'date'</span>]).sort_values([<span class="st">'symbol'</span>,<span class="st">'date'</span>])</span>
+<span id="cb27-6"><a></a>ret <span class="op">=</span> px.groupby(<span class="st">'symbol'</span>)[<span class="st">'close'</span>].pct_change()</span>
+<span id="cb27-7"><a></a>R <span class="op">=</span> px.assign(ret<span class="op">=</span>ret).pivot(index<span class="op">=</span><span class="st">'date'</span>, columns<span class="op">=</span><span class="st">'symbol'</span>, values<span class="op">=</span><span class="st">'ret'</span>).dropna()</span>
+<span id="cb27-8"><a></a>mu <span class="op">=</span> R.mean().values</span>
+<span id="cb27-9"><a></a>Sigma <span class="op">=</span> np.cov(R.values, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb27-10"><a></a>tickers <span class="op">=</span> R.columns</span>
+<span id="cb27-11"><a></a>sectors <span class="op">=</span> pd.Series({t: t.split(<span class="st">'-'</span>)[<span class="dv">0</span>] <span class="cf">for</span> t <span class="kw">in</span> tickers})  <span class="co"># example sector parse</span></span>
+<span id="cb27-12"><a></a></span>
+<span id="cb27-13"><a></a>N <span class="op">=</span> <span class="bu">len</span>(mu)</span>
+<span id="cb27-14"><a></a>var <span class="op">=</span> <span class="kw">lambda</span> w: w <span class="op">@</span> Sigma <span class="op">@</span> w</span>
+<span id="cb27-15"><a></a>ret_target <span class="op">=</span> mu.mean()  <span class="co"># target: average expected return</span></span>
+<span id="cb27-16"><a></a></span>
+<span id="cb27-17"><a></a><span class="kw">def</span> sector_matrix(labels):</span>
+<span id="cb27-18"><a></a>  cats <span class="op">=</span> <span class="bu">sorted</span>(labels.unique())</span>
+<span id="cb27-19"><a></a>  S <span class="op">=</span> np.zeros((<span class="bu">len</span>(cats), <span class="bu">len</span>(labels)))</span>
+<span id="cb27-20"><a></a>  <span class="cf">for</span> i,c <span class="kw">in</span> <span class="bu">enumerate</span>(cats):</span>
+<span id="cb27-21"><a></a>    S[i, labels.index[labels<span class="op">==</span>c].tolist()] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb27-22"><a></a>  <span class="cf">return</span> S, cats</span>
+<span id="cb27-23"><a></a></span>
+<span id="cb27-24"><a></a>S, cats <span class="op">=</span> sector_matrix(sectors)</span>
+<span id="cb27-25"><a></a>cap <span class="op">=</span> <span class="fl">0.35</span>  <span class="co"># max 35% per sector</span></span>
+<span id="cb27-26"><a></a></span>
+<span id="cb27-27"><a></a>cons <span class="op">=</span> [</span>
+<span id="cb27-28"><a></a>  {<span class="st">'type'</span>:<span class="st">'eq'</span>,  <span class="st">'fun'</span>: <span class="kw">lambda</span> w: np.<span class="bu">sum</span>(w) <span class="op">-</span> <span class="dv">1</span>},</span>
+<span id="cb27-29"><a></a>  {<span class="st">'type'</span>:<span class="st">'ineq'</span>,<span class="st">'fun'</span>: <span class="kw">lambda</span> w: w <span class="op">@</span> mu <span class="op">-</span> ret_target},</span>
+<span id="cb27-30"><a></a>]</span>
+<span id="cb27-31"><a></a><span class="co"># sector caps as inequality constraints S w &lt;= cap</span></span>
+<span id="cb27-32"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(S.shape[<span class="dv">0</span>]):</span>
+<span id="cb27-33"><a></a>  cons.append({<span class="st">'type'</span>:<span class="st">'ineq'</span>,<span class="st">'fun'</span>: (<span class="kw">lambda</span> i: <span class="kw">lambda</span> w: cap <span class="op">-</span> S[i]<span class="op">@</span>w)(i)})</span>
+<span id="cb27-34"><a></a></span>
+<span id="cb27-35"><a></a>bounds <span class="op">=</span> [(<span class="dv">0</span>,<span class="dv">1</span>)]<span class="op">*</span>N</span>
+<span id="cb27-36"><a></a>res <span class="op">=</span> opt.minimize(var, x0<span class="op">=</span>np.ones(N)<span class="op">/</span>N, bounds<span class="op">=</span>bounds, constraints<span class="op">=</span>cons, method<span class="op">=</span><span class="st">'SLSQP'</span>)</span>
+<span id="cb27-37"><a></a>weights <span class="op">=</span> pd.Series(res.x, index<span class="op">=</span>tickers).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb27-38"><a></a>weights.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="tracking-error-turnover-penalty-cvxpy" class="slide level2">
+<h2>Tracking error + turnover penalty (CVXPY)</h2>
+<p>Minimize tracking error to a benchmark with L1 turnover penalty to control changes from current weights.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd, cvxpy <span class="im">as</span> cp</span>
+<span id="cb28-2"><a></a></span>
+<span id="cb28-3"><a></a><span class="co"># R, Sigma from historical returns; w_bench benchmark weights; w_prev current weights</span></span>
+<span id="cb28-4"><a></a>px <span class="op">=</span> pd.read_csv(<span class="st">'data/prices-top20.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'date'</span>]).sort_values([<span class="st">'symbol'</span>,<span class="st">'date'</span>])</span>
+<span id="cb28-5"><a></a>ret <span class="op">=</span> px.groupby(<span class="st">'symbol'</span>)[<span class="st">'close'</span>].pct_change()</span>
+<span id="cb28-6"><a></a>R <span class="op">=</span> px.assign(ret<span class="op">=</span>ret).pivot(index<span class="op">=</span><span class="st">'date'</span>, columns<span class="op">=</span><span class="st">'symbol'</span>, values<span class="op">=</span><span class="st">'ret'</span>).dropna()</span>
+<span id="cb28-7"><a></a>Sigma <span class="op">=</span> np.cov(R.values, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb28-8"><a></a>tickers <span class="op">=</span> R.columns<span class="op">;</span> N <span class="op">=</span> <span class="bu">len</span>(tickers)</span>
+<span id="cb28-9"><a></a>w_bench <span class="op">=</span> np.ones(N)<span class="op">/</span>N</span>
+<span id="cb28-10"><a></a>w_prev <span class="op">=</span> np.ones(N)<span class="op">/</span>N</span>
+<span id="cb28-11"><a></a></span>
+<span id="cb28-12"><a></a>w <span class="op">=</span> cp.Variable(N)</span>
+<span id="cb28-13"><a></a>lam_te <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb28-14"><a></a>lam_to <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb28-15"><a></a>obj <span class="op">=</span> cp.quad_form(w <span class="op">-</span> w_bench, Sigma) <span class="op">*</span> lam_te <span class="op">+</span> lam_to <span class="op">*</span> cp.norm1(w <span class="op">-</span> w_prev)</span>
+<span id="cb28-16"><a></a>prob <span class="op">=</span> cp.Problem(cp.Minimize(obj), [cp.<span class="bu">sum</span>(w)<span class="op">==</span><span class="dv">1</span>, w<span class="op">&gt;=</span><span class="dv">0</span>])</span>
+<span id="cb28-17"><a></a>prob.solve(solver<span class="op">=</span>cp.OSQP)</span>
+<span id="cb28-18"><a></a>pd.Series(w.value, index<span class="op">=</span>tickers).sort_values(ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="risk-parity-equal-risk-contributions" class="slide level2">
+<h2>Risk parity (equal risk contributions)</h2>
+<p>Find weights so each asset contributes equally to portfolio risk. Solve with nonlinear constraints.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb29-2"><a></a><span class="im">from</span> scipy <span class="im">import</span> optimize <span class="im">as</span> opt</span>
+<span id="cb29-3"><a></a></span>
+<span id="cb29-4"><a></a><span class="kw">def</span> risk_contrib(w, Sigma):</span>
+<span id="cb29-5"><a></a>  <span class="co"># RC_i = w_i (Sigma w)_i</span></span>
+<span id="cb29-6"><a></a>  Sw <span class="op">=</span> Sigma <span class="op">@</span> w</span>
+<span id="cb29-7"><a></a>  <span class="cf">return</span> w <span class="op">*</span> Sw</span>
+<span id="cb29-8"><a></a></span>
+<span id="cb29-9"><a></a><span class="kw">def</span> rp_objective(w, Sigma):</span>
+<span id="cb29-10"><a></a>  RC <span class="op">=</span> risk_contrib(w, Sigma)</span>
+<span id="cb29-11"><a></a>  target <span class="op">=</span> np.mean(RC)</span>
+<span id="cb29-12"><a></a>  <span class="cf">return</span> np.<span class="bu">sum</span>((RC <span class="op">-</span> target)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb29-13"><a></a></span>
+<span id="cb29-14"><a></a>Sigma <span class="op">=</span> np.eye(<span class="dv">5</span>) <span class="op">*</span> <span class="fl">0.05</span></span>
+<span id="cb29-15"><a></a>Sigma[<span class="dv">0</span>,<span class="dv">1</span>]<span class="op">=</span>Sigma[<span class="dv">1</span>,<span class="dv">0</span>]<span class="op">=</span><span class="fl">0.03</span>  <span class="co"># some correlation</span></span>
+<span id="cb29-16"><a></a>N <span class="op">=</span> Sigma.shape[<span class="dv">0</span>]</span>
+<span id="cb29-17"><a></a>bounds <span class="op">=</span> [(<span class="dv">0</span>,<span class="dv">1</span>)]<span class="op">*</span>N</span>
+<span id="cb29-18"><a></a>cons <span class="op">=</span> ({<span class="st">'type'</span>:<span class="st">'eq'</span>,<span class="st">'fun'</span>: <span class="kw">lambda</span> w: np.<span class="bu">sum</span>(w)<span class="op">-</span><span class="dv">1</span>},)</span>
+<span id="cb29-19"><a></a>res <span class="op">=</span> opt.minimize(<span class="kw">lambda</span> w: rp_objective(w,Sigma), x0<span class="op">=</span>np.ones(N)<span class="op">/</span>N,</span>
+<span id="cb29-20"><a></a>           bounds<span class="op">=</span>bounds, constraints<span class="op">=</span>cons, method<span class="op">=</span><span class="st">'SLSQP'</span>)</span>
+<span id="cb29-21"><a></a>res.x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="robust-meanvariance-socp-with-cvxpy" class="slide level2">
+<h2>Robust mean–variance (SOCP with CVXPY)</h2>
+<p>Hedge estimation error by minimizing worst‑case variance in an ellipsoidal uncertainty set. Use the constraint <span class="math inline">\(\|Uw\|_2 \le t\)</span> and minimize <span class="math inline">\(t - \lambda \, (\mu^\top w)\)</span> subject to <span class="math inline">\(\mathbf{1}^\top w = 1\)</span> and <span class="math inline">\(w \ge 0\)</span>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, cvxpy <span class="im">as</span> cp</span>
+<span id="cb30-2"><a></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb30-3"><a></a>N <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb30-4"><a></a>mu <span class="op">=</span> np.random.rand(N)<span class="op">/</span><span class="dv">10</span></span>
+<span id="cb30-5"><a></a>Sigma_hat <span class="op">=</span> np.random.randn(N,N)<span class="op">;</span> Sigma_hat <span class="op">=</span> Sigma_hat.T<span class="op">@</span>Sigma_hat <span class="op">+</span> <span class="fl">1e-3</span><span class="op">*</span>np.eye(N)</span>
+<span id="cb30-6"><a></a>U <span class="op">=</span> np.linalg.cholesky(Sigma_hat)  <span class="co"># uncertainty shaping</span></span>
+<span id="cb30-7"><a></a>rho <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb30-8"><a></a>w <span class="op">=</span> cp.Variable(N)</span>
+<span id="cb30-9"><a></a></span>
+<span id="cb30-10"><a></a><span class="co"># worst-case variance upper bound: || U w ||_2 &lt;= t, minimize t + lambda * (-mu @ w)</span></span>
+<span id="cb30-11"><a></a>t <span class="op">=</span> cp.Variable()</span>
+<span id="cb30-12"><a></a>lam <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb30-13"><a></a>prob <span class="op">=</span> cp.Problem(cp.Minimize(t <span class="op">-</span> lam<span class="op">*</span>(mu<span class="op">@</span>w)), [</span>
+<span id="cb30-14"><a></a>  cp.<span class="bu">sum</span>(w) <span class="op">==</span> <span class="dv">1</span>,</span>
+<span id="cb30-15"><a></a>  w <span class="op">&gt;=</span> <span class="dv">0</span>,</span>
+<span id="cb30-16"><a></a>  cp.norm(U<span class="op">@</span>w, <span class="dv">2</span>) <span class="op">&lt;=</span> cp.sqrt(t) <span class="op">+</span> rho  <span class="co"># conservative form</span></span>
+<span id="cb30-17"><a></a>])</span>
+<span id="cb30-18"><a></a>prob.solve(solver<span class="op">=</span>cp.SCS)</span>
+<span id="cb30-19"><a></a>w.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="option-calibration-via-least-squares" class="slide level2">
+<h2>Option calibration via least squares</h2>
+<p>Fit a simple model parameter (e.g., volatility) to market prices by minimizing squared pricing errors.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb31-2"><a></a><span class="im">from</span> scipy.optimize <span class="im">import</span> least_squares</span>
+<span id="cb31-3"><a></a><span class="im">from</span> math <span class="im">import</span> log, sqrt, exp</span>
+<span id="cb31-4"><a></a><span class="im">from</span> mpmath <span class="im">import</span> quad, erfc  <span class="co"># or implement Black–Scholes directly</span></span>
+<span id="cb31-5"><a></a></span>
+<span id="cb31-6"><a></a><span class="kw">def</span> bs_call(s, k, t, r, sigma):</span>
+<span id="cb31-7"><a></a>  <span class="im">from</span> math <span class="im">import</span> log, sqrt</span>
+<span id="cb31-8"><a></a>  d1 <span class="op">=</span> (log(s<span class="op">/</span>k) <span class="op">+</span> (r<span class="op">+</span><span class="fl">0.5</span><span class="op">*</span>sigma<span class="op">**</span><span class="dv">2</span>)<span class="op">*</span>t) <span class="op">/</span> (sigma<span class="op">*</span>sqrt(t))</span>
+<span id="cb31-9"><a></a>  d2 <span class="op">=</span> d1 <span class="op">-</span> sigma<span class="op">*</span>sqrt(t)</span>
+<span id="cb31-10"><a></a>  <span class="im">from</span> mpmath <span class="im">import</span> quad, erfc</span>
+<span id="cb31-11"><a></a>  <span class="co"># quick normal CDF via erfc</span></span>
+<span id="cb31-12"><a></a>  Phi <span class="op">=</span> <span class="kw">lambda</span> z: <span class="fl">0.5</span><span class="op">*</span>erfc(<span class="op">-</span>z<span class="op">/</span>np.sqrt(<span class="dv">2</span>))</span>
+<span id="cb31-13"><a></a>  <span class="cf">return</span> s<span class="op">*</span>Phi(d1) <span class="op">-</span> k<span class="op">*</span>exp(<span class="op">-</span>r<span class="op">*</span>t)<span class="op">*</span>Phi(d2)</span>
+<span id="cb31-14"><a></a></span>
+<span id="cb31-15"><a></a>S <span class="op">=</span> <span class="dv">100</span><span class="op">;</span> r <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb31-16"><a></a>strikes <span class="op">=</span> np.array([<span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">100</span>, <span class="dv">105</span>, <span class="dv">110</span>])</span>
+<span id="cb31-17"><a></a>tts <span class="op">=</span> np.array([<span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>])</span>
+<span id="cb31-18"><a></a>market <span class="op">=</span> np.array([<span class="fl">11.5</span>, <span class="fl">7.9</span>, <span class="fl">5.8</span>, <span class="fl">3.9</span>, <span class="fl">2.5</span>])</span>
+<span id="cb31-19"><a></a></span>
+<span id="cb31-20"><a></a><span class="kw">def</span> resid(params):</span>
+<span id="cb31-21"><a></a>  sigma <span class="op">=</span> params[<span class="dv">0</span>]</span>
+<span id="cb31-22"><a></a>  model <span class="op">=</span> np.array([bs_call(S, k, t, r, sigma) <span class="cf">for</span> k,t <span class="kw">in</span> <span class="bu">zip</span>(strikes, tts)])</span>
+<span id="cb31-23"><a></a>  <span class="cf">return</span> model <span class="op">-</span> market</span>
+<span id="cb31-24"><a></a></span>
+<span id="cb31-25"><a></a>res <span class="op">=</span> least_squares(resid, x0<span class="op">=</span>[<span class="fl">0.2</span>], bounds<span class="op">=</span>(<span class="fl">1e-4</span>, <span class="fl">2.0</span>), loss<span class="op">=</span><span class="st">'soft_l1'</span>)</span>
+<span id="cb31-26"><a></a>res.x  <span class="co"># calibrated volatility</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="more-exercises" class="slide level2">
+<h2>More exercises</h2>
+<ul>
+<li><p>Nonlinear LS with <code>least_squares</code> using a robust loss (Cauchy/Huber)</p></li>
+<li><p>Markowitz with a target return in CVXPY; compare to SciPy SLSQP</p></li>
+<li><p>Small knapsack with OR‑Tools: change data and capacity</p></li>
+<li><p>Use JAX to minimize Rosenbrock and compare to SciPy BFGS ## Wrap‑up</p></li>
+<li><p>You can solve roots and minimize objectives with SciPy and NumPy</p></li>
+<li><p>Next: Flask and Streamlit</p></li>
 </ul>
 
 
