@@ -73,6 +73,10 @@ sol = opt.root(F, [0.5, 0.1])
 
 Minimize a scalar objective without constraints. SciPy picks gradient-based or derivative-free methods depending on options.
 
+$$
+\min_{x \in \mathbb{R}} \; (x-3)^2
+$$
+
 ```python
 from scipy import optimize as opt
 quad = lambda x: (x-3)**2
@@ -82,6 +86,14 @@ res = opt.minimize(lambda v: quad(v[0]), x0=[0.0])
 ## Markowitz example (finance)
 
 Min-variance with $\sum_i w_i = 1$ and $w \ge 0$ using historical covariance.
+
+$$
+\begin{aligned}
+\min_{w \in \mathbb{R}^N} \quad & w^\top \Sigma \, w \\
+  \text{s.t.}\quad & \mathbf{1}^\top w = 1, \\
+& w \ge 0
+\end{aligned}
+$$
 
 ```python
 import pandas as pd, numpy as np
@@ -107,6 +119,10 @@ weights.head()
 
 Optimize with bounds and/or constraints. Use methods that support them (e.g., SLSQP, trust-constr; COBYLA is derivative-free).
 
+$$
+\min_{x \in \mathbb{R}} \; (x-1)^2 \quad \text{s.t. } x \ge 0
+$$
+
 ```python
 from scipy import optimize as opt
 bounds = [(0, None)]
@@ -117,6 +133,10 @@ res = opt.minimize(lambda v: (v[0]-1)**2, x0=[2.0], bounds=bounds)
 ## Least squares
 
 Solve linear least squares $Ax \approx y$ (QR/SVD under the hood). Standard tool for linear regression under Gaussian noise.
+
+$$
+\min_{x} \; \|Ax - y\|_2^2
+$$
 
 ```python
 import numpy as np
@@ -129,6 +149,10 @@ coef, *_ = np.linalg.lstsq(A, y, rcond=None)
 ## Supplying Jacobian/Hessian
 
 Providing analytic gradients (and Hessians where applicable) improves speed and accuracy; quasi-Newton methods like BFGS approximate the Hessian from gradients.
+
+$$
+\min_{x} \; f(x) \quad \text{with } \nabla f,\; \nabla^2 f \text{ when available}
+$$
 
 ```python
 def f(x): ...
@@ -150,6 +174,10 @@ opt.minimize(f, x0, jac=jac, method='BFGS')
 ## Bounds and linear constraints
 
 Use `Bounds` for box constraints and `LinearConstraint` for affine equalities/inequalities; pair with SLSQP or trust-constr.
+
+$$
+\min_{x} \; f(x) \quad \text{s.t. } A x = b,\; \ell \le x \le u
+$$
 
 ```python
 from scipy.optimize import Bounds, LinearConstraint
@@ -193,6 +221,15 @@ opt.minimize(f, x0, callback=cb, options={"maxiter": 200})
 
 Solve linear objectives with linear constraints to global optimality using the HiGHS solvers (simplex/IPM), deterministic and scalable.
 
+$$
+\begin{aligned}
+\min_{x} \quad & c^\top x \\
+  	ext{s.t.}\quad & A_{\mathrm{ub}} x \le b_{\mathrm{ub}}, \\
+& A_{\mathrm{eq}} x = b_{\mathrm{eq}}, \\
+& \ell \le x \le u
+\end{aligned}
+$$
+
 ```python
 from scipy.optimize import linprog
 c = [1, 2]; A_ub=[[1,1]]; b_ub=[3]
@@ -203,6 +240,10 @@ linprog(c, A_ub=A_ub, b_ub=b_ub)
 ## Global optimization (basinhopping)
 
 Stochastic global search: random perturbations + local minimization to escape local minima in nonconvex landscapes.
+
+$$
+\min_{x} \; f(x)
+$$
 
 ```python
 from scipy.optimize import basinhopping
@@ -322,6 +363,13 @@ opt.minimize(rosen, x0, method='Nelder-Mead')  # derivative-free
 
 Handle nonlinear (in)equality constraints via `NonlinearConstraint`. `trust-constr` uses a constrained trust-region approach; analytic Jacobians help a lot. Example: minimize $\|x\|^2$ s.t. $x_0 x_1 = 1$, $x \ge 0$.
 
+$$
+\begin{aligned}
+\min_{x \ge 0} \quad & \|x\|_2^2 \\
+  	\text{s.t.}\quad & x_0\, x_1 = 1
+\end{aligned}
+$$
+
 ```python
 import numpy as np
 from scipy.optimize import NonlinearConstraint
@@ -340,6 +388,10 @@ res = opt.minimize(obj, x0=[0.5, 3.0], jac=grad,
 ## Nonlinear least squares (least_squares)
 
 Fit parameters by minimizing $\sum_i r_i(\theta)^2$ using Gauss-Newton/Levenberg–Marquardt (or TRF). Robust loss reduces outlier influence; e.g., fit $y = a e^{b x} + c$.
+
+$$
+\min_{\theta} \; \sum_i r_i(\theta)^2
+$$
 
 ```python
 import numpy as np
@@ -362,6 +414,10 @@ res.x  # estimated parameters
 
 Convenient wrapper around `least_squares` for parametric models; returns best-fit parameters and covariance.
 
+$$
+\min_{a,b,c} \; \sum_i \big(a e^{b x_i} + c - y_i\big)^2
+$$
+
 ```python
 import numpy as np
 from scipy.optimize import curve_fit
@@ -382,6 +438,10 @@ Explore nonconvex landscapes with population/stochastic methods:
 - Dual Annealing: simulated annealing variant with local refinements
 - SHGO: deterministic global optimizer for low dimensions within bounds
 
+$$
+\min_{v} \; f(v) \quad \text{subject to bounds}
+$$
+
 ```python
 from scipy.optimize import differential_evolution, dual_annealing, shgo
 
@@ -399,6 +459,15 @@ sg = shgo(f, bounds)
 ## Convex optimization with CVXPY
 
 Model convex problems declaratively and solve to global optimality with convex solvers (OSQP/SCS). Great for QPs, L1/L2 regularization, portfolios.
+
+$$
+\begin{aligned}
+\min_{w} \quad & w^\top \Sigma \, w \\
+  	ext{s.t.}\quad & \mathbf{1}^\top w = 1, \\
+& w \ge 0, \\
+& \mu^\top w \ge r_{\text{target}}
+\end{aligned}
+$$
 
 ```python
 # pip install cvxpy (once)
@@ -421,6 +490,13 @@ w.value
 
 Solve discrete/boolean decision problems with CP-SAT (MILP/CP). Global search leverages cutting planes and constraint propagation.
 
+$$
+\begin{aligned}
+\max_{x \in \{0,1\}^n} \quad & \sum_{i=1}^n v_i x_i \\
+  	ext{s.t.}\quad & \sum_{i=1}^n w_i x_i \le C
+\end{aligned}
+$$
+
 ```python
 # pip install ortools (once)
 from ortools.sat.python import cp_model
@@ -436,6 +512,10 @@ solver = cp_model.CpSolver(); solver.Solve(model)
 ## Automatic differentiation with JAX
 
 Use reverse-mode automatic differentiation to compute exact gradients on NumPy-like code for efficient first-order optimization.
+
+$$
+\min_{x \in \mathbb{R}^n} \; \sum_{i=1}^{n-1}\left[100\,(x_{i+1}-x_i^2)^2 + (1-x_i)^2\right]
+$$
 
 ```python
 # pip install jax jaxlib (CPU)
@@ -454,6 +534,10 @@ x
 ## Optimization in PyTorch (SGD/Adam)
 
 Optimize model parameters with first-order methods (SGD/Adam) using autograd; standard in ML for large-scale problems.
+
+$$
+\min_{w} \; \frac{1}{n} \sum_{i=1}^n \operatorname{BCE}\big(\sigma(x_i^\top w),\; y_i\big)
+$$
 
 ```python
 # pip install torch (CPU)
@@ -508,6 +592,15 @@ res = opt.minimize(rosen, x0, callback=cb, options={'maxiter': 200})
 
 Allocate a long-only portfolio with a minimum return, total weight = 1, and sector exposure caps.
 
+$$
+\begin{aligned}
+\min_{w} \quad & w^\top \Sigma \, w \\
+  	ext{s.t.}\quad & \mathbf{1}^\top w = 1,\; w \ge 0, \\
+& \mu^\top w \ge r_{\min}, \\
+& S w \le \text{cap}
+\end{aligned}
+$$
+
 ```python
 import numpy as np, pandas as pd
 from scipy import optimize as opt
@@ -552,6 +645,10 @@ weights.head(10)
 
 Minimize tracking error to a benchmark with L1 turnover penalty to control changes from current weights.
 
+$$
+\min_{w} \; \lambda_{\mathrm{te}}\, (w-w_b)^\top \Sigma (w-w_b) + \lambda_{\mathrm{to}}\, \|w-w_{\text{prev}}\|_1 \quad \text{s.t. } \mathbf{1}^\top w = 1,\; w \ge 0
+$$
+
 ```python
 import numpy as np, pandas as pd, cvxpy as cp
 
@@ -575,6 +672,12 @@ pd.Series(w.value, index=tickers).sort_values(ascending=False).head(10)
 ## Risk parity (equal risk contributions)
 
 Find weights so each asset contributes equally to portfolio risk. Solve with nonlinear constraints.
+
+Let \(\mathrm{RC}_i = w_i\,(\Sigma w)_i\). Then
+
+$$
+\min_{w} \; \sum_i (\mathrm{RC}_i - \bar{\mathrm{RC}})^2 \quad \text{s.t. } \mathbf{1}^\top w = 1,\; w \ge 0
+$$
 
 ```python
 import numpy as np
@@ -603,6 +706,14 @@ res.x
 
 Hedge estimation error by minimizing worst‑case variance in an ellipsoidal uncertainty set. Use the constraint $\|Uw\|_2 \le t$ and minimize $t - \lambda \, (\mu^\top w)$ subject to $\mathbf{1}^\top w = 1$ and $w \ge 0$.
 
+$$
+\begin{aligned}
+\min_{w,\,t} \quad & t - \lambda\, \mu^\top w \\
+  	ext{s.t.}\quad & \mathbf{1}^\top w = 1,\; w \ge 0, \\
+& \|U w\|_2 \le \sqrt{t} + \rho
+\end{aligned}
+$$
+
 ```python
 import numpy as np, cvxpy as cp
 np.random.seed(0)
@@ -627,6 +738,10 @@ w.value
 ## Option calibration via least squares
 
 Fit a simple model parameter (e.g., volatility) to market prices by minimizing squared pricing errors.
+
+$$
+\min_{\sigma} \; \sum_j \big( C_{\text{model}}(S,K_j,t_j,r,\sigma) - C^{\text{mkt}}_j \big)^2
+$$
 
 ```python
 import numpy as np
@@ -662,10 +777,4 @@ res.x  # calibrated volatility
 - Markowitz with a target return in CVXPY; compare to SciPy SLSQP
 - Small knapsack with OR‑Tools: change data and capacity
 - Use JAX to minimize Rosenbrock and compare to SciPy BFGS
-## Wrap‑up
 
-- You can solve roots and minimize objectives with SciPy and NumPy
-- Next: Flask and Streamlit
-- Prefer convex/linear formulations when possible (LP/QP/SOCP/CVXPy)
-- Supply gradients/Jacobians for speed and robustness; verify with `check_grad`
-- Scale, bound, and diagnose—then pick the simplest method that works
