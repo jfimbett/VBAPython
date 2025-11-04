@@ -1460,14 +1460,14 @@
     "href": "slides/python/05-optimization.html#scaling-and-constraints",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Scaling and constraints",
-    "text": "Scaling and constraints\n\nScale variables; use bounds/constraints\nTrust-constr for complex problems"
+    "text": "Scaling and constraints\n\nScale variables; use bounds/constraints\nTrust-constr for complex problems\nNon-dimensionalize inputs so gradients have similar magnitudes\nStart with wide bounds to find feasibility, then tighten\nRescale constraint functions so typical magnitudes are ~1 (improves tolerances)\nUse bounds to avoid invalid regions (e.g., sigma&gt;0, probabilities in [0,1])"
   },
   {
     "objectID": "slides/python/05-optimization.html#diagnostics",
     "href": "slides/python/05-optimization.html#diagnostics",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Diagnostics",
-    "text": "Diagnostics\n\nCheck status, fun, grad, nfev\nPlot objective over iterations when possible\n\n# Inspect common fields from scipy.optimize results\nprint({\n  'status': res.status,           # integer code\n  'message': res.message,         # human-readable\n  'fun': getattr(res, 'fun', None),\n  'nfev': getattr(res, 'nfev', None),\n  'nit': getattr(res, 'nit', None),\n  'success': res.success,\n})"
+    "text": "Diagnostics\n\nCheck status, fun, grad, nfev\nPlot objective over iterations when possible\nCompare solvers/methods; inconsistent answers hint at issues\nInspect residuals (for LS) and KKT violations (for constrained problems)\nFinite-difference your gradient and compare to analytic/auto-diff\n\n# Inspect common fields from scipy.optimize results\nprint({\n  'status': res.status,           # integer code\n  'message': res.message,         # human-readable\n  'fun': getattr(res, 'fun', None),\n  'nfev': getattr(res, 'nfev', None),\n  'nit': getattr(res, 'nit', None),\n  'success': res.success,\n})"
   },
   {
     "objectID": "slides/python/05-optimization.html#exercise-1",
@@ -1894,7 +1894,7 @@
     "href": "slides/python/05-optimization.html#designing-objectives",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Designing objectives",
-    "text": "Designing objectives\n\nSmooth and well-scaled objectives converge faster\nPrefer returning scalar; avoid non-differentiable kinks if possible"
+    "text": "Designing objectives\n\nSmooth and well-scaled objectives converge faster\nPrefer returning scalar; avoid non-differentiable kinks if possible\nShift/scale to keep typical values O(1); add small L2 regularization if ill‑posed\nPrefer native constraints over penalty hacks; if you must penalize, use smooth penalties\nMake objectives deterministic (fix RNG seeds, cache data) for reproducibility\nUnderstand landscape: convexity implies global optima; nonconvex needs multiple starts"
   },
   {
     "objectID": "slides/python/05-optimization.html#supplying-jacobianhessian",
@@ -1936,14 +1936,14 @@
     "href": "slides/python/05-optimization.html#trust-constr-highlights",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Trust-constr highlights",
-    "text": "Trust-constr highlights\n\nHandles bounds + (non)linear constraints with Jacobians\nGood default for complex constrained problems"
+    "text": "Trust-constr highlights\n\nHandles bounds + (non)linear constraints with Jacobians\nGood default for complex constrained problems\nSupports Bounds, LinearConstraint, and NonlinearConstraint in one framework\nScales well when you provide sparse Jacobians/Hessians\nWarm-start from previous solutions; set initial_tr_radius to control step sizes"
   },
   {
     "objectID": "slides/python/05-optimization.html#debugging-failures",
     "href": "slides/python/05-optimization.html#debugging-failures",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Debugging failures",
-    "text": "Debugging failures\n\nInspect res.message, try different initial guesses\nCheck gradients numerically; rescale variables"
+    "text": "Debugging failures\n\nInspect res.message, try different initial guesses\nCheck gradients numerically; rescale variables\nRelax tolerances temporarily to diagnose; then tighten back\nTry a simpler subproblem (drop constraints/variables) to isolate the issue\nAdd bounds to prevent NaNs/infs and clip inputs in your objective\nLog iterations via callbacks to see where it goes off the rails"
   },
   {
     "objectID": "slides/python/06-web-apps.html#flask-project-structure",
@@ -2587,7 +2587,7 @@
     "href": "slides/python/05-optimization.html#exercise-2-solution-minvariance-weights",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "Exercise 2 — Solution (min‑variance weights)",
-    "text": "Exercise 2 — Solution (min‑variance weights)\nEstimate daily returns from prices-top20.csv, compute covariance, and solve min‑variance portfolio with \\(\\sum_i w_i = 1\\) and \\(w \\ge 0\\).\nimport pandas as pd, numpy as np\nfrom scipy import optimize as opt\n\n# Load prices and compute returns per symbol\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\n\nSigma = np.cov(R.values, rowvar=False)\ntickers = R.columns\nN = len(tickers)\n\nvar = lambda w: w @ Sigma @ w\ncons = (\n  {'type':'eq', 'fun': lambda w: np.sum(w) - 1},  # sum to 1\n  {'type':'ineq','fun': lambda w: w},              # w &gt;= 0 (handled also by bounds)\n)\nbounds = [(0,1)]*N\nres = opt.minimize(var, x0=np.ones(N)/N, bounds=bounds, constraints=cons, method='SLSQP')\n\nweights = pd.Series(res.x, index=tickers).sort_values(ascending=False)\nprint('Variance:', var(res.x))\nweights.head(10)"
+    "text": "Exercise 2 — Solution (min‑variance weights)\nEstimate daily returns from prices-top20.csv, compute covariance, and solve min‑variance portfolio with \\(\\sum_i w_i = 1\\) and \\(w \\ge 0\\).\nFor a minimal, self‑contained dataset (if you don’t have prices locally), you can first write a tiny two‑ticker CSV to data/prices-top2.csv, then point the reader path to that file in the solution below:\n# Create a tiny two‑ticker daily prices CSV for demonstration\nimport os, numpy as np, pandas as pd\n\nos.makedirs('data', exist_ok=True)\ndates = pd.date_range('2023-01-02', periods=10, freq='B')\na_close = 100 + np.arange(len(dates))*0.5  # upward drift\nb_close =  50 + np.arange(len(dates))*0.2  # gentler drift\n\npx_demo = pd.DataFrame({\n  'date': list(dates) + list(dates),\n  'symbol': ['A-USD']*len(dates) + ['B-USD']*len(dates),\n  'close': list(a_close) + list(b_close),\n}).sort_values(['symbol','date'])\n\npx_demo.to_csv('data/prices-top2.csv', index=False)\nprint('Wrote data/prices-top2.csv with', len(px_demo), 'rows.')\n\nimport pandas as pd, numpy as np\nfrom scipy import optimize as opt\n\n# Load prices and compute returns per symbol\npx = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])\nret = px.groupby('symbol')['close'].pct_change()\nR = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()\n\nSigma = np.cov(R.values, rowvar=False)\ntickers = R.columns\nN = len(tickers)\n\nvar = lambda w: w @ Sigma @ w\ncons = (\n  {'type':'eq', 'fun': lambda w: np.sum(w) - 1},  # sum to 1\n  {'type':'ineq','fun': lambda w: w},              # w &gt;= 0 (handled also by bounds)\n)\nbounds = [(0,1)]*N\nres = opt.minimize(var, x0=np.ones(N)/N, bounds=bounds, constraints=cons, method='SLSQP')\n\nweights = pd.Series(res.x, index=tickers).sort_values(ascending=False)\nprint('Variance:', var(res.x))\nweights.head(10)"
   },
   {
     "objectID": "slides/python/05-optimization.html#method-zoo-scipy-minimize",
@@ -2706,6 +2706,6 @@
     "href": "slides/python/05-optimization.html#more-exercises",
     "title": "Python Session 5 — Numerical Optimization",
     "section": "More exercises",
-    "text": "More exercises\n\nNonlinear LS with least_squares using a robust loss (Cauchy/Huber)\nMarkowitz with a target return in CVXPY; compare to SciPy SLSQP\nSmall knapsack with OR‑Tools: change data and capacity\nUse JAX to minimize Rosenbrock and compare to SciPy BFGS ## Wrap‑up\nYou can solve roots and minimize objectives with SciPy and NumPy\nNext: Flask and Streamlit"
+    "text": "More exercises\n\nNonlinear LS with least_squares using a robust loss (Cauchy/Huber)\nMarkowitz with a target return in CVXPY; compare to SciPy SLSQP\nSmall knapsack with OR‑Tools: change data and capacity\nUse JAX to minimize Rosenbrock and compare to SciPy BFGS ## Wrap‑up\nYou can solve roots and minimize objectives with SciPy and NumPy\nNext: Flask and Streamlit\nPrefer convex/linear formulations when possible (LP/QP/SOCP/CVXPy)\nSupply gradients/Jacobians for speed and robustness; verify with check_grad\nScale, bound, and diagnose—then pick the simplest method that works"
   }
 ]

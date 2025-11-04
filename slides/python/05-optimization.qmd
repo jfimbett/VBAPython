@@ -61,8 +61,13 @@ sol = opt.root(F, [0.5, 0.1])
 ```
 
 ## Designing objectives
+
 - Smooth and well-scaled objectives converge faster
 - Prefer returning scalar; avoid non-differentiable kinks if possible
+- Shift/scale to keep typical values O(1); add small L2 regularization if ill‑posed
+- Prefer native constraints over penalty hacks; if you must penalize, use smooth penalties
+- Make objectives deterministic (fix RNG seeds, cache data) for reproducibility
+- Understand landscape: convexity implies global optima; nonconvex needs multiple starts
 
 ## Minimization: unconstrained
 
@@ -136,6 +141,10 @@ opt.minimize(f, x0, jac=jac, method='BFGS')
 
 - Scale variables; use bounds/constraints
 - Trust-constr for complex problems
+- Non-dimensionalize inputs so gradients have similar magnitudes
+- Start with wide bounds to find feasibility, then tighten
+- Rescale constraint functions so typical magnitudes are ~1 (improves tolerances)
+- Use bounds to avoid invalid regions (e.g., sigma>0, probabilities in [0,1])
 
 
 ## Bounds and linear constraints
@@ -154,6 +163,9 @@ opt.minimize(var, x0, bounds=bounds, constraints=[lin])
 ## Diagnostics
 - Check status, fun, grad, nfev
 - Plot objective over iterations when possible
+- Compare solvers/methods; inconsistent answers hint at issues
+- Inspect residuals (for LS) and KKT violations (for constrained problems)
+- Finite-difference your gradient and compare to analytic/auto-diff
 
 ```python
 # Inspect common fields from scipy.optimize results
@@ -202,11 +214,18 @@ res = basinhopping(lambda x: (x[0]-3)**2 + 10*abs(np.sin(x[0])), x0=[0.0])
 
 - Handles bounds + (non)linear constraints with Jacobians
 - Good default for complex constrained problems
+- Supports `Bounds`, `LinearConstraint`, and `NonlinearConstraint` in one framework
+- Scales well when you provide sparse Jacobians/Hessians
+- Warm-start from previous solutions; set `initial_tr_radius` to control step sizes
 
 ## Debugging failures
 
 - Inspect `res.message`, try different initial guesses
 - Check gradients numerically; rescale variables
+- Relax tolerances temporarily to diagnose; then tighten back
+- Try a simpler subproblem (drop constraints/variables) to isolate the issue
+- Add bounds to prevent NaNs/infs and clip inputs in your objective
+- Log iterations via callbacks to see where it goes off the rails
 
 ## Exercise 1 — Solution (logistic fit)
 
@@ -232,7 +251,26 @@ print({'L': L_hat, 'k': k_hat, 'x0': x0_hat})
 
 Estimate daily returns from `prices-top20.csv`, compute covariance, and solve min‑variance portfolio with $\sum_i w_i = 1$ and $w \ge 0$.
 
+For a minimal, self‑contained dataset (if you don't have prices locally), you can first write a tiny two‑ticker CSV to `data/prices-top2.csv`, then point the reader path to that file in the solution below:
+
 ```python
+# Create a tiny two‑ticker daily prices CSV for demonstration
+import os, numpy as np, pandas as pd
+
+os.makedirs('data', exist_ok=True)
+dates = pd.date_range('2023-01-02', periods=10, freq='B')
+a_close = 100 + np.arange(len(dates))*0.5  # upward drift
+b_close =  50 + np.arange(len(dates))*0.2  # gentler drift
+
+px_demo = pd.DataFrame({
+  'date': list(dates) + list(dates),
+  'symbol': ['A-USD']*len(dates) + ['B-USD']*len(dates),
+  'close': list(a_close) + list(b_close),
+}).sort_values(['symbol','date'])
+
+px_demo.to_csv('data/prices-top2.csv', index=False)
+print('Wrote data/prices-top2.csv with', len(px_demo), 'rows.')
+
 import pandas as pd, numpy as np
 from scipy import optimize as opt
 
@@ -281,6 +319,7 @@ opt.minimize(rosen, x0, method='Nelder-Mead')  # derivative-free
 
 
 ## Nonlinear constraints with Jacobians
+
 Handle nonlinear (in)equality constraints via `NonlinearConstraint`. `trust-constr` uses a constrained trust-region approach; analytic Jacobians help a lot. Example: minimize $\|x\|^2$ s.t. $x_0 x_1 = 1$, $x \ge 0$.
 
 ```python
@@ -299,6 +338,7 @@ res = opt.minimize(obj, x0=[0.5, 3.0], jac=grad,
            method='trust-constr')
 ```
 ## Nonlinear least squares (least_squares)
+
 Fit parameters by minimizing $\sum_i r_i(\theta)^2$ using Gauss-Newton/Levenberg–Marquardt (or TRF). Robust loss reduces outlier influence; e.g., fit $y = a e^{b x} + c$.
 
 ```python
@@ -319,6 +359,7 @@ res = least_squares(residuals, x0=[1, 1, 0], loss='huber', f_scale=0.5)
 res.x  # estimated parameters
 ```
 ## Curve fitting (curve_fit)
+
 Convenient wrapper around `least_squares` for parametric models; returns best-fit parameters and covariance.
 
 ```python
@@ -335,6 +376,7 @@ popt, pcov = curve_fit(logistic, X, Y, p0=[1, 1, 0])
 popt  # best-fit parameters
 ```
 ## Global optimizers beyond basinhopping
+
 Explore nonconvex landscapes with population/stochastic methods:
 - Differential Evolution: evolutionary search over bounded boxes
 - Dual Annealing: simulated annealing variant with local refinements
@@ -355,6 +397,7 @@ da = dual_annealing(f, bounds, maxiter=2000)
 sg = shgo(f, bounds)
 ```
 ## Convex optimization with CVXPY
+
 Model convex problems declaratively and solve to global optimality with convex solvers (OSQP/SCS). Great for QPs, L1/L2 regularization, portfolios.
 
 ```python
@@ -375,6 +418,7 @@ prob.solve(solver=cp.OSQP)
 w.value
 ```
 ## Mixed‑integer programming (OR‑Tools)
+
 Solve discrete/boolean decision problems with CP-SAT (MILP/CP). Global search leverages cutting planes and constraint propagation.
 
 ```python
@@ -390,6 +434,7 @@ solver = cp_model.CpSolver(); solver.Solve(model)
 [solver.Value(x_i) for x_i in x]
 ```
 ## Automatic differentiation with JAX
+
 Use reverse-mode automatic differentiation to compute exact gradients on NumPy-like code for efficient first-order optimization.
 
 ```python
@@ -407,6 +452,7 @@ for _ in range(200):
 x
 ```
 ## Optimization in PyTorch (SGD/Adam)
+
 Optimize model parameters with first-order methods (SGD/Adam) using autograd; standard in ML for large-scale problems.
 
 ```python
@@ -620,3 +666,6 @@ res.x  # calibrated volatility
 
 - You can solve roots and minimize objectives with SciPy and NumPy
 - Next: Flask and Streamlit
+- Prefer convex/linear formulations when possible (LP/QP/SOCP/CVXPy)
+- Supply gradients/Jacobians for speed and robustness; verify with `check_grad`
+- Scale, bound, and diagnose—then pick the simplest method that works
