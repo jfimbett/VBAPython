@@ -100,11 +100,15 @@ import pandas as pd, numpy as np
 from scipy import optimize as opt
 
 # use returns from prices-top20.csv to estimate mu and Sigma
-px = pd.read_csv('data/prices-top20.csv', parse_dates=['date']).sort_values(['symbol','date'])
-ret = px.groupby('symbol')['close'].pct_change()
-R = px.assign(ret=ret).pivot(index='date', columns='symbol', values='ret').dropna()
-mu = R.mean().values
-Sigma = np.cov(R.values, rowvar=False)
+dates = pd.date_range('2023-01-01', periods=100, freq='D')
+symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'META']
+data = []
+for symbol in symbols:
+    prices = 100 * np.exp(np.cumsum(np.random.randn(len(dates)) * 0.02))
+    for date, price in zip(dates, prices):
+        data.append({'date': date, 'symbol': symbol, 'close': price})
+px = pd.DataFrame(data).sort_values(['symbol', 'date'])
+
 
 # min variance portfolio with sum(w)=1 and w>=0
 N = len(mu)
