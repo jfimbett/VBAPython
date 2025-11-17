@@ -18,8 +18,29 @@ execute:
 
 ## Two paths to apps
 
-- Flask: micro web framework (routes, templates)
-- Streamlit: UI for data apps with minimal code
+- **Flask** (micro web framework)
+  - Full control over **HTTP**, URLs, templates, sessions, cookies
+  - Perfect for **APIs**, custom dashboards, teaching core web concepts
+  - Typical stack: Flask + Jinja2 + SQLAlchemy + Bootstrap
+- **Streamlit** (data app framework)
+  - Focus on **data + UI** with minimal web boilerplate
+  - Perfect for **quick prototypes**, EDA dashboards, teaching ML results
+  - You think in **Python scripts**, Streamlit turns them into web apps
+
+---
+
+## What is WSGI?
+
+- **WSGI** = Web Server Gateway Interface
+  - Standard interface between Python web apps and web servers
+  - Allows your Flask app to communicate with web servers (Apache, Nginx, etc.)
+- Think of it as a **translator**:
+  - Web server receives HTTP request → passes to WSGI → your Flask app processes → returns response
+- For development:
+  - Flask has built-in server (`app.run()`)
+- For production:
+  - Use production-grade WSGI servers like **gunicorn** or **uWSGI**
+  - They handle multiple requests concurrently and are more robust
 
 ---
 
@@ -27,39 +48,218 @@ execute:
 
 ```python
 from flask import Flask
-app = Flask(__name__)
+
+app = Flask(__name__)  # Flask app object
 
 @app.get("/")
 def home():
-    return "Hello, Flask!"
+    return "Hello, Flask! 🐍"
 
 if __name__ == "__main__":
+    # For local development only (not production)
     app.run(debug=True)
 ```
+
+- Save as `app.py`
+- Run with Flask CLI (recommended):
+
+  ```bash
+  export FLASK_APP=app
+  export FLASK_ENV=development  # enables debug mode
+  flask run
+  ```
+
+- Visit: `http://127.0.0.1:5000/`
 
 ---
 
 ## Flask: routes and params
 
 ```python
+from flask import request
+
 @app.get("/greet/<name>")
 def greet(name):
-    return f"Hi {name}!"
+    excited = request.args.get("excited", "0") == "1"
+    suffix = "!!!" if excited else "."
+    return f"Hi {name}{suffix}"
 ```
+
+- **Path parameter**: `<name>` appears in the URL, becomes a function argument
+- **Query parameter**: `?excited=1` read via `request.args`
+- Example URL:
+  - `http://localhost:5000/greet/Ana`
+  - `http://localhost:5000/greet/Ana?excited=1`
+- You can restrict types: `/user/<int:user_id>`, `/price/<float:x>`
 
 ---
 
 ## Flask: templates (Jinja2)
 
-- Render HTML with variables and loops
-- Keep logic in Python, presentation in templates
+```python
+from flask import render_template
+
+@app.get("/user/<name>")
+def user_profile(name):
+    hobbies = ["coding", "running", "music"]
+    return render_template("user.html", name=name, hobbies=hobbies)
+```
+
+**`templates/user.html`**
+
+```html
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Hello {{ name }}!</h1>
+    <ul>
+      {% for h in hobbies %}
+        <li>{{ h }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
+```
+
+- **Jinja2** = template engine used by Flask
+- `{{ ... }}` for variables, `{% ... %}` for control flow
+- Goal: **Python = logic**, **Jinja = presentation**
 
 ---
 
 ## Flask: forms and JSON
 
-- request.form, request.json
-- Return jsonify for APIs
+```python
+from flask import request, jsonify, render_template
+
+@app.get("/form")
+def show_form():
+    return render_template("sum_form.html")
+
+@app.post("/sum")
+def compute_sum():
+    a = int(request.form["a"])
+    b = int(request.form["b"])
+    total = a + b
+    return render_template("sum_result.html", total=total)
+
+@app.post("/api/sum")
+def api_sum():
+    data = request.get_json()
+    a = data["a"]
+    b = data["b"]
+    return jsonify({"result": a + b})
+```
+
+- `request.form` → form fields sent via POST (`Content-Type: application/x-www-form-urlencoded`)
+- `request.get_json()` / `request.json` → JSON body for APIs
+- `jsonify` converts dict → JSON response with correct headers
+
+---
+
+## Flask: request lifecycle
+
+- **Browser → HTTP request → Web server → Flask app → view function → response**
+- The WSGI layer sits between web server and Flask, handling the protocol translation
+- Important globals:
+  - `request`: current HTTP request (method, headers, body, args…)
+  - `session`: per-user, signed cookie storage
+  - `g`: request-scoped storage (DB connection, current user…)
+- Hooks:
+
+```python
+from flask import g, request
+
+@app.before_request
+def before():
+    g.request_path = request.path
+
+@app.after_request
+def after(response):
+    # e.g. add custom header
+    response.headers["X-App-Name"] = "Intro-Flask"
+    return response
+```
+
+- Think of it as a **pipeline** where you can plug in logic before/after views
+
+---
+
+## Flask: `url_for` and redirects
+
+```python
+from flask import url_for, redirect
+
+@app.get("/")
+def index():
+    # Generate URLs by function name (safer than hard-coding strings)
+    return f'<a href="{url_for("dashboard")}">Go to dashboard</a>'
+
+@app.get("/dashboard")
+def dashboard():
+    return "Dashboard"
+
+@app.get("/old-dashboard")
+def old_dashboard():
+    # Permanent redirect to new endpoint
+    return redirect(url_for("dashboard"), code=301)
+```
+
+- `url_for("dashboard")` builds `/dashboard`
+  - Robust when you later change URLs / add prefixes / blueprints
+- `redirect()` sends HTTP 302/301 to the browser
+
+---
+
+## Flask: configuration & environments
+
+```python
+import os
+
+class Config:
+    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-key")
+    DEBUG = False
+
+class DevConfig(Config):
+    DEBUG = True
+
+class ProdConfig(Config):
+    DEBUG = False
+
+app = Flask(__name__)
+app.config.from_object(DevConfig)
+```
+
+- Access anywhere: `app.config["SECRET_KEY"]`
+- Typical pattern:
+  - **Config class** (Dev / Prod / Test)
+  - Read secrets from **environment variables** (never hard-code passwords)
+
+---
+
+## Flask: application factory pattern
+
+```python
+def create_app(config_object=DevConfig):
+    app = Flask(__name__)
+    app.config.from_object(config_object)
+    # register blueprints, extensions…
+    return app
+```
+
+- Benefits:
+  - Create multiple app instances with different configs
+  - Easier testing (create test app with test config)
+  - Better organized for larger applications
+- Usage:
+
+```python
+# For development
+app = create_app(DevConfig)
+
+# For production
+app = create_app(ProdConfig)
+```
 
 ---
 
@@ -67,112 +267,294 @@ def greet(name):
 
 ```python
 import streamlit as st
-st.title("Hello Streamlit")
-name = st.text_input("Name")
-st.write(f"Hi {name}")
+
+st.title("Hello Streamlit 👋")
+
+name = st.text_input("Name", value="Juan")
+age = st.slider("Age", min_value=0, max_value=100, value=30)
+
+if name:
+    st.write(f"Hi {name}, you are {age} years old.")
 ```
+
+- Run: `streamlit run app.py`
+- Streamlit watches your code → **auto-reload on save**
+- Everything runs **top-to-bottom** on each interaction
 
 ---
 
 ## Streamlit: widgets
 
-- sliders, selectbox, file_uploader
-- instant feedback loop
+```python
+import streamlit as st
+
+st.sidebar.header("Controls")
+
+option = st.selectbox("Model", ["Logit", "Random Forest", "XGBoost"])
+threshold = st.slider("Default threshold", 0.0, 1.0, 0.5, 0.01)
+upload = st.file_uploader("Upload CSV", type=["csv"])
+
+if upload:
+    import pandas as pd
+    df = pd.read_csv(upload)
+    st.write("Preview:", df.head())
+
+st.write("Selected model:", option)
+st.write("Threshold:", threshold)
+```
+
+- Widgets: `text_input`, `selectbox`, `slider`, `checkbox`, `file_uploader`, `date_input`, …
+- **Immediate feedback**: UI updates after every interaction
 
 ---
 
 ## Streamlit: caching
 
 ```python
+import time
+import streamlit as st
+import pandas as pd
+
 @st.cache_data
 def load_data(path):
-    ...
+    time.sleep(2)  # simulate slow I/O
+    return pd.read_csv(path)
+
+df = load_data("data/big.csv")
+st.write(df.head())
 ```
+
+- `@st.cache_data`:
+  - Caches **pure functions**: same inputs → reuse output
+  - Clears cache when code changes or when you call `clear_cache()`
+- Great for: downloading data, feature engineering, slow aggregations
 
 ---
 
 ## Deploying
 
-- Flask: gunicorn + reverse proxy
-- Streamlit: Streamlit Cloud or container
+- **Flask**
+  - Never use `app.run()` in production (it's single-threaded and not secure)
+  - Use a production **WSGI server** (e.g. `gunicorn` or `uWSGI`)
+  - Typical command: `gunicorn app:app --workers 4`
+  - Put behind **reverse proxy** (Nginx/Apache) for HTTPS, load-balancing
+- **Streamlit**
+  - Streamlit Cloud (hosted)
+  - Or containerize (`Dockerfile`) and deploy to any PaaS / VM
+- Common to both:
+  - Use **environment variables** for secrets
+  - Ensure **requirements.txt** / `pyproject.toml` is complete
 
 ---
 
 ## Security basics
 
-- Never trust user input; validate and sanitize
-- Hide secrets via env variables
-
----
-
-## Exercise 1
-
-- Flask endpoint that sums two numbers from query params
-
----
-
-## Exercise 2
-
-- Streamlit app that uploads a CSV and shows summary stats
+- **Never trust user input**
+  - Validate types, ranges, allowed values
+  - Use libraries (WTForms, Marshmallow, Pydantic…) instead of doing everything by hand
+- **Escaping & XSS**
+  - Jinja2 auto-escapes by default → do not mark data as safe unless you are sure
+- **CSRF**
+  - Protect POST forms (Flask-WTF / your own CSRF tokens)
+- **Secrets**
+  - Store in **env vars** or secret managers, not in Git
+  - `SECRET_KEY`, DB passwords, API keys, OAuth tokens…
+- **HTTPS**
+  - In production, enforce HTTPS, secure cookies, and strong session keys
 
 ---
 
 ## Flask project structure
 
-```
+```text
 myapp/
-    app.py
+    app.py                 # or __init__.py if using factory pattern
+    config.py              # config classes (Dev, Prod, Test)
     templates/
+        base.html
+        index.html
+        dashboard.html
     static/
+        css/
+        js/
+        images/
+    blueprints/
+        __init__.py
+        auth/
+            __init__.py
+            routes.py
+        api/
+            __init__.py
+            routes.py
 ```
+
+- Start simple (`app.py`) then **refactor** to a package + blueprints as app grows
+- Separation of concerns:
+  - views (routes) / templates / static assets / configuration
 
 ---
 
 ## Static files
 
-- Place CSS/JS in `static/`; link via `url_for('static', filename='app.css')`
+```python
+from flask import url_for
+
+@app.get("/profile")
+def profile():
+    css_url = url_for("static", filename="css/app.css")
+    return f"""
+    <html>
+      <head><link rel="stylesheet" href="{css_url}"></head>
+      <body><h1>Profile page</h1></body>
+    </html>
+    """
+```
+
+- Put static assets under `static/` (default):
+  - `static/css/app.css`
+  - `static/js/app.js`
+  - `static/img/logo.png`
+- Use `url_for("static", filename="...")` instead of hard-coded `/static/...`
+  - Safer when app is mounted under a prefix or served by a proxy
 
 ---
 
 ## Error handling
 
 ```python
+from flask import render_template
+
 @app.errorhandler(404)
-def not_found(e): return ("Missing", 404)
+def not_found(e):
+    return render_template("404.html"), 404
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template("500.html"), 500
 ```
+
+- You can `abort(status_code)` to trigger an error:
+
+```python
+from flask import abort
+
+@app.get("/secret")
+def secret():
+    abort(403)  # Forbidden
+```
+
+- Goal: never show users raw tracebacks in production
+  - Use custom error pages and proper logging
 
 ---
 
 ## Logging
 
 ```python
-import logging; logging.basicConfig(level=logging.INFO)
-app.logger.info("started")
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+@app.before_first_request
+def startup():
+    app.logger.info("Application started")
+
+@app.get("/ping")
+def ping():
+    app.logger.debug("Ping endpoint called")
+    return "pong"
 ```
+
+- Use log levels: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
+- In production, send logs to:
+  - Files, log aggregation services (ELK stack, Datadog, etc.), or stdout (Docker)
 
 ---
 
 ## Sessions and cookies
 
 ```python
-app.secret_key = "change-me"
-session['user'] = 'ana'
+from flask import session
+
+app.secret_key = "change-me-in-prod"  # or from env
+
+@app.get("/login/<user>")
+def login(user):
+    session["user"] = user
+    return f"Logged in as {user}"
+
+@app.get("/whoami")
+def whoami():
+    user = session.get("user")
+    return f"You are {user or 'not logged in'}"
 ```
+
+- Flask sessions are **signed cookies** (client-side, tamper-proof)
+- Do **not** store very large or very sensitive data there
+- You can set `session.permanent = True` and configure `PERMANENT_SESSION_LIFETIME`
 
 ---
 
 ## CSRF and forms
 
-- Use WTForms/Flask-WTF for CSRF tokens on POST forms
+- Why CSRF?
+  - Attacker tricks user’s browser into sending a POST to your app
+- Typical pattern with Flask-WTF:
+
+```python
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+
+class NameForm(FlaskForm):
+    name = StringField("Your name", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+```
+
+```python
+@app.route("/form", methods=["GET", "POST"])
+def form():
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        ...
+    return render_template("form.html", form=form)
+```
+
+- Template must include `{{ form.csrf_token }}`:
+  - Flask-WTF automatically validates token
 
 ---
 
 ## File uploads
 
 ```python
-f = request.files['file']
-f.save('uploads/data.csv')
+import os
+from flask import request, redirect, url_for
+
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+ALLOWED_EXTENSIONS = {"csv", "txt"}
+
+def allowed(filename):
+    return "." in filename and \
+           filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.post("/upload")
+def upload():
+    f = request.files["file"]
+    if f.filename == "" or not allowed(f.filename):
+        return "Invalid file", 400
+    path = os.path.join(UPLOAD_DIR, f.filename)
+    f.save(path)
+    return f"Saved to {path}"
 ```
+
+- Validate:
+  - Filename extension
+  - File size (can use `request.content_length`)
+- Never trust client-side checks only
 
 ---
 
@@ -180,58 +562,140 @@ f.save('uploads/data.csv')
 
 ```python
 import streamlit as st
-st.session_state.setdefault('count', 0)
+
+if "count" not in st.session_state:
+    st.session_state.count = 0
+
+st.write("Count:", st.session_state.count)
+
+if st.button("Increment"):
+    st.session_state.count += 1
+
+if st.button("Reset"):
+    st.session_state.count = 0
 ```
+
+- `st.session_state` is similar to Flask `session`, but kept **server-side**
+- Use it for:
+  - Multi-step forms
+  - Wizard-style flows
+  - Remembering user selections
 
 ---
 
 ## Streamlit: caching nuances
 
-- `st.cache_data` for data; `st.cache_resource` for models/clients
+- `st.cache_data`:
+  - For **data**: reading CSVs, heavy computations, feature engineering
+  - Cache key = function code + arguments
+- `st.cache_resource`:
+  - For **resources**: ML models, DB connections, clients
+  - Only created once per session (unless code changes)
+- Example:
+
+```python
+@st.cache_resource
+def load_model():
+    # expensive model loading
+    ...
+    return model
+```
+
+- Be careful with **non-deterministic functions** (randomness, time)
 
 ---
 
 ## Deployment checklist
 
-- Procfile/requirements, `gunicorn app:app`, env vars
+- **Code & dependencies**
+  - `requirements.txt` / `pyproject.toml`
+  - `Procfile` (Heroku-style) → `web: gunicorn app:app`
+- **Configuration**
+  - Config classes for dev/prod
+  - Secrets via env vars (`SECRET_KEY`, DB URL, API keys)
+- **Static & media**
+  - Correct `static/` mapping
+  - Where to store user uploads? (local disk vs cloud storage)
+- **Observability**
+  - Logging, error tracking (Sentry, Rollbar, …)
+  - Health endpoint (`/health`) for monitoring
 
 ---
 
-<!-- removed by request: analogy content -->
-- Flask = build your kitchen from scratch
-- Streamlit = plug‑and‑play kitchen kit
+## Wrap-up
 
----
-
-## Wrap‑up
-
-- You can create basic web/data apps quickly
-- Next: Big data with Polars and Dask
+- You now know how to:
+  - Build **Flask apps** with routes, templates, forms, JSON APIs, sessions
+  - Understand the **request lifecycle** and WSGI interface
+  - Use **Streamlit** for fast data dashboards and prototypes
+  - Deploy apps with production servers and handle basic security
+- After this course you should:
+  - Be able to build a **small production-ready Flask app**
+  - Prototype data apps quickly with Streamlit
+  - Read Flask/Streamlit code from GitHub and understand it
 
 ---
 
 ## Flask: blueprints
 
-- Modularize routes for larger apps
+```python
+# blueprints/admin/routes.py
+from flask import Blueprint
+
+bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+@bp.get("/users")
+def list_users():
+    return "Admin: list of users"
+```
+
+```python
+# app.py
+from flask import Flask
+from blueprints.admin.routes import bp as admin_bp
+
+app = Flask(__name__)
+app.register_blueprint(admin_bp)
+```
+
+- Why blueprints?
+  - Modularize routes by domain: `auth`, `admin`, `api`, `blog`, …
+  - Easier to maintain large apps, easier to reuse across projects
 
 ---
 
 ## Streamlit: state
 
 ```python
+import streamlit as st
+
 if "n" not in st.session_state:
     st.session_state.n = 0
+
+st.write("n =", st.session_state.n)
+
+col1, col2 = st.columns(2)
+if col1.button("Add 1"):
+    st.session_state.n += 1
+if col2.button("Multiply by 2"):
+    st.session_state.n *= 2
 ```
+
+- Use session state to maintain values across reruns
+- Useful for multi-step workflows, calculators, and interactive applications
 
 ---
 
 ## Deployment gotchas
 
-- Timeouts, static files, CORS
+- **Timeouts**
+  - Long computations → use background jobs / Celery / caching
+- **Static files**
+  - Make sure your reverse proxy serves `/static` efficiently
+- **CORS**
+  - If you serve an API used by JS in another domain
+  - Use `flask-cors` or manual headers
+- **Debug mode**
+  - Never run `debug=True` in production
+  - Debugger gives code execution if misused
 
----
-
-## Knowledge check (quiz)
-
-- When pick Streamlit over Flask?
-- One security practice for secrets?

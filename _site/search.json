@@ -1502,70 +1502,70 @@
     "href": "slides/python/06-web-apps.html#two-paths-to-apps",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Two paths to apps",
-    "text": "Two paths to apps\n\nFlask: micro web framework (routes, templates)\nStreamlit: UI for data apps with minimal code"
+    "text": "Two paths to apps\n\nFlask (micro web framework)\n\nFull control over HTTP, URLs, templates, sessions, cookies\nPerfect for APIs, custom dashboards, teaching core web concepts\nTypical stack: Flask + Jinja2 + SQLAlchemy + Bootstrap\n\nStreamlit (data app framework)\n\nFocus on data + UI with minimal web boilerplate\nPerfect for quick prototypes, EDA dashboards, teaching ML results\nYou think in Python scripts, Streamlit turns them into web apps"
   },
   {
     "objectID": "slides/python/06-web-apps.html#flask-hello-app",
     "href": "slides/python/06-web-apps.html#flask-hello-app",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Flask: hello app",
-    "text": "Flask: hello app\nfrom flask import Flask\napp = Flask(__name__)\n\n@app.get(\"/\")\ndef home():\n    return \"Hello, Flask!\"\n\nif __name__ == \"__main__\":\n    app.run(debug=True)"
+    "text": "Flask: hello app\nfrom flask import Flask\n\napp = Flask(__name__)  # Flask app object\n\n@app.get(\"/\")\ndef home():\n    return \"Hello, Flask! 🐍\"\n\nif __name__ == \"__main__\":\n    # For local development only (not production)\n    app.run(debug=True)\n\nSave as app.py\nRun with Flask CLI (recommended):\nexport FLASK_APP=app\nexport FLASK_ENV=development  # enables debug mode\nflask run\nVisit: http://127.0.0.1:5000/"
   },
   {
     "objectID": "slides/python/06-web-apps.html#flask-routes-and-params",
     "href": "slides/python/06-web-apps.html#flask-routes-and-params",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Flask: routes and params",
-    "text": "Flask: routes and params\n@app.get(\"/greet/&lt;name&gt;\")\ndef greet(name):\n    return f\"Hi {name}!\""
+    "text": "Flask: routes and params\nfrom flask import request\n\n@app.get(\"/greet/&lt;name&gt;\")\ndef greet(name):\n    excited = request.args.get(\"excited\", \"0\") == \"1\"\n    suffix = \"!!!\" if excited else \".\"\n    return f\"Hi {name}{suffix}\"\n\nPath parameter: &lt;name&gt; appears in the URL, becomes a function argument\nQuery parameter: ?excited=1 read via request.args\nExample URL:\n\nhttp://localhost:5000/greet/Ana\nhttp://localhost:5000/greet/Ana?excited=1\n\nYou can restrict types: /user/&lt;int:user_id&gt;, /price/&lt;float:x&gt;"
   },
   {
     "objectID": "slides/python/06-web-apps.html#flask-templates-jinja2",
     "href": "slides/python/06-web-apps.html#flask-templates-jinja2",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Flask: templates (Jinja2)",
-    "text": "Flask: templates (Jinja2)\n\nRender HTML with variables and loops\nKeep logic in Python, presentation in templates"
+    "text": "Flask: templates (Jinja2)\nfrom flask import render_template\n\n@app.get(\"/user/&lt;name&gt;\")\ndef user_profile(name):\n    hobbies = [\"coding\", \"running\", \"music\"]\n    return render_template(\"user.html\", name=name, hobbies=hobbies)\ntemplates/user.html\n&lt;!doctype html&gt;\n&lt;html lang=\"en\"&gt;\n  &lt;body&gt;\n    &lt;h1&gt;Hello {{ name }}!&lt;/h1&gt;\n    &lt;ul&gt;\n      {% for h in hobbies %}\n        &lt;li&gt;{{ h }}&lt;/li&gt;\n      {% endfor %}\n    &lt;/ul&gt;\n  &lt;/body&gt;\n&lt;/html&gt;\n\nJinja2 = template engine used by Flask\n{ ... } for variables, {% ... %} for control flow\nGoal: Python = logic, Jinja = presentation"
   },
   {
     "objectID": "slides/python/06-web-apps.html#flask-forms-and-json",
     "href": "slides/python/06-web-apps.html#flask-forms-and-json",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Flask: forms and JSON",
-    "text": "Flask: forms and JSON\n\nrequest.form, request.json\nReturn jsonify for APIs"
+    "text": "Flask: forms and JSON\nfrom flask import request, jsonify, render_template\n\n@app.get(\"/form\")\ndef show_form():\n    return render_template(\"sum_form.html\")\n\n@app.post(\"/sum\")\ndef compute_sum():\n    a = int(request.form[\"a\"])\n    b = int(request.form[\"b\"])\n    total = a + b\n    return render_template(\"sum_result.html\", total=total)\n\n@app.post(\"/api/sum\")\ndef api_sum():\n    data = request.get_json()\n    a = data[\"a\"]\n    b = data[\"b\"]\n    return jsonify({\"result\": a + b})\n\nrequest.form → form fields sent via POST (Content-Type: application/x-www-form-urlencoded)\nrequest.get_json() / request.json → JSON body for APIs\njsonify converts dict → JSON response with correct headers"
   },
   {
     "objectID": "slides/python/06-web-apps.html#streamlit-hello-app",
     "href": "slides/python/06-web-apps.html#streamlit-hello-app",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Streamlit: hello app",
-    "text": "Streamlit: hello app\nimport streamlit as st\nst.title(\"Hello Streamlit\")\nname = st.text_input(\"Name\")\nst.write(f\"Hi {name}\")"
+    "text": "Streamlit: hello app\nimport streamlit as st\n\nst.title(\"Hello Streamlit 👋\")\n\nname = st.text_input(\"Name\", value=\"Juan\")\nage = st.slider(\"Age\", min_value=0, max_value=100, value=30)\n\nif name:\n    st.write(f\"Hi {name}, you are {age} years old.\")\n\nRun: streamlit run app.py\nStreamlit watches your code → auto-reload on save\nEverything runs top-to-bottom on each interaction"
   },
   {
     "objectID": "slides/python/06-web-apps.html#streamlit-widgets",
     "href": "slides/python/06-web-apps.html#streamlit-widgets",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Streamlit: widgets",
-    "text": "Streamlit: widgets\n\nsliders, selectbox, file_uploader\ninstant feedback loop"
+    "text": "Streamlit: widgets\nimport streamlit as st\n\nst.sidebar.header(\"Controls\")\n\noption = st.selectbox(\"Model\", [\"Logit\", \"Random Forest\", \"XGBoost\"])\nthreshold = st.slider(\"Default threshold\", 0.0, 1.0, 0.5, 0.01)\nupload = st.file_uploader(\"Upload CSV\", type=[\"csv\"])\n\nif upload:\n    import pandas as pd\n    df = pd.read_csv(upload)\n    st.write(\"Preview:\", df.head())\n\nst.write(\"Selected model:\", option)\nst.write(\"Threshold:\", threshold)\n\nWidgets: text_input, selectbox, slider, checkbox, file_uploader, date_input, …\nImmediate feedback: UI updates after every interaction"
   },
   {
     "objectID": "slides/python/06-web-apps.html#streamlit-caching",
     "href": "slides/python/06-web-apps.html#streamlit-caching",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Streamlit: caching",
-    "text": "Streamlit: caching\n@st.cache_data\ndef load_data(path):\n    ..."
+    "text": "Streamlit: caching\nimport time\nimport streamlit as st\nimport pandas as pd\n\n@st.cache_data\ndef load_data(path):\n    time.sleep(2)  # simulate slow I/O\n    return pd.read_csv(path)\n\ndf = load_data(\"data/big.csv\")\nst.write(df.head())\n\n@st.cache_data:\n\nCaches pure functions: same inputs → reuse output\nClears cache when code changes or when you call clear_cache()\n\nGreat for: downloading data, feature engineering, slow aggregations"
   },
   {
     "objectID": "slides/python/06-web-apps.html#deploying",
     "href": "slides/python/06-web-apps.html#deploying",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Deploying",
-    "text": "Deploying\n\nFlask: gunicorn + reverse proxy\nStreamlit: Streamlit Cloud or container"
+    "text": "Deploying\n\nFlask\n\nNever use app.run() in production (it’s single-threaded and not secure)\nUse a production WSGI server (e.g. gunicorn or uWSGI)\nTypical command: gunicorn app:app --workers 4\nPut behind reverse proxy (Nginx/Apache) for HTTPS, load-balancing\n\nStreamlit\n\nStreamlit Cloud (hosted)\nOr containerize (Dockerfile) and deploy to any PaaS / VM\n\nCommon to both:\n\nUse environment variables for secrets\nEnsure requirements.txt / pyproject.toml is complete"
   },
   {
     "objectID": "slides/python/06-web-apps.html#security-basics",
     "href": "slides/python/06-web-apps.html#security-basics",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Security basics",
-    "text": "Security basics\n\nNever trust user input; validate and sanitize\nHide secrets via env variables"
+    "text": "Security basics\n\nNever trust user input\n\nValidate types, ranges, allowed values\nUse libraries (WTForms, Marshmallow, Pydantic…) instead of doing everything by hand\n\nEscaping & XSS\n\nJinja2 auto-escapes by default → do not mark data as safe unless you are sure\n\nCSRF\n\nProtect POST forms (Flask-WTF / your own CSRF tokens)\n\nSecrets\n\nStore in env vars or secret managers, not in Git\nSECRET_KEY, DB passwords, API keys, OAuth tokens…\n\nHTTPS\n\nIn production, enforce HTTPS, secure cookies, and strong session keys"
   },
   {
     "objectID": "slides/python/06-web-apps.html#exercise-1",
@@ -1600,28 +1600,28 @@
     "href": "slides/python/06-web-apps.html#flask-blueprints",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Flask: blueprints",
-    "text": "Flask: blueprints\n\nModularize routes for larger apps"
+    "text": "Flask: blueprints\n# blueprints/admin/routes.py\nfrom flask import Blueprint\n\nbp = Blueprint(\"admin\", __name__, url_prefix=\"/admin\")\n\n@bp.get(\"/users\")\ndef list_users():\n    return \"Admin: list of users\"\n# app.py\nfrom flask import Flask\nfrom blueprints.admin.routes import bp as admin_bp\n\napp = Flask(__name__)\napp.register_blueprint(admin_bp)\n\nWhy blueprints?\n\nModularize routes by domain: auth, admin, api, blog, …\nEasier to maintain large apps, easier to reuse across projects"
   },
   {
     "objectID": "slides/python/06-web-apps.html#streamlit-state",
     "href": "slides/python/06-web-apps.html#streamlit-state",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Streamlit: state",
-    "text": "Streamlit: state\nif \"n\" not in st.session_state:\n    st.session_state.n = 0"
+    "text": "Streamlit: state\nimport streamlit as st\n\nif \"n\" not in st.session_state:\n    st.session_state.n = 0\n\nst.write(\"n =\", st.session_state.n)\n\ncol1, col2 = st.columns(2)\nif col1.button(\"Add 1\"):\n    st.session_state.n += 1\nif col2.button(\"Multiply by 2\"):\n    st.session_state.n *= 2\n\nUse session state to maintain values across reruns\nUseful for multi-step workflows, calculators, and interactive applications"
   },
   {
     "objectID": "slides/python/06-web-apps.html#deployment-gotchas",
     "href": "slides/python/06-web-apps.html#deployment-gotchas",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Deployment gotchas",
-    "text": "Deployment gotchas\n\nTimeouts, static files, CORS"
+    "text": "Deployment gotchas\n\nTimeouts\n\nLong computations → use background jobs / Celery / caching\n\nStatic files\n\nMake sure your reverse proxy serves /static efficiently\n\nCORS\n\nIf you serve an API used by JS in another domain\nUse flask-cors or manual headers\n\nDebug mode\n\nNever run debug=True in production\nDebugger gives code execution if misused"
   },
   {
     "objectID": "slides/python/06-web-apps.html#knowledge-check-quiz",
     "href": "slides/python/06-web-apps.html#knowledge-check-quiz",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Knowledge check (quiz)",
-    "text": "Knowledge check (quiz)\n\nWhen pick Streamlit over Flask?\nOne security practice for secrets?"
+    "text": "Knowledge check (quiz)\n\nConceptual:\n\nWhen would you pick Flask over Streamlit for a project?\nWhy is url_for() better than hard-coding URLs?\nWhat is the difference between st.cache_data and st.cache_resource?\n\nSecurity:\n\nOne good practice for storing secrets?\nWhy do we need CSRF protection on forms?\n\nImplementation:\n\nHow do you access query parameters in Flask?\nHow do you structure a project once it gets too big for a single app.py?"
   },
   {
     "objectID": "slides/python/07-bigdata.html#why-big-data-tools",
@@ -1950,70 +1950,70 @@
     "href": "slides/python/06-web-apps.html#flask-project-structure",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Flask project structure",
-    "text": "Flask project structure\nmyapp/\n    app.py\n    templates/\n    static/"
+    "text": "Flask project structure\nmyapp/\n    app.py                 # or __init__.py if using factory pattern\n    config.py              # config classes (Dev, Prod, Test)\n    templates/\n        base.html\n        index.html\n        dashboard.html\n    static/\n        css/\n        js/\n        images/\n    blueprints/\n        __init__.py\n        auth/\n            __init__.py\n            routes.py\n        api/\n            __init__.py\n            routes.py\n\nStart simple (app.py) then refactor to a package + blueprints as app grows\nSeparation of concerns:\n\nviews (routes) / templates / static assets / configuration"
   },
   {
     "objectID": "slides/python/06-web-apps.html#static-files",
     "href": "slides/python/06-web-apps.html#static-files",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Static files",
-    "text": "Static files\n\nPlace CSS/JS in static/; link via url_for('static', filename='app.css')"
+    "text": "Static files\nfrom flask import url_for\n\n@app.get(\"/profile\")\ndef profile():\n    css_url = url_for(\"static\", filename=\"css/app.css\")\n    return f\"\"\"\n    &lt;html&gt;\n      &lt;head&gt;&lt;link rel=\"stylesheet\" href=\"{css_url}\"&gt;&lt;/head&gt;\n      &lt;body&gt;&lt;h1&gt;Profile page&lt;/h1&gt;&lt;/body&gt;\n    &lt;/html&gt;\n    \"\"\"\n\nPut static assets under static/ (default):\n\nstatic/css/app.css\nstatic/js/app.js\nstatic/img/logo.png\n\nUse url_for(\"static\", filename=\"...\") instead of hard-coded /static/...\n\nSafer when app is mounted under a prefix or served by a proxy"
   },
   {
     "objectID": "slides/python/06-web-apps.html#error-handling",
     "href": "slides/python/06-web-apps.html#error-handling",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Error handling",
-    "text": "Error handling\n@app.errorhandler(404)\ndef not_found(e): return (\"Missing\", 404)"
+    "text": "Error handling\nfrom flask import render_template\n\n@app.errorhandler(404)\ndef not_found(e):\n    return render_template(\"404.html\"), 404\n\n@app.errorhandler(500)\ndef server_error(e):\n    return render_template(\"500.html\"), 500\n\nYou can abort(status_code) to trigger an error:\n\nfrom flask import abort\n\n@app.get(\"/secret\")\ndef secret():\n    abort(403)  # Forbidden\n\nGoal: never show users raw tracebacks in production\n\nUse custom error pages and proper logging"
   },
   {
     "objectID": "slides/python/06-web-apps.html#logging",
     "href": "slides/python/06-web-apps.html#logging",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Logging",
-    "text": "Logging\nimport logging; logging.basicConfig(level=logging.INFO)\napp.logger.info(\"started\")"
+    "text": "Logging\nimport logging\n\nlogging.basicConfig(level=logging.INFO)\n\n@app.before_first_request\ndef startup():\n    app.logger.info(\"Application started\")\n\n@app.get(\"/ping\")\ndef ping():\n    app.logger.debug(\"Ping endpoint called\")\n    return \"pong\"\n\nUse log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL\nIn production, send logs to:\n\nFiles, log aggregation services (ELK stack, Datadog, etc.), or stdout (Docker)"
   },
   {
     "objectID": "slides/python/06-web-apps.html#sessions-and-cookies",
     "href": "slides/python/06-web-apps.html#sessions-and-cookies",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Sessions and cookies",
-    "text": "Sessions and cookies\napp.secret_key = \"change-me\"\nsession['user'] = 'ana'"
+    "text": "Sessions and cookies\nfrom flask import session\n\napp.secret_key = \"change-me-in-prod\"  # or from env\n\n@app.get(\"/login/&lt;user&gt;\")\ndef login(user):\n    session[\"user\"] = user\n    return f\"Logged in as {user}\"\n\n@app.get(\"/whoami\")\ndef whoami():\n    user = session.get(\"user\")\n    return f\"You are {user or 'not logged in'}\"\n\nFlask sessions are signed cookies (client-side, tamper-proof)\nDo not store very large or very sensitive data there\nYou can set session.permanent = True and configure PERMANENT_SESSION_LIFETIME"
   },
   {
     "objectID": "slides/python/06-web-apps.html#csrf-and-forms",
     "href": "slides/python/06-web-apps.html#csrf-and-forms",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "CSRF and forms",
-    "text": "CSRF and forms\n\nUse WTForms/Flask-WTF for CSRF tokens on POST forms"
+    "text": "CSRF and forms\n\nWhy CSRF?\n\nAttacker tricks user’s browser into sending a POST to your app\n\nTypical pattern with Flask-WTF:\n\nfrom flask_wtf import FlaskForm\nfrom wtforms import StringField, SubmitField\nfrom wtforms.validators import DataRequired\n\nclass NameForm(FlaskForm):\n    name = StringField(\"Your name\", validators=[DataRequired()])\n    submit = SubmitField(\"Submit\")\n@app.route(\"/form\", methods=[\"GET\", \"POST\"])\ndef form():\n    form = NameForm()\n    if form.validate_on_submit():\n        name = form.name.data\n        ...\n    return render_template(\"form.html\", form=form)\n\nTemplate must include { form.csrf_token }:\n\nFlask-WTF automatically validates token"
   },
   {
     "objectID": "slides/python/06-web-apps.html#file-uploads",
     "href": "slides/python/06-web-apps.html#file-uploads",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "File uploads",
-    "text": "File uploads\nf = request.files['file']\nf.save('uploads/data.csv')"
+    "text": "File uploads\nimport os\nfrom flask import request, redirect, url_for\n\nUPLOAD_DIR = \"uploads\"\nos.makedirs(UPLOAD_DIR, exist_ok=True)\n\nALLOWED_EXTENSIONS = {\"csv\", \"txt\"}\n\ndef allowed(filename):\n    return \".\" in filename and \\\n           filename.rsplit(\".\", 1)[1].lower() in ALLOWED_EXTENSIONS\n\n@app.post(\"/upload\")\ndef upload():\n    f = request.files[\"file\"]\n    if f.filename == \"\" or not allowed(f.filename):\n        return \"Invalid file\", 400\n    path = os.path.join(UPLOAD_DIR, f.filename)\n    f.save(path)\n    return f\"Saved to {path}\"\n\nValidate:\n\nFilename extension\nFile size (can use request.content_length)\n\nNever trust client-side checks only"
   },
   {
     "objectID": "slides/python/06-web-apps.html#streamlit-session-state",
     "href": "slides/python/06-web-apps.html#streamlit-session-state",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Streamlit: session state",
-    "text": "Streamlit: session state\nimport streamlit as st\nst.session_state.setdefault('count', 0)"
+    "text": "Streamlit: session state\nimport streamlit as st\n\nif \"count\" not in st.session_state:\n    st.session_state.count = 0\n\nst.write(\"Count:\", st.session_state.count)\n\nif st.button(\"Increment\"):\n    st.session_state.count += 1\n\nif st.button(\"Reset\"):\n    st.session_state.count = 0\n\nst.session_state is similar to Flask session, but kept server-side\nUse it for:\n\nMulti-step forms\nWizard-style flows\nRemembering user selections"
   },
   {
     "objectID": "slides/python/06-web-apps.html#streamlit-caching-nuances",
     "href": "slides/python/06-web-apps.html#streamlit-caching-nuances",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Streamlit: caching nuances",
-    "text": "Streamlit: caching nuances\n\nst.cache_data for data; st.cache_resource for models/clients"
+    "text": "Streamlit: caching nuances\n\nst.cache_data:\n\nFor data: reading CSVs, heavy computations, feature engineering\nCache key = function code + arguments\n\nst.cache_resource:\n\nFor resources: ML models, DB connections, clients\nOnly created once per session (unless code changes)\n\nExample:\n\n@st.cache_resource\ndef load_model():\n    # expensive model loading\n    ...\n    return model\n\nBe careful with non-deterministic functions (randomness, time)"
   },
   {
     "objectID": "slides/python/06-web-apps.html#deployment-checklist",
     "href": "slides/python/06-web-apps.html#deployment-checklist",
     "title": "Python Session 6 — Flask and Streamlit",
     "section": "Deployment checklist",
-    "text": "Deployment checklist\n\nProcfile/requirements, gunicorn app:app, env vars"
+    "text": "Deployment checklist\n\nCode & dependencies\n\nrequirements.txt / pyproject.toml\nProcfile (Heroku-style) → web: gunicorn app:app\n\nConfiguration\n\nConfig classes for dev/prod\nSecrets via env vars (SECRET_KEY, DB URL, API keys)\n\nStatic & media\n\nCorrect static/ mapping\nWhere to store user uploads? (local disk vs cloud storage)\n\nObservability\n\nLogging, error tracking (Sentry, Rollbar, …)\nHealth endpoint (/health) for monitoring"
   },
   {
     "objectID": "slides/python/07-bigdata.html#predicate-pushdown",
@@ -2707,5 +2707,61 @@
     "title": "Python Session 5 — Numerical Optimization",
     "section": "More exercises",
     "text": "More exercises\n\nNonlinear LS with least_squares using a robust loss (Cauchy/Huber)\nMarkowitz with a target return in CVXPY; compare to SciPy SLSQP\nSmall knapsack with OR‑Tools: change data and capacity\nUse JAX to minimize Rosenbrock and compare to SciPy BFGS"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#flask-request-lifecycle",
+    "href": "slides/python/06-web-apps.html#flask-request-lifecycle",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Flask: request lifecycle",
+    "text": "Flask: request lifecycle\n\nBrowser → HTTP request → Web server → Flask app → view function → response\nThe WSGI layer sits between web server and Flask, handling the protocol translation\nImportant globals:\n\nrequest: current HTTP request (method, headers, body, args…)\nsession: per-user, signed cookie storage\ng: request-scoped storage (DB connection, current user…)\n\nHooks:\n\nfrom flask import g, request\n\n@app.before_request\ndef before():\n    g.request_path = request.path\n\n@app.after_request\ndef after(response):\n    # e.g. add custom header\n    response.headers[\"X-App-Name\"] = \"Intro-Flask\"\n    return response\n\nThink of it as a pipeline where you can plug in logic before/after views"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#flask-url_for-and-redirects",
+    "href": "slides/python/06-web-apps.html#flask-url_for-and-redirects",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Flask: url_for and redirects",
+    "text": "Flask: url_for and redirects\nfrom flask import url_for, redirect\n\n@app.get(\"/\")\ndef index():\n    # Generate URLs by function name (safer than hard-coding strings)\n    return f'&lt;a href=\"{url_for(\"dashboard\")}\"&gt;Go to dashboard&lt;/a&gt;'\n\n@app.get(\"/dashboard\")\ndef dashboard():\n    return \"Dashboard\"\n\n@app.get(\"/old-dashboard\")\ndef old_dashboard():\n    # Permanent redirect to new endpoint\n    return redirect(url_for(\"dashboard\"), code=301)\n\nurl_for(\"dashboard\") builds /dashboard\n\nRobust when you later change URLs / add prefixes / blueprints\n\nredirect() sends HTTP 302/301 to the browser"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#flask-configuration-environments",
+    "href": "slides/python/06-web-apps.html#flask-configuration-environments",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Flask: configuration & environments",
+    "text": "Flask: configuration & environments\nimport os\n\nclass Config:\n    SECRET_KEY = os.environ.get(\"SECRET_KEY\", \"dev-key\")\n    DEBUG = False\n\nclass DevConfig(Config):\n    DEBUG = True\n\nclass ProdConfig(Config):\n    DEBUG = False\n\napp = Flask(__name__)\napp.config.from_object(DevConfig)\n\nAccess anywhere: app.config[\"SECRET_KEY\"]\nTypical pattern:\n\nConfig class (Dev / Prod / Test)\nRead secrets from environment variables (never hard-code passwords)"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#exercise-1-flask",
+    "href": "slides/python/06-web-apps.html#exercise-1-flask",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Exercise 1 (Flask)",
+    "text": "Exercise 1 (Flask)\nGoal: endpoint that sums two numbers from query params.\n\nImplement /sum?a=3&b=5 → responds \"3 + 5 = 8\"\nRequirements:\n\nUse request.args for query params\nValidate that a and b exist and are numbers\nFor invalid input, return HTTP 400 with a clear error message\n\nExtension:\n\nAdd /api/sum that takes JSON {\"a\": 3, \"b\": 5} and returns JSON {\"result\": 8}"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#exercise-2-streamlit",
+    "href": "slides/python/06-web-apps.html#exercise-2-streamlit",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Exercise 2 (Streamlit)",
+    "text": "Exercise 2 (Streamlit)\nGoal: CSV uploader with stats + simple visualization.\n\nLet users upload a CSV:\n\nShow df.head()\nShow df.describe() for numeric columns\n\nAdd UI:\n\nselectbox to choose a numeric column\nShow st.bar_chart or st.line_chart of that column\n\nExtension:\n\nAdd checkbox “Show missing values” and display df.isna().sum()"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#wrap-up",
+    "href": "slides/python/06-web-apps.html#wrap-up",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Wrap-up",
+    "text": "Wrap-up\n\nYou now know how to:\n\nBuild Flask apps with routes, templates, forms, JSON APIs, sessions\nUnderstand the request lifecycle and WSGI interface\nUse Streamlit for fast data dashboards and prototypes\nDeploy apps with production servers and handle basic security\n\nAfter this course you should:\n\nBe able to build a small production-ready Flask app\nPrototype data apps quickly with Streamlit\nRead Flask/Streamlit code from GitHub and understand it"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#what-is-wsgi",
+    "href": "slides/python/06-web-apps.html#what-is-wsgi",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "What is WSGI?",
+    "text": "What is WSGI?\n\nWSGI = Web Server Gateway Interface\n\nStandard interface between Python web apps and web servers\nAllows your Flask app to communicate with web servers (Apache, Nginx, etc.)\n\nThink of it as a translator:\n\nWeb server receives HTTP request → passes to WSGI → your Flask app processes → returns response\n\nFor development:\n\nFlask has built-in server (app.run())\n\nFor production:\n\nUse production-grade WSGI servers like gunicorn or uWSGI\nThey handle multiple requests concurrently and are more robust"
+  },
+  {
+    "objectID": "slides/python/06-web-apps.html#flask-application-factory-pattern",
+    "href": "slides/python/06-web-apps.html#flask-application-factory-pattern",
+    "title": "Python Session 6 — Flask and Streamlit",
+    "section": "Flask: application factory pattern",
+    "text": "Flask: application factory pattern\ndef create_app(config_object=DevConfig):\n    app = Flask(__name__)\n    app.config.from_object(config_object)\n    # register blueprints, extensions…\n    return app\n\nBenefits:\n\nCreate multiple app instances with different configs\nEasier testing (create test app with test config)\nBetter organized for larger applications\n\nUsage:\n\n# For development\napp = create_app(DevConfig)\n\n# For production\napp = create_app(ProdConfig)"
   }
 ]
