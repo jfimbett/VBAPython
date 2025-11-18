@@ -157,6 +157,34 @@ def api_sum():
 
 ---
 
+## Flask: calling APIs with requests
+
+**Server code** (`test.py`):
+```python
+@app.post("/api/sum")
+def api_sum():
+    data = request.get_json()
+    a = data["a"]
+    b = data["b"]
+    return jsonify({"result": a + b})
+```
+
+**Client code** (`api_test.py`):
+```python
+import requests
+
+data = {"a": 5, "b": 7}
+
+response = requests.post("http://127.0.0.1:5000/api/sum", json=data)
+print(response.json())
+```
+
+- Use `requests.post()` with `json=` parameter to send JSON data
+- Server must use `request.get_json()` to parse the JSON body
+- Response is also JSON, parse with `response.json()`
+
+---
+
 ## Flask: request lifecycle
 
 - **Browser → HTTP request → Web server → Flask app → view function → response**
